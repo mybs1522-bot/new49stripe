@@ -144,8 +144,8 @@ const CheckoutPage: React.FC = () => {
 
           <ModernPaymentForm bare email={email} onSuccess={handleSuccess} />
 
-          <div className="flex items-center justify-center gap-1 mt-4 text-[10px] text-gray-400 font-medium uppercase tracking-wide">
-            <Lock size={9} /> SSL Secured Payment - 7-Day Money-Back Guarantee
+          <div className="flex items-center justify-center gap-1.5 mt-4 text-[11px] text-gray-500 font-medium text-center">
+            🎓 Skill Certificate will be automatically mailed after you complete the course.
           </div>
         </div>
       </div>

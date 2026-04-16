@@ -176,7 +176,7 @@ const LandingPage: React.FC = () => {
               <div className="flex flex-col sm:flex-row gap-3 items-center mb-3 w-full sm:w-auto">
                 <button onClick={openPaymentModal} className="w-full sm:w-auto px-8 py-3.5 md:py-4 bg-gradient-to-r from-orange-500 to-orange-600 text-white rounded-2xl font-bold text-sm md:text-lg shadow-xl shadow-orange-500/20 hover:shadow-orange-500/30 hover:scale-[1.03] transition-all flex items-center justify-center gap-3 group premium-stroke whitespace-nowrap">
                   <Download size={18} className="shrink-0" />
-                  Get All Courses & 24/7 Support <ArrowRight className="group-hover:translate-x-1 transition-transform" size={18} />
+                  Get All Courses and Software <ArrowRight className="group-hover:translate-x-1 transition-transform" size={18} />
                 </button>
               </div>
               <p className="text-[10px] md:text-xs text-slate-500 mb-7 md:mb-10 font-bold">24/7 Team Support • Free Software • 7-Day Money-Back Guarantee</p>

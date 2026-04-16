@@ -90,13 +90,10 @@ const CheckoutPage: React.FC = () => {
 
       <div className="checkout-card w-full max-w-md bg-white rounded-3xl shadow-2xl overflow-hidden">
         <div className="bg-black text-white px-6 py-5">
-          <div className="flex items-center justify-between mb-1">
+          <div className="flex items-center mb-1">
             <div className="inline-flex items-center gap-1.5 text-gray-400 text-[10px] font-bold uppercase tracking-widest">
               <Sparkles size={11} /> Complete Bundle
             </div>
-            <button onClick={() => navigate("/")} className="p-1.5 bg-white/10 hover:bg-white/20 rounded-full transition-colors">
-              <X size={15} className="text-white" />
-            </button>
           </div>
           <h3 className="text-xl font-display font-bold mb-1">All {COURSES.length} Courses</h3>
           <div className="flex items-baseline gap-2">

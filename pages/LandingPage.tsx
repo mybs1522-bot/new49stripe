@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { ArrowRight, Star, CheckCircle, CheckCircle2, X, ChevronDown, Sparkles, Eye, Download, Mail, Lock, Loader2, Timer, Check } from 'lucide-react';
 import { COURSES, BUNDLE_PRICE } from '../constants';
 import ModernPaymentForm from '../components/ui/modern-payment-form';
+import TeamSection from '../components/ui/team';
 import {
   Logo, SocialProofToast,
   PROBLEM_POINTS, TRANSFORMATION_STORIES, FEAR_STATS,
@@ -75,18 +77,11 @@ const CtaWithTimer = ({ timeLeft, onClick, variant = 'green' }: { timeLeft: { h:
 };
 
 const LandingPage: React.FC = () => {
+  const navigate = useNavigate();
   const [timeLeft, setTimeLeft] = useState(() => { const D = (3 * 3600 + 36 * 60 + 20) * 1000, r = D - (Date.now() % D); return { h: Math.floor((r / 3600000) % 24), m: Math.floor((r / 60000) % 60), s: Math.floor((r / 1000) % 60) }; });
   const [showStickyBar, setShowStickyBar] = useState(false);
   useEffect(() => { window.scrollTo(0, 0); if ((window as any).fbq) (window as any).fbq('track', 'ViewContent', { content_name: 'Avada Design Bundle', value: 49, currency: 'USD' }); }, []);
   const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(0);
-
-  // Payment modal state
-  const [showPaymentModal, setShowPaymentModal] = useState(false);
-  const [email, setEmail] = useState('');
-  const [emailError, setEmailError] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const [paymentError, setPaymentError] = useState('');
-  const [paymentSuccess, setPaymentSuccess] = useState<string | null>(null);
   const [studentCount, setStudentCount] = useState(22390);
 
   useEffect(() => {
@@ -97,18 +92,9 @@ const LandingPage: React.FC = () => {
   useEffect(() => { const t = setInterval(() => setStudentCount(c => c + 1), 4000); return () => clearInterval(t); }, []);
 
   const formatTime = (val: number) => val.toString().padStart(2, '0');
-  const validateEmail = (e: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e);
   const openPaymentModal = () => {
-    setShowPaymentModal(true);
-    // Meta Pixel: InitiateCheckout
-    if (typeof window !== 'undefined' && (window as any).fbq) {
-      (window as any).fbq('track', 'InitiateCheckout');
-    }
-  };
-
-  const handlePaymentSuccess = () => {
-    setShowPaymentModal(false);
-    setPaymentSuccess('stripe-payment-completed');
+    if ((window as any).fbq) (window as any).fbq('track', 'InitiateCheckout');
+    navigate('/checkout');
   };
 
   return (
@@ -124,7 +110,7 @@ const LandingPage: React.FC = () => {
 
       <main>
         {/* 1. HERO — The Hook */}
-        <section className="relative pt-0 pb-10 md:pb-20 overflow-hidden" style={{ background: '#ffffff' }}>
+        <section className="relative pt-0 pb-4 md:pb-20 overflow-hidden" style={{ background: '#ffffff' }}>
           <div className="w-full px-4 md:max-w-4xl md:mx-auto relative z-10">
             <div className="flex flex-col items-center text-center pt-7 md:pt-14">
 
@@ -196,7 +182,7 @@ const LandingPage: React.FC = () => {
               <p className="text-[10px] md:text-xs text-slate-500 mb-7 md:mb-10 font-bold">24/7 Team Support • Free Software • 7-Day Money-Back Guarantee</p>
 
               {/* Outcome strip */}
-              <div className="w-full mb-6 flex gap-2">
+              <div className="w-full mb-4 flex gap-2">
                 <div className="flex-1 bg-amber-50 border border-amber-200 rounded-xl px-3 py-3 text-left">
                   <p className="text-base font-black text-slate-900">💼 Get a Better Job</p>
                   <p className="text-[11px] text-slate-500 mt-0.5">Higher-paying design roles</p>
@@ -205,6 +191,15 @@ const LandingPage: React.FC = () => {
                   <p className="text-base font-black text-slate-900">🏢 Own Design Firm</p>
                   <p className="text-[11px] text-slate-500 mt-0.5">Freelance & studio projects</p>
                 </div>
+              </div>
+
+              <div className="w-full mb-2 md:mb-6 bg-orange-50 border border-orange-200 rounded-2xl px-4 py-4 text-left">
+                <p className="text-xs font-bold uppercase tracking-widest text-orange-500 mb-3">✨ Best Part</p>
+                <ul className="space-y-2">
+                  <li className="flex items-start gap-2 text-sm md:text-base font-semibold text-slate-800"><span className="text-orange-400 shrink-0">—</span> Just a Laptop or Computer is all you need</li>
+                  <li className="flex items-start gap-2 text-sm md:text-base font-semibold text-slate-800"><span className="text-orange-400 shrink-0">—</span> We teach everything from the absolute basics</li>
+                  <li className="flex items-start gap-2 text-sm md:text-base font-semibold text-slate-800"><span className="text-orange-400 shrink-0">—</span> Become an industry-ready designer in weeks</li>
+                </ul>
               </div>
 
             </div>
@@ -224,80 +219,67 @@ const LandingPage: React.FC = () => {
              </div>
            </div>
            
-           <div className="flex flex-col gap-3 md:gap-4 relative w-full overflow-hidden pb-4">
-            {/* ROW 1: Courses 1 to 6 */}
-            <div className="flex gap-3 md:gap-4 animate-scroll-right hover:pause w-max pl-4 md:pl-6">
+           {/* Mobile: static 4×3 grid */}
+           <div className="md:hidden grid grid-cols-4 gap-2 px-3">
+             {COURSES.slice(0, 12).map((course, i) => (
+               <div key={course.id} className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
+                 <div className="relative aspect-square overflow-hidden bg-gray-100">
+                   <img src={course.imageUrl} alt={course.title} className="w-full h-full object-cover" />
+                   <div className="absolute top-1 left-1 w-5 h-5 bg-white/95 rounded-full flex items-center justify-center font-bold text-gray-900 text-[9px] border border-gray-200">{i + 1}</div>
+                   <div className="absolute top-1 right-1 bg-white/95 text-gray-900 text-[7px] font-bold uppercase px-1 py-0.5 rounded-full border border-gray-200 leading-none">{course.software}</div>
+                 </div>
+                 <div className="p-1.5">
+                   <h3 className="font-bold text-gray-900 text-[10px] line-clamp-1 mb-1">{course.title}</h3>
+                   <div className="bg-orange-50 text-orange-600 text-[8px] font-bold px-1 py-0.5 rounded flex items-center justify-center gap-0.5 border border-orange-100">
+                     <CheckCircle2 size={7}/> Included
+                   </div>
+                 </div>
+               </div>
+             ))}
+           </div>
+
+           {/* Desktop: scrolling rows */}
+           <div className="hidden md:flex flex-col gap-4 relative w-full overflow-hidden pb-4">
+            <div className="flex gap-4 animate-scroll-right hover:pause w-max pl-6">
               {[...COURSES.slice(0, 6), ...COURSES.slice(0, 6)].map((course, i) => {
                 const globalIndex = i % 6;
                 return (
-                  <div key={`row1-${course.id}-${i}`} className="w-[140px] md:w-[150px] shrink-0 bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden group hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
+                  <div key={`row1-${course.id}-${i}`} className="w-[150px] shrink-0 bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden group hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
                     <div className="relative aspect-square overflow-hidden bg-gray-100">
                       <img src={course.imageUrl} alt={course.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-                      
-                      {/* Number Badge */}
-                      <div className="absolute top-1.5 left-1.5 w-6 h-6 bg-white/95 backdrop-blur-sm rounded-full flex items-center justify-center font-display font-bold text-gray-900 shadow-sm text-[10px] border border-gray-200">
-                        {globalIndex + 1}
-                      </div>
-                      
-                      {/* Software Badge */}
-                      <div className="absolute top-1.5 right-1.5 bg-white/95 backdrop-blur-sm text-gray-900 text-[8px] font-bold uppercase tracking-widest px-1.5 py-0.5 rounded-full shadow-sm border border-gray-200">
-                        {course.software}
-                      </div>
-                      
-                      {/* View Overlay */}
+                      <div className="absolute top-1.5 left-1.5 w-6 h-6 bg-white/95 backdrop-blur-sm rounded-full flex items-center justify-center font-display font-bold text-gray-900 shadow-sm text-[10px] border border-gray-200">{globalIndex + 1}</div>
+                      <div className="absolute top-1.5 right-1.5 bg-white/95 backdrop-blur-sm text-gray-900 text-[8px] font-bold uppercase tracking-widest px-1.5 py-0.5 rounded-full shadow-sm border border-gray-200">{course.software}</div>
                       <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                        <div className="w-6 h-6 bg-white rounded-full flex items-center justify-center text-orange-500 shadow-lg">
-                          <Eye size={14} />
-                        </div>
+                        <div className="w-6 h-6 bg-white rounded-full flex items-center justify-center text-orange-500 shadow-lg"><Eye size={14} /></div>
                       </div>
                     </div>
-                    
                     <div className="p-2">
-                      <h3 className="font-display font-bold text-gray-900 text-xs md:text-sm mb-1 line-clamp-1 leading-tight" title={course.title}>{course.title}</h3>
+                      <h3 className="font-display font-bold text-gray-900 text-sm mb-1 line-clamp-1 leading-tight">{course.title}</h3>
                       <div className="mt-1 pt-1 border-t border-gray-100">
-                        <div className="bg-orange-50 text-orange-600 text-[9px] font-bold px-1.5 py-0.5 rounded flex items-center justify-center gap-1 border border-orange-100 w-full">
-                          <CheckCircle2 size={8}/> Included
-                        </div>
+                        <div className="bg-orange-50 text-orange-600 text-[9px] font-bold px-1.5 py-0.5 rounded flex items-center justify-center gap-1 border border-orange-100 w-full"><CheckCircle2 size={8}/> Included</div>
                       </div>
                     </div>
                   </div>
                 );
               })}
             </div>
-            
-            {/* ROW 2: Courses 7 to 12 */}
-            <div className="flex gap-3 md:gap-4 animate-scroll-right hover:pause w-max pl-4 md:pl-6" style={{ animationDelay: '-22.5s' }}>
+            <div className="flex gap-4 animate-scroll-right hover:pause w-max pl-6" style={{ animationDelay: '-22.5s' }}>
               {[...COURSES.slice(6, 12), ...COURSES.slice(6, 12)].map((course, i) => {
                 const globalIndex = (i % 6) + 6;
                 return (
-                  <div key={`row2-${course.id}-${i}`} className="w-[140px] md:w-[150px] shrink-0 bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden group hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
+                  <div key={`row2-${course.id}-${i}`} className="w-[150px] shrink-0 bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden group hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
                     <div className="relative aspect-square overflow-hidden bg-gray-100">
                       <img src={course.imageUrl} alt={course.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-                      
-                      {/* Number Badge */}
-                      <div className="absolute top-1.5 left-1.5 w-6 h-6 bg-white/95 backdrop-blur-sm rounded-full flex items-center justify-center font-display font-bold text-gray-900 shadow-sm text-[10px] border border-gray-200">
-                        {globalIndex + 1}
-                      </div>
-                      
-                      {/* Software Badge */}
-                      <div className="absolute top-1.5 right-1.5 bg-white/95 backdrop-blur-sm text-gray-900 text-[8px] font-bold uppercase tracking-widest px-1.5 py-0.5 rounded-full shadow-sm border border-gray-200">
-                        {course.software}
-                      </div>
-                      
-                      {/* View Overlay */}
+                      <div className="absolute top-1.5 left-1.5 w-6 h-6 bg-white/95 backdrop-blur-sm rounded-full flex items-center justify-center font-display font-bold text-gray-900 shadow-sm text-[10px] border border-gray-200">{globalIndex + 1}</div>
+                      <div className="absolute top-1.5 right-1.5 bg-white/95 backdrop-blur-sm text-gray-900 text-[8px] font-bold uppercase tracking-widest px-1.5 py-0.5 rounded-full shadow-sm border border-gray-200">{course.software}</div>
                       <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                        <div className="w-6 h-6 bg-white rounded-full flex items-center justify-center text-orange-500 shadow-lg">
-                          <Eye size={14} />
-                        </div>
+                        <div className="w-6 h-6 bg-white rounded-full flex items-center justify-center text-orange-500 shadow-lg"><Eye size={14} /></div>
                       </div>
                     </div>
-                    
                     <div className="p-2">
-                      <h3 className="font-display font-bold text-gray-900 text-xs md:text-sm mb-1 line-clamp-1 leading-tight" title={course.title}>{course.title}</h3>
+                      <h3 className="font-display font-bold text-gray-900 text-sm mb-1 line-clamp-1 leading-tight">{course.title}</h3>
                       <div className="mt-1 pt-1 border-t border-gray-100">
-                        <div className="bg-orange-50 text-orange-600 text-[9px] font-bold px-1.5 py-0.5 rounded flex items-center justify-center gap-1 border border-orange-100 w-full">
-                          <CheckCircle2 size={8}/> Included
-                        </div>
+                        <div className="bg-orange-50 text-orange-600 text-[9px] font-bold px-1.5 py-0.5 rounded flex items-center justify-center gap-1 border border-orange-100 w-full"><CheckCircle2 size={8}/> Included</div>
                       </div>
                     </div>
                   </div>
@@ -316,6 +298,27 @@ const LandingPage: React.FC = () => {
           </div>
         </section>
 
+
+        {/* AI ENHANCEMENT — Visual Proof */}
+        <section className="py-16 md:py-20 bg-white border-b border-slate-200">
+          <div className="max-w-5xl mx-auto px-5">
+            <div className="reveal text-center mb-10">
+              <p className="text-orange-500 text-xs font-mono uppercase tracking-widest mb-3">AI Courses Included</p>
+              <h2 className="text-3xl md:text-5xl font-display font-bold text-slate-900 tracking-tight mb-4">Learn <span className="text-orange-600">Free To Use AI Tools</span></h2>
+              <p className="text-slate-500 text-base max-w-xl mx-auto">Learn the tools that help you render without any charges locally on your system.</p>
+            </div>
+            <div className="reveal flex justify-center">
+              <video
+                src="https://rendair-landingpage.s3.us-east-1.amazonaws.com/rendair-ai-chat-03-cc.mp4"
+                autoPlay
+                loop
+                muted
+                playsInline
+                className="w-full max-w-4xl rounded-2xl shadow-2xl"
+              />
+            </div>
+          </div>
+        </section>
 
         {/* 4. STUDENT WORK CAROUSEL — Visual Proof */}
         <section className="py-16 md:py-24 bg-slate-50 overflow-hidden border-b border-slate-200 grid-bg">
@@ -348,7 +351,7 @@ const LandingPage: React.FC = () => {
         <section className="py-16 bg-white border-b border-slate-200">
           <div className="max-w-5xl mx-auto px-5">
             <div className="reveal text-center mb-10">
-              <h2 className="text-3xl md:text-5xl font-display font-bold text-slate-900 tracking-tight mb-4">Invest in Yourself Today. <br className="hidden md:block" /><span className="text-orange-600">Start making money in the industry.</span></h2>
+              <h2 className="text-3xl md:text-5xl font-display font-bold text-slate-900 tracking-tight mb-4">Time is Money <br className="hidden md:block" /><span className="text-orange-600">and this program saves you time.</span></h2>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
               {INCOME_TIERS.map((tier, i) => (
@@ -418,6 +421,9 @@ const LandingPage: React.FC = () => {
           </div>
         </section>
 
+        {/* MEET YOUR MENTORS */}
+        <TeamSection />
+
         {/* 3. MANIFESTO — The Story & The Gap */}
         <section className="py-16 md:py-28 grid-bg bg-white border-b border-slate-200">
           <div className="max-w-3xl mx-auto px-5">
@@ -478,6 +484,7 @@ const LandingPage: React.FC = () => {
           </div>
         </section>
 
+
         {/* 8. TESTIMONIALS — Social Proof */}
         <section className="py-16 md:py-24 bg-white overflow-hidden grid-bg">
           <div className="max-w-5xl mx-auto px-5 mb-12">
@@ -517,9 +524,6 @@ const LandingPage: React.FC = () => {
                 </div>
               ))}
             </div>
-          </div>
-          <div className="max-w-4xl mx-auto px-5 mt-16 md:mt-24 text-center reveal">
-            <img src="/renders/mentors.png" alt="Industry Experts" className="w-full h-auto drop-shadow-2xl" />
           </div>
         </section>
 
@@ -596,151 +600,6 @@ const LandingPage: React.FC = () => {
 
         </button>
       </div>
-
-      {/* ═══════ PAYMENT MODAL ═══════ */}
-      {showPaymentModal && (
-        <div className="fixed inset-0 z-[100] flex flex-col items-center justify-center p-4 gap-3">
-          <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" onClick={() => setShowPaymentModal(false)} />
-          <div className="relative z-10 inline-flex items-center gap-2 bg-white rounded-full px-5 py-2.5 shadow-xl border border-gray-200">
-            <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse shrink-0"></span>
-            <span className="text-sm font-bold text-gray-900">{studentCount.toLocaleString('en-IN')}</span>
-            <span className="text-xs text-gray-500">students already enrolled</span>
-          </div>
-          <div className="relative w-full max-w-md bg-white rounded-3xl shadow-2xl overflow-y-auto max-h-[90vh] animate-[fadeIn_0.3s_ease-out]">
-            <button aria-label="Close" onClick={() => setShowPaymentModal(false)} className="absolute top-3 right-3 z-20 w-8 h-8 flex items-center justify-center bg-white/20 hover:bg-white/40 rounded-full text-white transition-colors">
-              <X size={16} />
-            </button>
-
-            {/* Header - pure black */}
-            <div className="bg-black text-white px-5 py-5">
-              <div className="inline-flex items-center gap-1.5 text-gray-400 text-[10px] font-bold uppercase tracking-widest mb-1.5">
-                <Sparkles size={12} />
-                Complete Bundle
-              </div>
-              <h3 className="text-xl font-display font-bold mb-1">All {COURSES.length} Courses</h3>
-              <div className="flex items-baseline gap-2">
-                <span className="text-2xl font-display font-black">$49</span>
-                <span className="text-gray-500 text-sm line-through">$99</span>
-                <span className="bg-white/10 text-white text-xs font-bold px-2 py-0.5 rounded-full border border-white/20">50% OFF</span>
-              </div>
-            </div>
-
-            <div className="px-5 pt-4 pb-5">
-              {/* Features */}
-              <div className="grid grid-cols-2 gap-2 mb-4">
-                {["12 Premium Courses", "10,000+ Textures", "Official Certificate", "24/7 Team Support", "Lifetime Access"].map((item, i) => (
-                  <div key={i} className="flex items-center gap-2 text-xs text-gray-700 font-medium">
-                    <CheckCircle2 size={12} className="text-gray-900 shrink-0" />
-                    {item}
-                  </div>
-                ))}
-                <div className="flex items-center gap-2 text-xs font-bold col-span-2 bg-green-50 border border-green-200 rounded-lg px-3 py-2 text-green-600">
-                  <Download size={12} className="shrink-0 text-green-600" />
-                  Software Download — All Links Included
-                </div>
-              </div>
-
-              {/* Timer */}
-              <div className="bg-gray-50 rounded-xl p-2.5 mb-5 flex items-center justify-between border border-gray-200">
-                <div className="flex items-center gap-2">
-                  <Timer size={14} className="text-gray-900 animate-pulse" />
-                  <span className="text-xs font-bold text-gray-900">Offer ends in:</span>
-                </div>
-                <div className="flex items-center gap-0.5 font-display font-bold text-sm tabular-nums text-gray-900 bg-white px-2.5 py-1 rounded-md border border-gray-200 shadow-sm">
-                  <span>{formatTime(timeLeft.h)}</span><span className="text-gray-400">:</span>
-                  <span>{formatTime(timeLeft.m)}</span><span className="text-gray-400">:</span>
-                  <span>{formatTime(timeLeft.s)}</span>
-                </div>
-              </div>
-
-              {/* Email — very prominent */}
-              <label className="block text-xl font-black text-gray-900 mb-2">Email</label>
-              <div className="relative mb-1">
-                <Mail size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
-                <input
-                  type="email"
-                  placeholder="your@email.com"
-                  value={email}
-                  autoFocus
-                  onChange={(e) => { setEmail(e.target.value); setEmailError(false); }}
-                  className={`w-full pl-11 pr-4 py-3.5 bg-white border-2 ${
-                    emailError ? 'border-red-500' : 'border-gray-900'
-                  } rounded-xl text-sm font-medium focus:outline-none transition-all`}
-                />
-              </div>
-              {emailError && <p className="text-red-500 text-[10px] mb-2 font-bold">Enter a valid email address</p>}
-
-              <ModernPaymentForm
-                bare
-                email={email}
-                onSuccess={handlePaymentSuccess}
-              />
-
-              <div className="flex items-center justify-center gap-2 mt-4 text-[10px] text-gray-400">
-                <Lock size={10} /> SSL Secured Payment • 7-Day Money-Back Guarantee
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* ═══════ PAYMENT SUCCESS OVERLAY ═══════ */}
-      {paymentSuccess && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-[fadeIn_0.5s_ease]">
-          <div className="bg-white rounded-[2rem] p-8 max-w-lg w-full text-center shadow-[0_20px_50px_rgba(0,0,0,0.3)] border border-gray-100 relative overflow-hidden max-h-[90vh] overflow-y-auto">
-            <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-orange-600 to-orange-500"></div>
-            <div className="w-20 h-20 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-6 shadow-sm">
-              <Check size={40} className="text-orange-500" strokeWidth={3} />
-            </div>
-            <h2 className="text-3xl font-display font-black text-gray-900 mb-2">Payment Successful!</h2>
-            <p className="text-gray-500 mb-6 leading-relaxed">
-              Your payment of <span className="font-bold text-gray-900">$49</span> was received. Welcome to Avada!
-            </p>
-            {/* Save link warning */}
-            <div className="bg-yellow-50 border-2 border-yellow-400 rounded-2xl p-4 mb-4 text-left">
-              <p className="text-yellow-800 text-sm font-black mb-1">⚠️ Save this link — it's your only access</p>
-              <p className="text-yellow-700 text-xs leading-relaxed">This link was also emailed to you. Bookmark it now or copy it below.</p>
-            </div>
-            <div className="bg-gray-50 rounded-2xl p-5 mb-6 text-left border border-gray-100">
-              <div className="flex items-center gap-2 mb-3">
-                <Sparkles size={16} className="text-orange-500" />
-                <h3 className="font-bold text-gray-900">Your Course Library:</h3>
-              </div>
-              <a
-                href="https://drive.google.com/drive/folders/1CCyv9u82HiYI8jnyULISfBoGMcbcqd9U?usp=drive_link"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="block w-full bg-gray-900 hover:bg-black text-white font-bold py-3.5 px-4 rounded-xl text-center transition-colors text-sm mb-3"
-              >
-                Open Google Drive →
-              </a>
-              <button
-                onClick={() => { navigator.clipboard.writeText('https://drive.google.com/drive/folders/1CCyv9u82HiYI8jnyULISfBoGMcbcqd9U?usp=drive_link'); }}
-                className="w-full border-2 border-gray-200 hover:border-gray-400 text-gray-600 font-bold py-2.5 px-4 rounded-xl text-xs transition-colors"
-              >
-                Copy Link
-              </button>
-            </div>
-            <div className="bg-gray-50 rounded-2xl p-4 mb-8 text-left border border-gray-100 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-              <div>
-                <div className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">Receipt Number</div>
-                <div className="font-mono text-xs text-gray-600 truncate">{paymentSuccess}</div>
-              </div>
-              <div className="sm:text-right w-full sm:w-auto p-3 bg-white rounded-lg border border-gray-100">
-                <div className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">Support / WhatsApp</div>
-                <a href="https://wa.me/918545015333" target="_blank" rel="noopener noreferrer" className="font-bold text-orange-600 hover:text-orange-500">+91 8545015333</a>
-              </div>
-            </div>
-            <button
-              onClick={() => setPaymentSuccess(null)}
-              className="w-full bg-gray-900 text-white font-bold py-4 rounded-xl hover:bg-black transition-all shadow-lg hover:shadow-xl active:scale-[0.98]"
-            >
-              Close & Start Learning
-            </button>
-          </div>
-        </div>
-      )}
-
 
       <SocialProofToast />
     </div>

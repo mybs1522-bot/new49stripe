@@ -101,6 +101,7 @@ function CheckoutForm({ email, onSuccess, onBack, amount }: CheckoutFormProps) {
   const elements = useElements();
   const [isLoading, setIsLoading] = useState(false);
   const [message, setMessage] = useState("");
+  const [cardTyped, setCardTyped] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -145,20 +146,16 @@ function CheckoutForm({ email, onSuccess, onBack, amount }: CheckoutFormProps) {
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
 
-      {/* PayPal */}
-      <PayPalButton email={email} onSuccess={onSuccess} amount={amount} />
-
-      <div className="flex items-center gap-3 text-gray-600">
-        <hr className="flex-grow border-gray-400" />
-        <span className="text-xs font-bold whitespace-nowrap">or pay by card</span>
-        <hr className="flex-grow border-gray-400" />
-      </div>
-
       {/* Card fields */}
       <div className="space-y-3">
         <div className="space-y-1">
           <Label className="text-xs text-gray-600 font-semibold">Card number</Label>
-          <StripeInputWrap><CardNumberElement options={{ ...CARD_STYLE, showIcon: true }} /></StripeInputWrap>
+          <StripeInputWrap>
+            <CardNumberElement
+              options={{ ...CARD_STYLE, showIcon: true }}
+              onChange={(e) => setCardTyped(!e.empty)}
+            />
+          </StripeInputWrap>
         </div>
         <div className="grid grid-cols-2 gap-3">
           <div className="space-y-1">
@@ -186,6 +183,16 @@ function CheckoutForm({ email, onSuccess, onBack, amount }: CheckoutFormProps) {
         className="w-full h-12 bg-gray-900 hover:bg-black disabled:opacity-50 disabled:cursor-not-allowed text-white font-bold rounded-xl text-base flex items-center justify-center gap-2 transition-all">
         {isLoading ? <><Loader2 size={18} className="animate-spin" /> Processing…</> : `Pay ${amount} · Get Instant Access`}
       </button>
+
+      {/* PayPal — hidden once user starts typing card number */}
+      <div className={`transition-all duration-300 overflow-hidden ${cardTyped ? 'max-h-0 opacity-0 pointer-events-none' : 'max-h-24 opacity-100'}`}>
+        <div className="flex items-center gap-3 text-gray-600 mb-3">
+          <hr className="flex-grow border-gray-300" />
+          <span className="text-xs font-bold whitespace-nowrap text-gray-400">or pay with</span>
+          <hr className="flex-grow border-gray-300" />
+        </div>
+        <PayPalButton email={email} onSuccess={onSuccess} amount={amount} />
+      </div>
 
       <div className="flex items-center justify-center gap-4 text-[10px] text-gray-400 font-medium uppercase tracking-wide">
         <span className="flex items-center gap-1"><Lock size={10} /> SSL Secured</span>

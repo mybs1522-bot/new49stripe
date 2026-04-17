@@ -16,10 +16,10 @@ const FOLLOWUP_STAGES = ['sketchup-free', 'render-bundle', 'full-bundle'];
 
 // ── Buy links ──
 const BUY = {
-  renders:    'https://new49stripe.vercel.app/',
-  fullBundle: 'https://new49stripe.vercel.app/onetime',
-  books:      'https://new49stripe.vercel.app/offer',
-  checkout:   'https://new49stripe.vercel.app/checkout',
+  renders:    'https://start.avadalearn.com/',
+  fullBundle: 'https://start.avadalearn.com/onetime',
+  books:      'https://start.avadalearn.com/offer',
+  checkout:   'https://start.avadalearn.com/checkout',
 };
 
 // ─────────────────────────────────────────────
@@ -78,7 +78,7 @@ function wrap(body: string): string {
 ${body}
 <tr><td style="background:#f9fafb;padding:20px 40px;border-top:1px solid #e5e7eb;">
 <p style="margin:0;color:#9ca3af;font-size:12px;">© 2026 Avada Design.<br>
-<a href="https://new49stripe.vercel.app" style="color:#9ca3af;">Visit us</a> · <a href="mailto:hello@archbysha.com?subject=Unsubscribe" style="color:#9ca3af;">Unsubscribe</a></p>
+<a href="https://start.avadalearn.com" style="color:#9ca3af;">Visit us</a> · <a href="mailto:hello@archbysha.com?subject=Unsubscribe" style="color:#9ca3af;">Unsubscribe</a></p>
 </td></tr>
 </table></td></tr></table></body></html>`;
 }

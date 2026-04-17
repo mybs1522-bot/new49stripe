@@ -6,13 +6,13 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
 
-// ── Drive links ──
+// ── Drive links (each product MUST have its own secret — no shared fallback) ──
 const LINKS = {
-  sketchup: Deno.env.get('DRIVE_LINK_SKETCHUP') ?? Deno.env.get('DRIVE_LINK') ?? '',
-  render:   Deno.env.get('DRIVE_LINK_RENDER')   ?? Deno.env.get('DRIVE_LINK') ?? '',
-  full:     Deno.env.get('DRIVE_LINK_FULL')     ?? Deno.env.get('DRIVE_LINK') ?? '',
-  books:    Deno.env.get('DRIVE_LINK_BOOKS')    ?? Deno.env.get('DRIVE_LINK') ?? '',
-  booksDownsell: Deno.env.get('DRIVE_LINK_BOOKS_DOWNSELL') ?? Deno.env.get('DRIVE_LINK') ?? '',
+  sketchup: Deno.env.get('DRIVE_LINK_SKETCHUP') ?? '',
+  render:   Deno.env.get('DRIVE_LINK_RENDER')   ?? '',
+  full:     Deno.env.get('DRIVE_LINK_FULL')     ?? '',
+  books:    Deno.env.get('DRIVE_LINK_BOOKS')    ?? '',
+  booksDownsell: Deno.env.get('DRIVE_LINK_BOOKS_DOWNSELL') ?? '',
 };
 
 // ── Buy links ──

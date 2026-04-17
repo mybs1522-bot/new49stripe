@@ -12,7 +12,12 @@ import PageLoader from './components/PageLoader';
 
 const App: React.FC = () => {
   const { pathname } = useLocation();
-  const [loading, setLoading] = useState(true);
+  const showLoader = pathname === '/sketchup';
+  const [loading, setLoading] = useState(showLoader);
+
+  useEffect(() => {
+    setLoading(showLoader);
+  }, [showLoader]);
 
   useEffect(() => {
     window.scrollTo(0, 0);

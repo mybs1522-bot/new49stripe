@@ -96,18 +96,14 @@ const OfferPage: React.FC = () => {
           <Check size={40} className="text-green-600" strokeWidth={2.5} />
         </div>
         <h2 className="text-2xl font-display font-black text-gray-900 mb-2">You're All Set!</h2>
-        <p className="text-gray-500 text-sm mb-6">Your order is complete. You now have full access to your library!</p>
-        <div className="bg-yellow-50 border-2 border-yellow-400 rounded-2xl p-4 mb-4 text-left">
-          <p className="text-yellow-800 text-sm font-black mb-1">Save this link - it is your only access</p>
-          <p className="text-yellow-700 text-xs">This link was also emailed to you. Bookmark it now.</p>
+        <p className="text-gray-500 text-sm mb-6">Your order is complete. We've generated your custom access dashboard.</p>
+        <div className="bg-emerald-50 border-2 border-emerald-200 rounded-2xl p-5 mb-4 text-left">
+          <p className="text-emerald-800 text-sm font-black mb-1">Check Your Email Inbox Now</p>
+          <p className="text-emerald-700 text-xs leading-relaxed">Your secure layout and course access links have been successfully delivered to your email. Please check your inbox (and spam folder) to open your library.</p>
         </div>
-        <a href="https://drive.google.com/drive/folders/1CCyv9u82HiYI8jnyULISfBoGMcbcqd9U?usp=drive_link" target="_blank" rel="noopener noreferrer"
-          className="block w-full bg-gray-900 hover:bg-black text-white font-bold py-3.5 rounded-xl text-center text-sm mb-3 transition-colors">
-          Open Google Drive
-        </a>
-        <button onClick={() => navigator.clipboard.writeText("https://drive.google.com/drive/folders/1CCyv9u82HiYI8jnyULISfBoGMcbcqd9U?usp=drive_link")}
-          className="w-full border-2 border-gray-200 hover:border-gray-400 text-gray-600 font-bold py-2.5 rounded-xl text-xs transition-colors">
-          Copy Link
+        <button onClick={() => window.location.href = "mailto:"}
+          className="block w-full bg-gray-900 hover:bg-black text-white font-bold py-3.5 rounded-xl text-center text-sm transition-colors">
+          Open Email App
         </button>
       </div>
     </div>

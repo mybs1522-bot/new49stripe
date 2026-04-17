@@ -17,37 +17,43 @@ serve(async (req: Request) => {
       httpClient: Stripe.createFetchHttpClient(),
     });
 
-    const { email, amount } = await req.json();
-    let numericAmount = 900; // default $9
+    const { customerId, amount } = await req.json();
+    let numericAmount = 2700; // default $27
     if (amount) {
       const cleanAmount = amount.replace(/[^0-9.]/g, '');
       numericAmount = Math.round(parseFloat(cleanAmount) * 100);
     }
 
-    // Find or create customer (required to save card)
-    let customerId = undefined;
-    if (email) {
-      const existingCustomers = await stripe.customers.list({ email, limit: 1 });
-      if (existingCustomers.data.length > 0) {
-        customerId = existingCustomers.data[0].id;
-      } else {
-        const newCustomer = await stripe.customers.create({ email });
-        customerId = newCustomer.id;
-      }
+    if (!customerId) {
+        throw new Error('Customer ID is required');
     }
 
+    // Retrieve customer's saved payment methods
+    const paymentMethods = await stripe.paymentMethods.list({
+      customer: customerId,
+      type: 'card',
+      limit: 1,
+    });
+
+    if (paymentMethods.data.length === 0) {
+      throw new Error('No saved payment methods found for this customer.');
+    }
+
+    const defaultPaymentMethodId = paymentMethods.data[0].id;
+
+    // Charge the card immediately (off_session)
     const paymentIntent = await stripe.paymentIntents.create({
       amount: numericAmount,
       currency: 'usd',
       customer: customerId,
-      setup_future_usage: 'off_session', // THIS IS CRITICAL FOR ONE-CLICK UPSELL
-      receipt_email: email || undefined,
-      metadata: { product: 'Avada Design Bundle' },
-      automatic_payment_methods: { enabled: true },
+      payment_method: defaultPaymentMethodId,
+      off_session: true,
+      confirm: true, // Attempt to confirm the payment immediately
+      metadata: { product: 'Avada Design Bundle Upsell' },
     });
 
     return new Response(
-      JSON.stringify({ clientSecret: paymentIntent.client_secret, customerId }),
+      JSON.stringify({ success: true, paymentIntentId: paymentIntent.id, status: paymentIntent.status }),
       { status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
   } catch (err: any) {

@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { X, Lock, Check, ArrowRight, Loader2, ShieldCheck, PartyPopper, Star, Users, Zap, Timer, BookOpen, Gift, CheckCircle2 } from 'lucide-react';
+import { X, Lock, Check, ArrowRight, Loader2, ShieldCheck, PartyPopper, Star, Users, Zap, Timer, BookOpen, Gift, CheckCircle2, User, Phone, ChevronDown } from 'lucide-react';
 import { submitPhoneNumber } from '../services/mockBackend';
 import { openRazorpayCheckout } from '../services/razorpay';
-import { PRICING_PLANS, COURSES } from '../constants';
+import { PRICING_PLANS, FRONT_END_COURSES } from '../constants';
 import { Course } from '../types';
 
 interface PaymentModalProps {
@@ -13,11 +13,16 @@ interface PaymentModalProps {
 
 type Step = 'DETAILS' | 'PACKAGE_PREVIEW' | 'PLANS' | 'SUCCESS';
 
+const ROLE_OPTIONS = ['Architect', 'Student', 'Interior Designer', 'Home Owner', 'Contractor', 'Other'];
+
 export const PaymentModal: React.FC<PaymentModalProps> = ({ isOpen, onClose, initialCourse }) => {
   const [step, setStep] = useState<Step>('PACKAGE_PREVIEW');
   const [selectedPlanId, setSelectedPlanId] = useState<string | null>('lifetime-basic');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
+  const [name, setName] = useState('');
+  const [phone, setPhone] = useState('');
+  const [role, setRole] = useState('');
   
   // Animation State for Bundle
   const [addedCount, setAddedCount] = useState(0);
@@ -40,7 +45,7 @@ export const PaymentModal: React.FC<PaymentModalProps> = ({ isOpen, onClose, ini
       setAddedCount(0);
       const interval = setInterval(() => {
         setAddedCount(prev => {
-          if (prev >= COURSES.length) {
+          if (prev >= FRONT_END_COURSES.length) {
             clearInterval(interval);
             return prev;
           }
@@ -113,7 +118,7 @@ export const PaymentModal: React.FC<PaymentModalProps> = ({ isOpen, onClose, ini
     setIsLoading(true);
 
     try {
-      if (selectedPlan.price === '$49') {
+      if (selectedPlan.price === '$9') {
          await submitPhoneNumber('', selectedPlan.id);
          window.location.href = 'https://www.avada.space/checkout';
          return;
@@ -131,7 +136,7 @@ export const PaymentModal: React.FC<PaymentModalProps> = ({ isOpen, onClose, ini
     }
   };
 
-  const isBundleComplete = addedCount >= COURSES.length;
+  const isBundleComplete = addedCount >= FRONT_END_COURSES.length;
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
@@ -195,7 +200,7 @@ export const PaymentModal: React.FC<PaymentModalProps> = ({ isOpen, onClose, ini
            <div className="relative z-10 mt-auto">
              <div className="text-xs uppercase tracking-widest text-gray-500 mb-3 font-bold">What's included</div>
              <ul className="space-y-2">
-               <li className="flex items-center gap-2 text-sm text-gray-300"><Check size={14} className="text-brand-accent" /> 12+ Premium Courses</li>
+               <li className="flex items-center gap-2 text-sm text-gray-300"><Check size={14} className="text-brand-accent" /> 3 Premium Courses</li>
                <li className="flex items-center gap-2 text-sm text-gray-300"><Check size={14} className="text-brand-accent" /> Source Files Download</li>
                <li className="flex items-center gap-2 text-sm text-gray-300"><Check size={14} className="text-brand-accent" /> ISO Certification</li>
              </ul>
@@ -221,7 +226,7 @@ export const PaymentModal: React.FC<PaymentModalProps> = ({ isOpen, onClose, ini
                             <span className="text-xs font-bold text-gray-400 uppercase tracking-widest">Back</span>
                          </div>
                     )}
-                    <h3 className="text-2xl font-bold font-display text-gray-900 mb-1">The Ultimate Architecture Bundle</h3>
+                    <h3 className="text-2xl font-bold font-display text-gray-900 mb-1">The Complete Rendering Pipeline</h3>
                     <p className="text-gray-500 text-sm">You're one step away. Get instant access to everything.</p>
                 </div>
                 
@@ -230,7 +235,7 @@ export const PaymentModal: React.FC<PaymentModalProps> = ({ isOpen, onClose, ini
                     <div className="flex items-center justify-between mb-2">
                         <h4 className="text-xs font-bold text-gray-900 uppercase tracking-widest flex items-center gap-2">
                             <BookOpen size={14} className="text-brand-primary"/> 
-                            {isBundleComplete ? '12 Premium Courses Included' : `Adding Courses: ${addedCount}/${COURSES.length}`}
+                            {isBundleComplete ? '3 Premium Courses Included' : `Adding Courses: ${addedCount}/${FRONT_END_COURSES.length}`}
                         </h4>
                         {!isBundleComplete && <Loader2 size={14} className="animate-spin text-brand-primary" />}
                     </div>
@@ -238,12 +243,12 @@ export const PaymentModal: React.FC<PaymentModalProps> = ({ isOpen, onClose, ini
                     <div className="h-1.5 w-full bg-gray-100 rounded-full mb-4 overflow-hidden">
                        <div 
                           className="h-full bg-brand-primary transition-all duration-300 ease-out"
-                          style={{ width: `${(addedCount / COURSES.length) * 100}%` }}
+                          style={{ width: `${(addedCount / FRONT_END_COURSES.length) * 100}%` }}
                        ></div>
                     </div>
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                        {COURSES.slice(0, addedCount).map((course, idx) => (
+                        {FRONT_END_COURSES.slice(0, addedCount).map((course, idx) => (
                             <div 
                                 key={course.id} 
                                 className="flex items-center gap-3 text-sm text-gray-700 bg-gray-50 p-2 rounded-lg border border-gray-100 animate-[fadeIn_0.3s_ease-out]"
@@ -321,10 +326,63 @@ export const PaymentModal: React.FC<PaymentModalProps> = ({ isOpen, onClose, ini
                       <button onClick={() => setStep('PACKAGE_PREVIEW')} className="text-gray-400 hover:text-black mr-2 transition-colors">
                           <ArrowRight size={20} className="rotate-180" />
                       </button>
-                      <h3 className="text-2xl font-bold font-display text-gray-900">Select Plan</h3>
+                      <h3 className="text-2xl font-bold font-display text-gray-900">Your Details</h3>
                     </div>
-                    <p className="text-gray-500 text-sm mb-6">Start your journey today. Cancel anytime.</p>
-                    
+                    <p className="text-gray-500 text-sm mb-5">Help us personalise your experience.</p>
+
+                    {/* Name */}
+                    <div className="mb-4">
+                      <label className="block text-xs font-bold text-gray-700 uppercase tracking-widest mb-1.5">Your Name</label>
+                      <div className="relative">
+                        <User size={14} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400" />
+                        <input
+                          type="text"
+                          placeholder="e.g. Priya Sharma"
+                          value={name}
+                          onChange={e => setName(e.target.value)}
+                          className="w-full pl-10 pr-4 py-3 bg-gray-50 border-2 border-gray-200 rounded-xl text-sm font-medium focus:outline-none focus:border-brand-primary focus:bg-white transition-all"
+                        />
+                      </div>
+                    </div>
+
+                    {/* I am */}
+                    <div className="mb-4">
+                      <label className="block text-xs font-bold text-gray-700 uppercase tracking-widest mb-1.5">I am a…</label>
+                      <div className="grid grid-cols-3 gap-2">
+                        {ROLE_OPTIONS.map(r => (
+                          <button
+                            key={r}
+                            type="button"
+                            onClick={() => setRole(r)}
+                            className={`py-2 px-3 rounded-xl border-2 text-xs font-bold transition-all ${
+                              role === r
+                                ? 'bg-brand-primary/10 border-brand-primary text-brand-primary'
+                                : 'bg-gray-50 border-gray-200 text-gray-600 hover:border-gray-300'
+                            }`}
+                          >
+                            {r}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Phone */}
+                    <div className="mb-5">
+                      <label className="block text-xs font-bold text-gray-700 uppercase tracking-widest mb-1.5">Phone Number</label>
+                      <div className="relative">
+                        <Phone size={14} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400" />
+                        <input
+                          type="tel"
+                          placeholder="+91 98765 43210"
+                          value={phone}
+                          onChange={e => setPhone(e.target.value)}
+                          className="w-full pl-10 pr-4 py-3 bg-gray-50 border-2 border-gray-200 rounded-xl text-sm font-medium focus:outline-none focus:border-brand-primary focus:bg-white transition-all"
+                        />
+                      </div>
+                    </div>
+
+                    {/* Plan selector */}
+                    <p className="text-xs font-bold text-gray-700 uppercase tracking-widest mb-2">Select Plan</p>
                     <div className="space-y-3 mb-8">
                       {PRICING_PLANS.map((plan) => {
                         const currentUsers = plan.id === 'lifetime-basic' ? userCounts['lifetime-basic'] : userCounts['lifetime-plus'];

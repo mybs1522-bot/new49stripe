@@ -1,22 +1,20 @@
 import React, { useState, useEffect } from "react";
-import { FRONT_END_COURSES, FRONT_END_PRICE, FRONT_END_ORIGINAL_PRICE } from "../constants";
-import { Sparkles, Timer, CheckCircle2, Download, Mail, Lock, Check, X, ArrowLeft } from "lucide-react";
+import { Sparkles, Timer, CheckCircle2, Download, Mail, Check, ArrowLeft } from "lucide-react";
 import ModernPaymentForm from "../components/ui/modern-payment-form";
 import { useNavigate } from "react-router-dom";
-import { sendStageEmail } from "../services/email";
 
-const CheckoutPage: React.FC = () => {
+const SketchupPage: React.FC = () => {
   const navigate = useNavigate();
   const [timeLeft, setTimeLeft] = useState({ h: 1, m: 19, s: 59 });
   const [email, setEmail] = useState("");
   const [emailError, setEmailError] = useState(false);
-  const [studentCount, setStudentCount] = useState(22847);
+  const [studentCount, setStudentCount] = useState(41293);
 
-  useEffect(() => { const t = setInterval(() => setStudentCount(c => c + 1), 4000); return () => clearInterval(t); }, []);
+  useEffect(() => { const t = setInterval(() => setStudentCount(c => c + 1), 6000); return () => clearInterval(t); }, []);
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    if ((window as any).fbq) (window as any).fbq("track", "ViewContent", { content_name: "Avada Checkout", value: FRONT_END_PRICE, currency: "USD" });
+    if ((window as any).fbq) (window as any).fbq("track", "ViewContent", { content_name: "Sketchup Free Tier", value: 1.56, currency: "USD" });
   }, []);
 
   useEffect(() => {
@@ -31,9 +29,9 @@ const CheckoutPage: React.FC = () => {
   const f = (v: number) => v.toString().padStart(2, "0");
 
   const handleSuccess = (customerId?: string) => {
-    if ((window as any).fbq) (window as any).fbq("track", "Purchase", { value: FRONT_END_PRICE, currency: "USD" });
-    sendStageEmail(email, 'render-bundle');
-    navigate("/onetime", { state: { customerId } });
+    if ((window as any).fbq) (window as any).fbq("track", "Purchase", { value: 1.56, currency: "USD" });
+    // Redirect to upsell page, passing customerId via state for one-click upsell
+    navigate("/", { state: { customerId } });
   };
 
   return (
@@ -44,7 +42,7 @@ const CheckoutPage: React.FC = () => {
         <button onClick={() => navigate("/")} className="flex items-center gap-1.5 text-xs text-gray-500 hover:text-gray-800 transition-colors font-medium">
           <ArrowLeft size={14} /> Back to home
         </button>
-        <h1 className="text-3xl font-display font-black text-gray-900 mt-3 text-center">Checkout</h1>
+        <h1 className="text-2xl font-display font-black text-gray-900 mt-3 text-center">Claim Your Free Course</h1>
       </div>
 
       <div className="inline-flex items-center gap-2 bg-white rounded-full px-5 py-2.5 shadow-md border border-gray-200 mb-4">
@@ -61,29 +59,28 @@ const CheckoutPage: React.FC = () => {
             className="w-full h-full object-cover"
           />
         </div>
-        <p className="text-xs font-semibold text-gray-600 mt-2 text-center max-w-[160px]">🎨 SketchUp + V-Ray + D5 Render AI</p>
+        <p className="text-xs font-semibold text-gray-600 mt-2 text-center max-w-[160px]">🎨 SketchUp Absolute Beginner to Pro</p>
       </div>
 
       <div className="checkout-card w-full max-w-md bg-white rounded-3xl shadow-2xl overflow-hidden">
-        <div className="bg-black text-white px-6 py-5">
+        <div className="bg-orange-500 text-white px-6 py-5">
           <div className="flex items-center mb-1">
-            <div className="inline-flex items-center gap-1.5 text-gray-400 text-[10px] font-bold uppercase tracking-widest">
-              <Sparkles size={11} /> Rendering Pipeline
+            <div className="inline-flex items-center gap-1.5 text-orange-200 text-[10px] font-bold uppercase tracking-widest">
+              <Sparkles size={11} /> Limited Time Offer
             </div>
           </div>
-          <h3 className="text-xl font-display font-bold mb-1">SketchUp + V-Ray + D5 Render</h3>
+          <h3 className="text-xl font-display font-bold mb-1 line-clamp-1">SketchUp Architecture Course</h3>
           <div className="flex items-baseline gap-2">
-            <span className="text-2xl font-display font-black">${FRONT_END_PRICE}</span>
-            <span className="text-gray-500 text-sm line-through">${FRONT_END_ORIGINAL_PRICE}</span>
-            <span className="bg-white/10 text-white text-xs font-bold px-2 py-0.5 rounded-full border border-white/20">91% OFF</span>
+             <span className="text-2xl font-display font-black uppercase text-white">FREE</span>
+             <span className="text-orange-100 text-xs font-bold px-2 py-0.5 rounded-full border border-orange-300 ml-auto">+ $1.56 processing fee</span>
           </div>
         </div>
 
         <div className="px-6 pt-5 pb-6">
           <div className="grid grid-cols-2 gap-2 mb-4">
-            {["3 Premium Courses", "10,000+ Textures", "Official Certificate", "24/7 Team Support", "Lifetime Access"].map((item, i) => (
+            {["SketchUp Basics to Pro", "V-Ray Introduction", "Official Certificate", "24/7 Team Support"].map((item, i) => (
               <div key={i} className="flex items-center gap-2 text-xs text-gray-700 font-medium">
-                <CheckCircle2 size={12} className="text-gray-500 shrink-0" /> {item}
+                <CheckCircle2 size={12} className="text-orange-500 shrink-0" /> {item}
               </div>
             ))}
             <div className="col-span-2 flex items-center gap-2 text-xs font-bold bg-green-50 border border-green-200 rounded-lg px-3 py-2 text-green-700">
@@ -115,7 +112,7 @@ const CheckoutPage: React.FC = () => {
           </div>
           {emailError && <p className="text-red-500 text-[10px] mb-2 font-bold">Enter a valid email address</p>}
 
-          <ModernPaymentForm bare email={email} onSuccess={handleSuccess} amount={`$${FRONT_END_PRICE}`} />
+          <ModernPaymentForm bare email={email} onSuccess={handleSuccess} amount="$1.56" />
 
           <div className="flex items-center justify-center gap-1.5 mt-4 text-[11px] text-gray-500 font-medium text-center">
             🎓 Skill Certificate will be automatically mailed after you complete the course.
@@ -126,4 +123,4 @@ const CheckoutPage: React.FC = () => {
   );
 };
 
-export default CheckoutPage;
+export default SketchupPage;

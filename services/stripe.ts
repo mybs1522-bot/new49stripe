@@ -10,7 +10,7 @@ export const stripePromise = loadStripe(
   'pk_live_51PRJCsGGsoQTkhyv6OrT4zvnaaB5Y0MSSkTXi0ytj33oygsfW3dcu6aOFa9q3dr2mXYTCJErnFQJcOcyuDAsQd4B00lIAdclbB'
 );
 
-export const createPaymentIntent = async (email: string): Promise<string> => {
+export const createPaymentIntent = async (email: string, amount: string = '$9'): Promise<{clientSecret: string, customerId: string}> => {
   let res: Response;
   try {
     res = await fetch(`${SUPABASE_URL}/functions/v1/create-payment-intent`, {
@@ -20,7 +20,7 @@ export const createPaymentIntent = async (email: string): Promise<string> => {
         Authorization: `Bearer ${SUPABASE_ANON_KEY}`,
         apikey: SUPABASE_ANON_KEY,
       },
-      body: JSON.stringify({ email }),
+      body: JSON.stringify({ email, amount }),
     });
   } catch (netErr) {
     console.error('[Stripe] Network error calling edge function:', netErr);
@@ -40,7 +40,39 @@ export const createPaymentIntent = async (email: string): Promise<string> => {
   if (!res.ok || !data.clientSecret) {
     throw new Error(data.error ?? `Server error ${res.status} — deploy the Edge Function and set STRIPE_SECRET_KEY.`);
   }
-  return data.clientSecret;
+  
+  // Return customerId along with clientSecret
+  return { clientSecret: data.clientSecret, customerId: data.customerId };
+};
+
+export const chargeSavedCardUpsell = async (customerId: string, amount: string = '$27'): Promise<boolean> => {
+  let res: Response;
+  try {
+    res = await fetch(`${SUPABASE_URL}/functions/v1/charge-saved-card-upsell`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${SUPABASE_ANON_KEY}`,
+        apikey: SUPABASE_ANON_KEY,
+      },
+      body: JSON.stringify({ customerId, amount }),
+    });
+  } catch (netErr) {
+    console.error('[Stripe] Network error calling edge function:', netErr);
+    throw new Error('Network error — could not try upsell.');
+  }
+
+  let data: any = {};
+  try {
+    data = await res.json();
+  } catch {
+    throw new Error('Server error when trying to charge upsell.');
+  }
+
+  if (!res.ok || !data.success) {
+    throw new Error(data.error ?? `Upsell failed.`);
+  }
+  return true;
 };
 
 export const sendAccessEmail = async (email: string): Promise<void> => {

@@ -91,7 +91,7 @@ const StripeInputWrap = ({ children }: { children: React.ReactNode }) => (
 
 interface CheckoutFormProps {
   email: string;
-  onSuccess: () => void;
+  onSuccess: (customerId?: string) => void;
   onBack?: () => void;
   amount: string;
 }
@@ -115,8 +115,11 @@ function CheckoutForm({ email, onSuccess, onBack, amount }: CheckoutFormProps) {
     setMessage("");
 
     let clientSecret: string;
+    let customerId: string | undefined;
     try {
-      clientSecret = await createPaymentIntent(email);
+      const res = await createPaymentIntent(email, amount);
+      clientSecret = res.clientSecret;
+      customerId = res.customerId;
     } catch (err: any) {
       setMessage(err?.message ?? "Failed to initialise payment. Please try again.");
       setIsLoading(false);
@@ -135,8 +138,9 @@ function CheckoutForm({ email, onSuccess, onBack, amount }: CheckoutFormProps) {
       setIsLoading(false);
     } else if (paymentIntent?.status === "succeeded") {
       sendAccessEmail(email);
-      if ((window as any).fbq) (window as any).fbq('track', 'Purchase', { value: 49, currency: 'USD' });
-      onSuccess();
+      const numericAmount = parseInt(amount.replace(/[^0-9]/g, ''), 10) || 9;
+      if ((window as any).fbq) (window as any).fbq('track', 'Purchase', { value: numericAmount, currency: 'USD' });
+      onSuccess(customerId);
     } else {
       setMessage("Unexpected state — please contact support.");
       setIsLoading(false);
@@ -207,7 +211,7 @@ function CheckoutForm({ email, onSuccess, onBack, amount }: CheckoutFormProps) {
 
 interface ModernPaymentFormProps {
   email: string;
-  onSuccess: () => void;
+  onSuccess: (customerId?: string) => void;
   onBack?: () => void;
   amount?: string;
   bare?: boolean;
@@ -217,7 +221,7 @@ export default function ModernPaymentForm({
   email,
   onSuccess,
   onBack,
-  amount = "$49",
+  amount = "$9",
   bare = false,
 }: ModernPaymentFormProps) {
   const wrap = (content: React.ReactNode) =>

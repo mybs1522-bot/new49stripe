@@ -230,6 +230,105 @@ export const COURSES = RAW_COURSES.map(course => {
   return { ...course, imageUrl: url };
 });
 
+// ─── FRONT-END OFFER: SketchUp + V-Ray + D5 Render ───
+export const FRONT_END_IDS = ['3', '5', '7'];
+export const FRONT_END_COURSES = COURSES.filter(c => FRONT_END_IDS.includes(c.id));
+
+// ─── UPSELL: Everything else ───
+export const UPSELL_COURSES = COURSES.filter(c => !FRONT_END_IDS.includes(c.id));
+
+export const FRONT_END_PRICE = 9;
+export const FRONT_END_ORIGINAL_PRICE = 99;
+export const UPSELL_PRICE = 27;
+export const UPSELL_ORIGINAL_PRICE = 199;
+export const UPSELL2_PRICE = 36;
+export const UPSELL2_ORIGINAL_PRICE = 99;
+export const DOWNSELL_BOOKS_PRICE = 12;
+
+export const BUNDLE_PRICE = FRONT_END_PRICE;
+export const BUNDLE_ORIGINAL_PRICE = FRONT_END_ORIGINAL_PRICE;
+
+export const RAW_BOOKS: Course[] = [
+  {
+    id: 'b1',
+    title: 'Living Room Design Book',
+    software: '145 Pages',
+    description: 'The heart of the home is usually the most cluttered. I teach you how to create conversation circles, master rug sizing, and lighting layers that actually work.',
+    imageUrl: 'https://lh3.googleusercontent.com/d/1YYJxA6NPSH23Oe3Nal_3QlW_DG0-mqKJ',
+    color: 'from-orange-400 to-amber-300',
+    students: '12.5k',
+    price: 0,
+    originalPrice: 0,
+    learningPoints: ['The "Rug Rule" 90% of people break', 'Lighting layering for mood vs. function', 'Selecting the perfect sofa scale'],
+    workflowImpact: 'Stop making living rooms that look like furniture showrooms. Make them liveable.'
+  },
+  {
+    id: 'b2',
+    title: 'Kitchen Design Book',
+    software: '180 Pages',
+    description: 'Function meets envy. We go deep on the "Working Triangle," cabinet finishes that don\'t date, and island dimensions that allow flow.',
+    imageUrl: 'https://lh3.googleusercontent.com/d/1AlxdHun9I2AO639g4Q0YJv_BOzb9sbZe',
+    color: 'from-slate-600 to-slate-400',
+    students: '10.2k',
+    price: 0,
+    originalPrice: 0,
+    learningPoints: ['The Golden Triangle rule explained', 'Materials that survive red wine spills', 'Hidden storage hacks for small spaces'],
+    workflowImpact: 'Design kitchens that people actually want to cook in, not just look at.'
+  },
+  {
+    id: 'b3',
+    title: 'Bedroom Design Book',
+    software: '120 Pages',
+    description: 'Your sanctuary. I show you how to use texture and color psychology to lower heart rates. It\'s not just a bed in a room; it\'s a retreat.',
+    imageUrl: 'https://lh3.googleusercontent.com/d/12APuUeW_CUcJxCYDG-R0PhmtwpKmWqs8',
+    color: 'from-stone-500 to-stone-400',
+    students: '15k',
+    price: 0,
+    originalPrice: 0,
+    learningPoints: ['Color psychology for deep sleep', 'Bedding textures that feel expensive', 'Blackout solutions that look chic'],
+    workflowImpact: 'Create spaces where your clients (or you) can actually disconnect from the world.'
+  },
+  {
+    id: 'b4',
+    title: 'Washroom Design Book',
+    software: '95 Pages',
+    description: 'Yes, bathrooms matter. Stop treating them like utility closets. We cover tile transitions, vanity lighting, and how to make 40sqft feel like a spa.',
+    imageUrl: 'https://lh3.googleusercontent.com/d/17CCyJ7HJhtPg3XPS8y9wf7SOG_kVMgf8',
+    color: 'from-teal-500 to-emerald-400',
+    students: '9.8k',
+    price: 0,
+    originalPrice: 0,
+    learningPoints: ['Tile layouts that expand space', 'The science of flattering vanity lighting', 'Fixture mixing: Brass vs. Chrome'],
+    workflowImpact: 'Turn the most expensive room per sqft into the most impressive one.'
+  },
+  {
+    id: 'b5',
+    title: 'Study Design Book',
+    software: '110 Pages',
+    description: 'Work from home is here to stay. Learn to design ergonomic, distraction-free zones that look good on a Zoom call.',
+    imageUrl: 'https://lh3.googleusercontent.com/d/1dzA2UnKUd_S37XMjh53ZiuhviZAivH1B',
+    color: 'from-blue-900 to-blue-700',
+    students: '11k',
+    price: 0,
+    originalPrice: 0,
+    learningPoints: ['Video-call background styling', 'Ergonomics without the ugly chair', 'Cable management mastery'],
+    workflowImpact: 'Productivity is designed. Build spaces that encourage deep work.'
+  },
+  {
+    id: 'b6',
+    title: 'Elevations Design Book',
+    software: '160 Pages',
+    description: 'Curb appeal is the first impression. We talk paint palettes, landscaping integration, and front door theory.',
+    imageUrl: 'https://lh3.googleusercontent.com/d/1_TGYyThr32ciEl7C7obqHnwq1_WOR8N2',
+    color: 'from-green-600 to-lime-500',
+    students: '8.5k',
+    price: 0,
+    originalPrice: 0,
+    learningPoints: ['Choosing exterior paint that lasts', 'Lighting the path: Safety vs. Style', 'Entryway styling that welcomes'],
+    workflowImpact: 'Increase property value before anyone even steps inside the house.'
+  }
+];
+
 export const COURSE_CATEGORIES = [
   {
     title: "Planning",
@@ -249,15 +348,12 @@ export const COURSE_CATEGORIES = [
   }
 ];
 
-export const BUNDLE_PRICE = 49;
-export const BUNDLE_ORIGINAL_PRICE = 588; // 12 × $49
-
 export const PRICING_PLANS = [
   {
     id: 'lifetime-basic',
     duration: 'Lifetime Access',
     period: 'One-time payment',
-    price: '$49',
+    price: '$9',
     originalPrice: '$99',
     label: 'Best Value'
   }
@@ -268,13 +364,13 @@ export const TESTIMONIALS: Testimonial[] = [
     name: 'James Carter',
     role: 'Senior Architect',
     location: 'New York, USA',
-    content: 'The Revit workflow section alone saved our firm countless hours. Undeniable value for any professional design project.'
+    content: 'The V-Ray workflow section alone saved our firm countless hours. Undeniable value for any professional design project.'
   },
   {
     name: 'Sophie Laurent',
     role: '3D Visualizer',
     location: 'London, UK',
-    content: 'V-Ray + 3ds Max combo is a game-changer. My clients in the real estate sector are blown away by the realism.'
+    content: 'V-Ray + D5 Render combo is a game-changer. My clients in the real estate sector are blown away by the realism.'
   },
   {
     name: 'Emma Rodriguez',
@@ -286,13 +382,13 @@ export const TESTIMONIALS: Testimonial[] = [
     name: 'Daniel Chen',
     role: 'Architecture Student',
     location: 'Toronto, Canada',
-    content: 'Landed my dream internship at a top firm because I was the only one who knew Enscape VR and AI Design.'
+    content: 'Landed my dream internship at a top firm because I was the only one who knew SketchUp + V-Ray + D5 Render AI.'
   },
   {
     name: 'Olivia Brooks',
     role: 'Interior Designer',
     location: 'Sydney, Australia',
-    content: 'I can now present 10 variations to clients in the time it used to take for one. Best $49 I ever spent.'
+    content: 'I can now present 10 variations to clients in the time it used to take for one. Best $9 I ever spent.'
   },
   {
     name: 'Marco Rossi',
@@ -308,8 +404,8 @@ export const FAQ_ITEMS: FaqItem[] = [
     answer: "You'll receive instant access via email with download links and login credentials within 5 minutes of payment."
   },
   {
-    question: "Can I buy individual courses or only the bundle?",
-    answer: "Both options are available! Each course is $9 individually, or get all 12 for just $49 — saving over $59. The bundle is by far the best deal."
+    question: "Which courses are included?",
+    answer: "You get 3 premium courses — SketchUp Pro, V-Ray Photorealism, and D5 Render AI — everything you need to design and render stunning interiors and exteriors."
   },
   {
     question: "Are project files included?",

@@ -316,10 +316,7 @@ const Dashboard: React.FC<{ onLogout: () => void }> = ({ onLogout }) => {
     setLoading(true);
     setError('');
     try {
-      const { data, error: err } = await supabase
-        .from('leads')
-        .select('*')
-        .order('created_at', { ascending: false });
+      const { data, error: err } = await supabase.rpc('get_leads_secure', { auth_pass: 'Robbin#15' });
       if (err) throw err;
       setLeads(data ?? []);
     } catch (e: any) {

@@ -60,23 +60,7 @@ async function sendFbPurchaseEvent(email: string): Promise<void> {
   }
 }
 
-async function sendAccessEmail(email: string): Promise<void> {
-  if (!email) return;
-  try {
-    await fetch(`${SUPABASE_URL}/functions/v1/send-access-email`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${SUPABASE_ANON_KEY}`,
-        apikey: SUPABASE_ANON_KEY,
-      },
-      body: JSON.stringify({ email }),
-    });
-  } catch (e) {
-    console.error('[paypal-webhook] sendAccessEmail failed:', e);
-  }
-}
-
+// Removed sendAccessEmail to prevent duplicate emails. Frontend sends the structured email.
 serve(async (req: Request) => {
   if (req.method !== 'POST') {
     return new Response('Method not allowed', { status: 405 });
@@ -123,8 +107,8 @@ serve(async (req: Request) => {
       '';
 
     if (email) {
-      console.log('[paypal-webhook] Sending access email + FB event to:', email);
-      await Promise.all([sendAccessEmail(email), sendFbPurchaseEvent(email)]);
+      console.log('[paypal-webhook] Sending FB event to:', email);
+      await sendFbPurchaseEvent(email);
     } else {
       console.warn('[paypal-webhook] No payer email in event:', JSON.stringify(event.resource?.payer));
     }

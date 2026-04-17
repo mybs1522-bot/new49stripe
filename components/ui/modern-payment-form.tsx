@@ -43,7 +43,7 @@ function PayPalButton({ email, onSuccess, amount }: { email: string; onSuccess: 
           purchase_units: [{ amount: { value: amountVal }, description: 'Avada Design Bundle – All Courses' }],
           ...(email ? { payer: { email_address: email } } : {}),
         }),
-      onApprove: async (_: any, actions: any) => { await actions.order.capture(); sendAccessEmail(email); if ((window as any).fbq) (window as any).fbq('track', 'Purchase', { value: 49, currency: 'USD' }); onSuccess(); },
+      onApprove: async (_: any, actions: any) => { await actions.order.capture(); if ((window as any).fbq) (window as any).fbq('track', 'Purchase', { value: 49, currency: 'USD' }); onSuccess(); },
       onError: (e: any) => console.error('[PayPal]', e),
     }).render(containerRef.current);
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -137,7 +137,6 @@ function CheckoutForm({ email, onSuccess, onBack, amount }: CheckoutFormProps) {
       setMessage(error.message ?? "Payment failed. Please try again.");
       setIsLoading(false);
     } else if (paymentIntent?.status === "succeeded") {
-      sendAccessEmail(email);
       const numericAmount = parseInt(amount.replace(/[^0-9]/g, ''), 10) || 9;
       if ((window as any).fbq) (window as any).fbq('track', 'Purchase', { value: numericAmount, currency: 'USD' });
       onSuccess(customerId);

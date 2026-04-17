@@ -89,12 +89,21 @@ ${rows}
 // TEMPLATES
 // ─────────────────────────────────────────────
 
-function tSketchupFree(): { subject: string; html: string } {
+function getGreeting(name?: string | null): string {
+  if (!name) return 'Hi there,';
+  const firstName = name.split(' ')[0];
+  return `Hi ${firstName},`;
+}
+
+// ─────────────────────────────────────────────
+
+function tSketchupFree(name?: string | null): { subject: string; html: string } {
   return {
-    subject: '🎨 Your Free SketchUp Course is Ready — Access Inside',
+    subject: 'Your Courses are Here - SketchUp Access',
     html: wrap(`
-      ${hdr('Your SketchUp course is live! 🎨', '100% free — yours to keep forever.')}
+      ${hdr('Your SketchUp course is live!', '100% free — yours to keep forever.')}
       <tr><td style="padding:36px 40px;">
+        <p style="margin:0 0 16px;color:#374151;font-size:16px;font-weight:600;">${getGreeting(name)}</p>
         <p style="margin:0 0 8px;color:#374151;font-size:16px;line-height:1.7;">Your <strong>SketchUp Absolute Beginner to Pro</strong> course is now ready. This is your permanent access link — bookmark it!</p>
         ${accessBtn(LINKS.sketchup, 'Open Your Free SketchUp Course')}
         <br/><br/>
@@ -137,12 +146,13 @@ function tSketchupFree(): { subject: string; html: string } {
   };
 }
 
-function tRenderBundle(): { subject: string; html: string } {
+function tRenderBundle(name?: string | null): { subject: string; html: string } {
   return {
-    subject: '⚡ Your AI Rendering Courses Are Live — V-Ray + D5 Render',
+    subject: 'Your Courses are Here - V-Ray & D5 Render Access',
     html: wrap(`
-      ${hdr("You just gave yourself an unfair advantage. ⚡", "V-Ray AI + D5 Render AI — yours for life.", '#1e293b')}
+      ${hdr("Your rendering library is unlocked.", "V-Ray AI + D5 Render AI — yours for life.", '#1e293b')}
       <tr><td style="padding:36px 40px;">
+        <p style="margin:0 0 16px;color:#374151;font-size:16px;font-weight:600;">${getGreeting(name)}</p>
         <p style="margin:0 0 8px;color:#374151;font-size:16px;line-height:1.7;">You now have the rendering skills that <strong>95% of designers are still missing</strong>. Here's your library:</p>
         <p style="margin:0 0 6px;color:#374151;font-size:14px;line-height:2;">✅ SketchUp Pro<br/>✅ V-Ray AI — Photorealistic rendering<br/>✅ D5 Render AI — Real-time 4K walkthroughs</p>
         ${accessBtn(LINKS.render, 'Open Your Rendering Courses')}
@@ -179,12 +189,13 @@ function tRenderBundle(): { subject: string; html: string } {
   };
 }
 
-function tFullBundle(): { subject: string; html: string } {
+function tFullBundle(name?: string | null): { subject: string; html: string } {
   return {
-    subject: '🏆 All 12 Courses Unlocked — Your Complete Design Library',
+    subject: 'Your Courses are Here - Complete Library Access',
     html: wrap(`
-      ${hdr("You're in the top 1% of design students. 🏆", "All 12 premium courses — yours for life.", '#0c4a6e')}
+      ${hdr("Welcome to the full Avada library.", "All 12 premium courses — yours for life.", '#0c4a6e')}
       <tr><td style="padding:36px 40px;">
+        <p style="margin:0 0 16px;color:#374151;font-size:16px;font-weight:600;">${getGreeting(name)}</p>
         <p style="margin:0 0 8px;color:#374151;font-size:16px;line-height:1.7;">Here's your complete library — everything you need to go from student to studio-level professional:</p>
         <p style="margin:0 0 6px;color:#374151;font-size:14px;line-height:2;">
           ✅ SketchUp Pro<br/>✅ V-Ray AI<br/>✅ D5 Render AI<br/>✅ AutoCAD 2D & 3D<br/>✅ Revit Architecture<br/>✅ Lumion Visualization<br/>✅ 3ds Max + Corona<br/>✅ Enscape VR<br/>✅ Photoshop for Designers<br/>✅ Adobe Illustrator<br/>✅ SketchUp Advanced Interiors<br/>✅ AI Tools for Design
@@ -214,12 +225,13 @@ function tFullBundle(): { subject: string; html: string } {
   };
 }
 
-function tBooksBundle(): { subject: string; html: string } {
+function tBooksBundle(name?: string | null): { subject: string; html: string } {
   return {
-    subject: '📚 Your Interior Design Books — Download Ready',
+    subject: 'Your Books are Here - Download Link',
     html: wrap(`
-      ${hdr("You've completed the full Avada stack! 📚", "You now own everything. Incredible.", '#065f46')}
+      ${hdr("Your books are ready for download.", "You now own everything. Incredible.", '#065f46')}
       <tr><td style="padding:36px 40px;">
+        <p style="margin:0 0 16px;color:#374151;font-size:16px;font-weight:600;">${getGreeting(name)}</p>
         <p style="margin:0 0 12px;color:#374151;font-size:16px;line-height:1.7;">Congratulations — you now own the most complete interior design education package we've ever created.</p>
         <p style="margin:0 0 6px;color:#374151;font-size:14px;line-height:2;">✅ SketchUp Pro<br/>✅ V-Ray AI + D5 Render AI<br/>✅ 9 Premium Courses<br/>✅ 6 Interior Design Books</p>
         ${accessBtn(LINKS.books, 'Download Your Books')}
@@ -236,12 +248,13 @@ function tBooksBundle(): { subject: string; html: string } {
   };
 }
 
-function tBooksDownsell(): { subject: string; html: string } {
+function tBooksDownsell(name?: string | null): { subject: string; html: string } {
   return {
-    subject: '📚 Your 2 Design Books Are Ready — Plus an Upgrade Offer',
+    subject: 'Your Books are Here - Access Inside',
     html: wrap(`
-      ${hdr('Your 2 design books are live! 📚', 'Kitchen Design + Bedroom Interiors — yours forever.')}
+      ${hdr('Your 2 design books are live!', 'Kitchen Design + Bedroom Interiors — yours forever.')}
       <tr><td style="padding:36px 40px;">
+        <p style="margin:0 0 16px;color:#374151;font-size:16px;font-weight:600;">${getGreeting(name)}</p>
         <p style="margin:0 0 8px;color:#374151;font-size:16px;line-height:1.7;">Great choice! Your 2 bestselling books are now ready to download.</p>
         <p style="margin:0 0 6px;color:#374151;font-size:14px;line-height:2;">✅ Kitchen Design Mastery<br/>✅ Bedroom Interiors Pro</p>
         ${accessBtn(LINKS.booksDownsell, 'Download Your 2 Books')}
@@ -306,7 +319,8 @@ export function followupTemplate(stage: string, followupNumber: 1 | 2 | 3): { su
           followupNumber === 3 ? '#7f1d1d' : '#1e293b'
         )}
         <tr><td style="padding:36px 40px;">
-          <p style="margin:0 0 16px;color:#374151;font-size:16px;line-height:1.7;">
+        <p style="margin:0 0 16px;color:#374151;font-size:16px;font-weight:600;">${getGreeting(name)}</p>
+        <p style="margin:0 0 16px;color:#374151;font-size:16px;line-height:1.7;">
             ${followupNumber === 1
               ? 'You claimed your free SketchUp course — that\'s a great first step. But here\'s the thing: <strong>SketchUp alone won\'t land you clients.</strong>'
               : followupNumber === 2
@@ -361,7 +375,8 @@ export function followupTemplate(stage: string, followupNumber: 1 | 2 | 3): { su
           followupNumber === 3 ? '#7f1d1d' : '#0c4a6e'
         )}
         <tr><td style="padding:36px 40px;">
-          <p style="margin:0 0 16px;color:#374151;font-size:16px;line-height:1.7;">
+        <p style="margin:0 0 16px;color:#374151;font-size:16px;font-weight:600;">${getGreeting(name)}</p>
+        <p style="margin:0 0 16px;color:#374151;font-size:16px;line-height:1.7;">
             ${followupNumber === 1
               ? 'You made a smart move adding AI rendering. But to work at top studios or run your own firm, you need <strong>AutoCAD, Revit, Lumion and 3ds Max</strong> too.'
               : followupNumber === 2
@@ -406,7 +421,8 @@ export function followupTemplate(stage: string, followupNumber: 1 | 2 | 3): { su
           followupNumber === 3 ? '#7f1d1d' : '#065f46'
         )}
         <tr><td style="padding:36px 40px;">
-          <p style="margin:0 0 16px;color:#374151;font-size:16px;line-height:1.7;">
+        <p style="margin:0 0 16px;color:#374151;font-size:16px;font-weight:600;">${getGreeting(name)}</p>
+        <p style="margin:0 0 16px;color:#374151;font-size:16px;line-height:1.7;">
             ${followupNumber === 1
               ? 'You\'ve mastered the software. But the best designers also deeply understand <strong>space, light, material and human behaviour</strong>. That\'s what these 6 books teach.'
               : followupNumber === 2
@@ -434,14 +450,14 @@ export function followupTemplate(stage: string, followupNumber: 1 | 2 | 3): { su
 // ROUTER
 // ─────────────────────────────────────────────
 
-function getTemplate(product: string): { subject: string; html: string } {
+function getTemplate(product: string, name?: string | null): { subject: string; html: string } {
   switch (product) {
-    case 'sketchup-free':    return tSketchupFree();
-    case 'render-bundle':    return tRenderBundle();
-    case 'full-bundle':      return tFullBundle();
-    case 'books-bundle':     return tBooksBundle();
-    case 'books-downsell':   return tBooksDownsell();
-    default:                 return tFullBundle(); // legacy fallback
+    case 'sketchup-free':    return tSketchupFree(name);
+    case 'render-bundle':    return tRenderBundle(name);
+    case 'full-bundle':      return tFullBundle(name);
+    case 'books-bundle':     return tBooksBundle(name);
+    case 'books-downsell':   return tBooksDownsell(name);
+    default:                 return tFullBundle(name); // legacy fallback
   }
 }
 
@@ -480,7 +496,7 @@ serve(async (req: Request) => {
     if (!RESEND_API_KEY) throw new Error('RESEND_API_KEY not set');
 
     // ── Send immediate access email ──
-    const template = getTemplate(product);
+    const template = getTemplate(product, name);
     await sendEmail(email, template.subject, template.html, RESEND_API_KEY);
 
     // ── Upsert lead into DB ──

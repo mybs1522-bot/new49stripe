@@ -24,6 +24,14 @@ const BUY = {
 
 // ─────────────────────────────────────────────
 // INLINE FOLLOW-UP TEMPLATES
+// ─────────────────────────────────────────────
+
+function getGreeting(name?: string | null): string {
+  if (!name) return 'Hi there,';
+  const firstName = name.split(' ')[0];
+  return `Hi ${firstName},`;
+}
+
 // (copied here to avoid import issues in edge runtime)
 // ─────────────────────────────────────────────
 
@@ -75,7 +83,7 @@ ${body}
 </table></td></tr></table></body></html>`;
 }
 
-function getFollowupTemplate(stage: string, num: 1 | 2 | 3): { subject: string; html: string } | null {
+function getFollowupTemplate(stage: string, num: 1 | 2 | 3, name?: string | null): { subject: string; html: string } | null {
   if (stage === 'sketchup-free') {
     const subjects = [
       '⚡ Quick reminder — your AI Rendering upgrade is still available',
@@ -92,6 +100,7 @@ function getFollowupTemplate(stage: string, num: 1 | 2 | 3): { subject: string; 
       html: wrap(`
         ${hdr('Your skills are incomplete. Here\'s the fix.', 'SketchUp is just the foundation.', num === 3 ? '#7f1d1d' : '#1e293b')}
         <tr><td style="padding:36px 40px;">
+          <p style="margin:0 0 16px;color:#374151;font-size:16px;font-weight:600;">${getGreeting(name)}</p>
           <p style="margin:0 0 20px;color:#374151;font-size:16px;line-height:1.7;">${intros[num - 1]}</p>
           ${missBox([
             { emoji: '⚡', title: 'V-Ray AI + D5 Render AI', desc: 'Photorealistic renders and 4K video walkthroughs using AI. Designers with this skill charge $2,000–$5,000 per project — not $200.', price: '$9 one-time', link: BUY.renders },
@@ -114,6 +123,7 @@ function getFollowupTemplate(stage: string, num: 1 | 2 | 3): { subject: string; 
       html: wrap(`
         ${hdr('Great renders. But your toolkit isn\'t complete.', 'The courses top studios look for are still missing.', num === 3 ? '#7f1d1d' : '#0c4a6e')}
         <tr><td style="padding:36px 40px;">
+          <p style="margin:0 0 16px;color:#374151;font-size:16px;font-weight:600;">${getGreeting(name)}</p>
           <p style="margin:0 0 20px;color:#374151;font-size:16px;line-height:1.7;">
             ${num === 1 ? 'You\'ve got AI rendering covered — that puts you ahead of 80% of students. But to work at top studios or run your own firm, <strong>AutoCAD, Revit and Lumion</strong> are non-negotiable.'
               : num === 2 ? 'We analysed 500 architecture job postings. <strong>87% required AutoCAD. 71% required Revit.</strong> These are baseline skills — not extras.'
@@ -139,6 +149,7 @@ function getFollowupTemplate(stage: string, num: 1 | 2 | 3): { subject: string; 
       html: wrap(`
         ${hdr('One thing separates good from great designers.', 'Design principles that no software can teach.', num === 3 ? '#7f1d1d' : '#065f46')}
         <tr><td style="padding:36px 40px;">
+          <p style="margin:0 0 16px;color:#374151;font-size:16px;font-weight:600;">${getGreeting(name)}</p>
           <p style="margin:0 0 20px;color:#374151;font-size:16px;line-height:1.7;">
             ${num === 1 ? 'You\'ve mastered the tools. But the best designers also deeply understand <strong>space, light, material and proportion</strong>. These 6 books teach that — and set you apart from every other design student.'
               : num === 2 ? 'Software gets outdated. Design principles don\'t. The most successful alumni from our community say the same thing: <strong>"I wish I\'d read these books earlier."</strong>'
@@ -175,7 +186,7 @@ serve(async (req: Request) => {
     // Fetch leads at this stage who need follow-ups
     const { data: leads, error } = await supabase
       .from('leads')
-      .select('id, email, stage, updated_at, followup_1_at, followup_2_at, followup_3_at')
+      .select('id, email, name, stage, updated_at, followup_1_at, followup_2_at, followup_3_at')
       .eq('stage', stage);
 
     if (error || !leads) continue;
@@ -191,7 +202,7 @@ serve(async (req: Request) => {
 
       if (!followupNum) continue;
 
-      const template = getFollowupTemplate(stage, followupNum);
+      const template = getFollowupTemplate(stage, followupNum, lead.name);
       if (!template) continue;
 
       try {

@@ -12,8 +12,8 @@ const ADMIN_PASS = 'Robbin#15';
 const SESSION_KEY = 'admin_auth_v1';
 
 // ── Supabase (reads leads table via service role key or anon if RLS allows) ──
-const supabaseUrl = (import.meta.env.VITE_SUPABASE_URL as string) || 'https://placeholder.supabase.co';
-const supabaseKey = (import.meta.env.VITE_SUPABASE_SERVICE_ROLE_KEY || import.meta.env.VITE_SUPABASE_ANON_KEY) as string || 'placeholder';
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL ?? 'https://aexrgtpxyzfxjecozstf.supabase.co';
+const supabaseKey = import.meta.env.VITE_SUPABASE_SERVICE_ROLE_KEY ?? import.meta.env.VITE_SUPABASE_ANON_KEY ?? 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFleHJndHB4eXpmeGplY296c3RmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIyOTY0MjcsImV4cCI6MjA4Nzg3MjQyN30._ZSmh9iTP3etyGj5XrkEGJtRp9kR8z6jAmLOMesIvkg';
 const supabase = createClient(supabaseUrl, supabaseKey);
 
 
@@ -313,12 +313,6 @@ const Dashboard: React.FC<{ onLogout: () => void }> = ({ onLogout }) => {
   const [selectedLead, setSelectedLead] = useState<Lead | null>(null);
 
   const fetchLeads = useCallback(async () => {
-    if (supabaseUrl === 'https://placeholder.supabase.co') {
-      setError('Setup Required: Please add VITE_SUPABASE_URL and VITE_SUPABASE_SERVICE_ROLE_KEY to your .env file to view signups.');
-      setLoading(false);
-      return;
-    }
-
     setLoading(true);
     setError('');
     try {

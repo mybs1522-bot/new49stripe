@@ -101,6 +101,11 @@ const OfferPage: React.FC = () => {
           <p className="text-emerald-800 text-sm font-black mb-1">Check Your Email Inbox Now</p>
           <p className="text-emerald-700 text-xs leading-relaxed">Your secure layout and course access links have been successfully delivered to your email. Please check your inbox (and spam folder) to open your library.</p>
         </div>
+        
+        <div className="bg-gray-50 border border-gray-200 rounded-xl p-4 mb-5 text-left text-xs font-medium text-gray-600">
+          Didn't receive the email? Wait 2 minutes. If it's still missing, please take a screenshot of this page and WhatsApp us at <strong className="text-gray-900">+91 91987 47810</strong> for manual activation.
+        </div>
+        
         <button onClick={() => window.location.href = "mailto:"}
           className="block w-full bg-gray-900 hover:bg-black text-white font-bold py-3.5 rounded-xl text-center text-sm transition-colors">
           Open Email App

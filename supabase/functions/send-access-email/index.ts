@@ -509,7 +509,7 @@ serve(async (req: Request) => {
       .from('leads')
       .select('stage')
       .eq('email', email)
-      .single();
+      .maybeSingle();
 
     // Only upgrade stage, never downgrade
     const newStage = existing

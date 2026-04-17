@@ -59,7 +59,7 @@ const whatsapp = () =>
   `<table width="100%" cellpadding="0" cellspacing="0" style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:10px;">
 <tr><td style="padding:18px 22px;">
 <p style="margin:0 0 12px;color:#166534;font-size:13px;font-weight:700;">Need help? We're here 24/7.</p>
-<a href="https://wa.me/918545015333" style="display:inline-block;background:#25D366;color:#fff;font-weight:700;font-size:14px;padding:12px 24px;border-radius:8px;text-decoration:none;">💬 Chat on WhatsApp</a>
+<a href="https://wa.me/919198747810" style="display:inline-block;background:#25D366;color:#fff;font-weight:700;font-size:14px;padding:12px 24px;border-radius:8px;text-decoration:none;">💬 Chat on WhatsApp</a>
 </td></tr></table>`;
 
 function wrap(body: string): string {

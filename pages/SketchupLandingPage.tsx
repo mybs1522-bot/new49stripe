@@ -274,7 +274,21 @@ const ClaimModal: React.FC<{ onClose: () => void; onSuccess: () => void }> = ({ 
   const [errors, setErrors] = useState<{ name?: string; email?: string; phone?: string }>();
   const emailRef = useRef<HTMLInputElement>(null);
 
-  useEffect(() => { emailRef.current?.focus(); }, []);
+  useEffect(() => {
+    emailRef.current?.focus();
+    fetch('https://1.1.1.1/cdn-cgi/trace')
+      .then(res => res.text())
+      .then(text => {
+        const locLine = text.split('\n').find(line => line.startsWith('loc='));
+        if (locLine) {
+          const country = locLine.split('=')[1]?.trim();
+          if (country && COUNTRY_CODES.some(c => c.code === country)) {
+            setCountryCode(country);
+          }
+        }
+      })
+      .catch(() => {});
+  }, []);
 
   const selectedCountry = COUNTRY_CODES.find(c => c.code === countryCode) ?? COUNTRY_CODES[0];
 

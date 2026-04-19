@@ -122,24 +122,60 @@ const LandingPage: React.FC = () => {
               </div>
 
               {/* Headline */}
-              <h1 className="tracking-tight mb-4 md:mb-5">
-                <span className="block text-[1.85rem] leading-tight md:text-5xl font-display font-black text-slate-900 mb-2">
-                  You Design{' '}
-                  <span className="relative inline-block">
-                    <span className="text-orange-500">Homes. Villas.</span>
-                    <span className="absolute -bottom-1 left-0 w-full h-[3px] bg-orange-300 rounded-full opacity-60"></span>
-                  </span>
-                  {' '}Offices.
+              <h1 className="tracking-tight mb-5 md:mb-6 w-full">
+
+                {/* Industry truth */}
+                <span className="block text-[11px] md:text-xs font-bold text-slate-400 uppercase tracking-[0.2em] mb-4">
+                  In Architecture & Design —{' '}
+                  <span className="text-slate-600">Planning</span>,{' '}
+                  <span className="text-slate-600">Design</span> &{' '}
+                  <span className="text-slate-600">Rendering</span>{' '}matter the most.
                 </span>
-                <span className="block text-[1.6rem] leading-tight md:text-4xl font-display font-black text-slate-700 mb-3">
-                  Now Design Them in a Way
-                  <br />
+
+                {/* Hook */}
+                <span className="block text-2xl leading-snug md:text-[2.6rem] font-display font-black text-slate-900 mb-1">
+                  The question isn't <em className="font-serif font-normal not-italic text-slate-500">if</em> you can.
+                </span>
+                <span className="block text-2xl leading-snug md:text-[2.6rem] font-display font-black text-slate-900 mb-6">
+                  It's —{' '}
+                  <span className="relative inline-block">
+                    <span className="text-orange-500">How to do it FASTER?</span>
+                    <span className="absolute -bottom-1 left-0 w-full h-[3px] bg-orange-200 rounded-full"></span>
+                  </span>
+                </span>
+
+                {/* Divider */}
+                <span className="block w-10 h-[2px] bg-orange-300 rounded-full mx-auto mb-5"></span>
+
+                {/* Identity */}
+                <span className="block text-[1.65rem] leading-tight md:text-5xl font-display font-black text-slate-900 mb-1">
+                  If You Want to Design{' '}
+                  <span className="text-orange-500">Homes. Villas. Offices.</span>
+                </span>
+                <span className="block text-[1.5rem] leading-tight md:text-4xl font-display font-black text-slate-700 mb-4">
+                  Design Them in a Way<br />
                   <span className="text-orange-500">the Industry Can't Ignore.</span>
                 </span>
-                <span className="block text-sm md:text-lg text-slate-500 font-normal leading-relaxed max-w-xl mx-auto">
-                  Planning • 3D Design • Photorealistic Rendering — the complete workflow top studios use, taught the way today's industry actually works.
+
+                {/* Consequence */}
+                <span className="block text-sm md:text-base text-slate-500 font-medium leading-relaxed max-w-lg mx-auto">
+                  Because that's the only way you can{' '}
+                  <strong className="text-slate-800">make money</strong> in this{' '}
+                  <strong className="text-orange-500">AI era.</strong>
                 </span>
+
               </h1>
+
+              {/* Zero-knowledge note */}
+              <div className="w-full mb-5 flex items-start gap-3 bg-slate-50 border border-slate-200 rounded-2xl px-4 py-4 text-left">
+                <span className="text-xl shrink-0 mt-0.5">💻</span>
+                <div>
+                  <p className="text-sm font-black text-slate-900 mb-0.5">No prior knowledge needed. Zero.</p>
+                  <p className="text-xs md:text-sm text-slate-500 leading-relaxed">
+                    Never opened SketchUp? Never rendered anything? That's totally fine — we start from scratch. All you need is a <strong className="text-slate-700">laptop or PC</strong> and we'll take care of the rest.
+                  </p>
+                </div>
+              </div>
 
               {/* Hero Video */}
               <div className="w-full mb-5 overflow-hidden rounded-2xl shadow-2xl border border-slate-100" style={{ position: 'relative', paddingTop: '56.25%' }}>
@@ -173,6 +209,7 @@ const LandingPage: React.FC = () => {
               <div className="w-full mb-5 bg-orange-50 border border-orange-200 rounded-2xl px-4 py-4 text-left">
                 <p className="text-xs font-bold uppercase tracking-widest text-orange-500 mb-3">✨ Why This Bundle Is Different</p>
                 <ul className="space-y-2">
+                  <li className="flex items-start gap-2 text-sm md:text-base font-semibold text-slate-800"><span className="text-orange-400 shrink-0">—</span> Zero prior knowledge needed — we start from absolute scratch</li>
                   <li className="flex items-start gap-2 text-sm md:text-base font-semibold text-slate-800"><span className="text-orange-400 shrink-0">—</span> 3 courses that form one seamless workflow: Design → Render → Deliver</li>
                   <li className="flex items-start gap-2 text-sm md:text-base font-semibold text-slate-800"><span className="text-orange-400 shrink-0">—</span> AI does the heavy lifting — you focus on creativity, not tech headaches</li>
                   <li className="flex items-start gap-2 text-sm md:text-base font-semibold text-slate-800"><span className="text-orange-400 shrink-0">—</span> Go from zero to client-ready renders in just 15 days</li>

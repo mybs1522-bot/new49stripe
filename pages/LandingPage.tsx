@@ -1,11 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { ArrowRight, Star, CheckCircle, CheckCircle2, X, ChevronDown, Sparkles, Eye, Download, Mail, Lock, Loader2, Timer, Check, ShieldCheck } from 'lucide-react';
 import { FRONT_END_COURSES, FRONT_END_PRICE, FRONT_END_ORIGINAL_PRICE } from '../constants';
-import ModernPaymentForm from '../components/ui/modern-payment-form';
 import TeamSection from '../components/ui/team';
-import { chargeSavedCardUpsell } from '../services/stripe';
-import { sendStageEmail } from '../services/email';
 import {
   Logo, SocialProofToast,
   PROBLEM_POINTS, TRANSFORMATION_STORIES, FEAR_STATS,
@@ -13,7 +10,7 @@ import {
   COURSES_LANDING, PAGE_PREVIEWS_ROW1, PAGE_PREVIEWS_ROW2
 } from './LandingHelpers';
 
-/* ─── REUSABLE CTA WITH TIMER (Apple-style proportions) ─── */
+/* ─── REUSABLE CTA WITH TIMER ─── */
 const CtaWithTimer = ({ timeLeft, onClick, variant = 'green' }: { timeLeft: { h: number; m: number; s: number }; onClick: () => void; variant?: 'green' | 'dark' | 'blue' }) => {
   const f = (v: number) => v.toString().padStart(2, '0');
   const bgClass = variant === 'dark'
@@ -22,8 +19,6 @@ const CtaWithTimer = ({ timeLeft, onClick, variant = 'green' }: { timeLeft: { h:
   const btnClass = variant === 'dark'
     ? 'bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-500'
     : 'bg-slate-900 hover:bg-black';
-  const textColor = 'text-white';
-  const btnTextColor = 'text-white';
   const timerAccent = variant === 'dark' ? 'text-orange-400' : 'text-orange-500';
   const timerBg = variant === 'dark' ? 'bg-slate-800 border-slate-700' : 'bg-orange-50 border-orange-200';
 
@@ -39,7 +34,7 @@ const CtaWithTimer = ({ timeLeft, onClick, variant = 'green' }: { timeLeft: { h:
           <span className={`text-[10px] md:text-xs font-bold uppercase tracking-widest ${timerAccent}`}>Offer Ends In</span>
         </div>
 
-        {/* Timer digits - compact on mobile */}
+        {/* Timer digits */}
         <div className="flex items-center gap-1">
           {[{ val: f(timeLeft.h), label: 'HRS' }, { val: f(timeLeft.m), label: 'MIN' }, { val: f(timeLeft.s), label: 'SEC' }].map((unit, i) => (
             <React.Fragment key={i}>
@@ -54,21 +49,21 @@ const CtaWithTimer = ({ timeLeft, onClick, variant = 'green' }: { timeLeft: { h:
           ))}
         </div>
 
-        {/* Price - tighter on mobile */}
+        {/* Price */}
         <div className="flex items-baseline gap-2">
           <span className={`text-sm ${variant === 'dark' ? 'text-slate-500' : 'text-slate-400'} line-through font-bold`}>${FRONT_END_ORIGINAL_PRICE}</span>
           <span className={`text-3xl font-display font-black ${variant === 'dark' ? 'text-white' : 'text-slate-900'}`}>${FRONT_END_PRICE}</span>
           <span className="bg-orange-100 text-orange-500 text-[9px] font-bold px-1.5 py-0.5 rounded-full">91% OFF</span>
         </div>
 
-        {/* Button - full width on mobile, auto on desktop */}
+        {/* Button */}
         <button
           onClick={onClick}
-          className={`${btnClass} ${btnTextColor} font-bold text-sm px-6 py-3 rounded-xl flex items-center justify-center gap-2 group hover:scale-[1.02] active:scale-[0.98] transition-all w-full`}
+          className={`${btnClass} text-white font-bold text-sm px-6 py-3 rounded-xl flex items-center justify-center gap-2 group hover:scale-[1.02] active:scale-[0.98] transition-all w-full`}
           style={{ boxShadow: '0 0 0 2px #f97316, 0 0 16px rgba(249,115,22,0.4)' }}
         >
           <Download size={16} className="shrink-0" />
-          <span>Yes! I want it.</span>
+          <span>Get Instant Access</span>
           <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform shrink-0" />
         </button>
 
@@ -80,14 +75,10 @@ const CtaWithTimer = ({ timeLeft, onClick, variant = 'green' }: { timeLeft: { h:
 
 const LandingPage: React.FC = () => {
   const navigate = useNavigate();
-  const location = useLocation();
-  const customerId = location.state?.customerId;
 
   const [timeLeft, setTimeLeft] = useState(() => { const D = (3 * 3600 + 36 * 60 + 20) * 1000, r = D - (Date.now() % D); return { h: Math.floor((r / 3600000) % 24), m: Math.floor((r / 60000) % 60), s: Math.floor((r / 1000) % 60) }; });
   const [showStickyBar, setShowStickyBar] = useState(false);
-  const [isProcessingUpSell, setIsProcessingUpSell] = useState(false);
-  const [isConfirmingSkip, setIsConfirmingSkip] = useState(false);
-  useEffect(() => { window.scrollTo(0, 0); if ((window as any).fbq) (window as any).fbq('track', 'ViewContent', { content_name: 'Avada Design AI Rendering Bundle', value: FRONT_END_PRICE, currency: 'USD' }); }, []);
+  useEffect(() => { window.scrollTo(0, 0); if ((window as any).fbq) (window as any).fbq('track', 'ViewContent', { content_name: 'Avada Design — SketchUp + V-Ray + D5 Render AI', value: FRONT_END_PRICE, currency: 'USD' }); }, []);
   const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(0);
   const [studentCount, setStudentCount] = useState(22390);
 
@@ -100,165 +91,100 @@ const LandingPage: React.FC = () => {
 
   const formatTime = (val: number) => val.toString().padStart(2, '0');
 
-  const handleUpsellSuccess = () => {
-    if ((window as any).fbq) (window as any).fbq('track', 'Purchase', { value: FRONT_END_PRICE, currency: 'USD' });
-    // email is not available on LandingPage (1-click); email was already sent at sketchup stage
-    navigate('/onetime', { state: { customerId } });
-  };
-
-  const handleSkipUpsell = () => {
-    navigate('/onetime', { state: { customerId } });
-  };
-
-  const openPaymentModal = async () => {
+  const openPaymentModal = () => {
     if ((window as any).fbq) (window as any).fbq('track', 'InitiateCheckout');
-    if (customerId) {
-      // Free-tier user: 1-click charge saved card
-      setIsProcessingUpSell(true);
-      try {
-        await chargeSavedCardUpsell(customerId, `$${FRONT_END_PRICE}`);
-        handleUpsellSuccess();
-      } catch (err) {
-        console.error('One-click upsell failed, falling back to checkout', err);
-        setIsProcessingUpSell(false);
-        navigate('/checkout');
-      }
-    } else {
-      // Direct visitor: normal checkout
-      navigate('/checkout');
-    }
+    navigate('/checkout');
   };
 
   return (
     <div className="min-h-screen bg-white text-gray-900 font-sans overflow-x-hidden selection:bg-orange-100">
-      {/* ═══ ONE-TIME OFFER UPSELL BANNER ═══ */}
-      <div className="bg-gradient-to-r from-orange-600 via-orange-500 to-amber-500 text-white text-center py-3 px-4">
-        <div className="flex items-center justify-center gap-3 flex-wrap">
-          <span className="text-xs font-black uppercase tracking-widest bg-white/20 px-2.5 py-1 rounded-full">🎁 One-Time Offer</span>
-          <p className="text-sm font-bold">SketchUp only makes designs — Add <span className="underline underline-offset-2">AI Photo &amp; Video Renders</span> for just ${FRONT_END_PRICE}</p>
-          <span className="text-xs font-black bg-black/30 px-2.5 py-1 rounded-full">⏳ Expires in {formatTime(timeLeft.h)}:{formatTime(timeLeft.m)}:{formatTime(timeLeft.s)}</span>
-        </div>
-      </div>
 
       {/* ═══ STICKY HEADER ═══ */}
       <header className="sticky top-0 z-[60] bg-white/80 backdrop-blur-2xl border-b border-slate-100/60 px-5 py-4">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
+          <Logo />
           <div className="flex items-center gap-4">
-            <button disabled={isProcessingUpSell} onClick={openPaymentModal} className="hidden md:block text-white px-6 py-2.5 rounded-full text-xs font-black uppercase tracking-widest hover:scale-105 transition-all premium-stroke disabled:opacity-70" style={{ background: 'linear-gradient(135deg,#f97316,#ea580c)', boxShadow: '0 0 20px rgba(249,115,22,0.45)' }}>{isProcessingUpSell ? 'Processing...' : 'Yes! I want it.'}</button>
+            <button onClick={openPaymentModal} className="text-white px-6 py-2.5 rounded-full text-xs font-black uppercase tracking-widest hover:scale-105 transition-all premium-stroke" style={{ background: 'linear-gradient(135deg,#f97316,#ea580c)', boxShadow: '0 0 20px rgba(249,115,22,0.45)' }}>Get Access — ${FRONT_END_PRICE}</button>
           </div>
         </div>
       </header>
 
       <main>
-        {/* 1. HERO — The Hook */}
-        <section className="relative pt-0 pb-4 md:pb-20 overflow-hidden" style={{ background: '#ffffff' }}>
-          <div className="w-full px-4 md:max-w-4xl md:mx-auto relative z-10">
+        {/* 1. HERO — The Primary Pitch */}
+        <section className="relative pt-0 pb-6 md:pb-16 overflow-hidden" style={{ background: '#ffffff' }}>
+          <div className="w-full px-4 md:max-w-3xl md:mx-auto relative z-10">
             <div className="flex flex-col items-center text-center pt-7 md:pt-14">
 
-              {/* Top badge */}
-              <div className="mb-2 md:mb-3 inline-flex items-center gap-2 px-4 py-1.5 bg-orange-50 border border-orange-300 rounded-full shadow-sm">
-                <CheckCircle2 size={12} className="text-orange-500" />
-                <span className="text-[11px] md:text-xs font-bold text-orange-700 uppercase tracking-widest">🎁 One-Time Offer — This Offer Disappears When You Leave</span>
+              {/* Badge */}
+              <div className="mb-4 inline-flex items-center gap-2 px-4 py-1.5 bg-orange-50 border border-orange-300 rounded-full shadow-sm">
+                <Sparkles size={12} className="text-orange-500" />
+                <span className="text-[11px] md:text-xs font-bold text-orange-700 uppercase tracking-widest">For Architects & Interior Designers</span>
               </div>
 
-
-              {/* Intro text */}
-              <p className="text-sm md:text-base text-slate-700 mb-3 md:mb-5 max-w-lg font-medium leading-relaxed">
-                You just unlocked the free SketchUp course. But here’s the truth — <span className="text-orange-500 font-bold">SketchUp alone won’t get you clients.</span> Clients buy <span className="font-bold text-slate-900 underline underline-offset-2 decoration-orange-400">photorealistic images</span> and <span className="font-bold text-slate-900 underline underline-offset-2 decoration-orange-400">cinematic video walkthroughs</span>. That’s what V-Ray AI and D5 Render AI give you.
-              </p>
-
-              {/* Big headline */}
-              <h1 className="tracking-tight mb-2 md:mb-3">
-                <span className="block text-[2.2rem] leading-tight md:text-6xl font-display font-black text-slate-900 mb-0.5">
-                  Design, AI Render &amp; Sell
+              {/* Headline */}
+              <h1 className="tracking-tight mb-4 md:mb-5">
+                <span className="block text-[1.85rem] leading-tight md:text-5xl font-display font-black text-slate-900 mb-2">
+                  You Design{' '}
+                  <span className="relative inline-block">
+                    <span className="text-orange-500">Homes. Villas.</span>
+                    <span className="absolute -bottom-1 left-0 w-full h-[3px] bg-orange-300 rounded-full opacity-60"></span>
+                  </span>
+                  {' '}Offices.
                 </span>
-                <span className="block text-[2rem] leading-none md:text-5xl font-display font-black">
-                  <span className="text-orange-500">Homes</span><span className="text-slate-400 font-light text-2xl md:text-3xl mx-1">,</span><span className="text-slate-900">Offices</span><span className="text-slate-400 font-light text-2xl md:text-3xl mx-1"> &amp;</span><span className="text-slate-700">Villas</span>
+                <span className="block text-[1.6rem] leading-tight md:text-4xl font-display font-black text-slate-700 mb-3">
+                  Now Design Them in a Way
+                  <br />
+                  <span className="text-orange-500">the Industry Can't Ignore.</span>
                 </span>
-                <span className="block text-lg md:text-2xl font-serif italic text-slate-600 mt-1 md:mt-2">
-                  with <span className="text-orange-500 not-italic font-black">AI-Powered</span> V-Ray + D5 Render.
+                <span className="block text-sm md:text-lg text-slate-500 font-normal leading-relaxed max-w-xl mx-auto">
+                  Planning • 3D Design • Photorealistic Rendering — the complete workflow top studios use, taught the way today's industry actually works.
                 </span>
               </h1>
 
-              {/* PDR line */}
-              <p className="text-sm md:text-base font-bold text-slate-800 mt-2 md:mt-4 mb-1">
-                The Complete <span className="text-orange-500">AI Rendering Pipeline</span> — Design It, Light It, Sell It
-              </p>
-              <p className="text-xs md:text-sm text-slate-500 mb-5 md:mb-8 max-w-sm md:max-w-md">
-                3 AI-powered courses. One unbeatable price.
-              </p>
+              {/* Hero Video */}
+              <div className="w-full mb-5 overflow-hidden rounded-2xl shadow-2xl border border-slate-100" style={{ position: 'relative', paddingTop: '56.25%' }}>
+                <iframe src="https://iframe.mediadelivery.net/embed/489113/a214b199-e64a-4eaf-af70-edfbc586e5fd?autoplay=true&loop=true&muted=true&preload=true&responsive=true" loading="lazy" style={{ border: 0, position: 'absolute', top: 0, height: '100%', width: '100%' }} allow="accelerometer;gyroscope;autoplay;encrypted-media;picture-in-picture;" allowFullScreen={true} />
+              </div>
 
-              {/* Story Block */}
-              <div className="w-full max-w-3xl mx-auto mb-6 md:mb-10 text-left bg-white p-5 md:p-8 rounded-2xl shadow-sm border border-orange-100 relative overflow-hidden">
-                <p className="text-sm md:text-lg font-serif text-slate-800 leading-relaxed mb-3 italic">
-                  "I spent 6 months mastering SketchUp and still couldn’t land clients. The day I added <span className="font-bold text-slate-900 border-b-2 border-orange-400">AI Rendering with V-Ray and D5 Render</span>, everything changed. My first photorealistic render closed a $3,800 project in 24 hours."
+              {/* Post-video hook */}
+              <div className="w-full mb-6 text-center">
+                <p className="text-xl md:text-3xl font-display font-black text-slate-900 leading-tight">
+                  Design like Top Designers in{' '}
+                  <span className="relative inline-block">
+                    <span className="text-orange-500">15 Days.</span>
+                    <span className="absolute -bottom-0.5 left-0 w-full h-[3px] bg-orange-300 rounded-full opacity-70"></span>
+                  </span>
                 </p>
-                <div className="w-10 h-1 bg-orange-500 rounded-full mb-3"></div>
-                <p className="text-xs md:text-sm text-slate-500 font-bold">— Ankit R., Freelance Interior Designer, Delhi</p>
-                <div className="mt-4 flex items-start gap-3 p-3 md:p-4 bg-orange-50 border border-orange-100 rounded-xl">
-                  <span className="text-xl md:text-2xl mt-0.5 shrink-0">📊</span>
-                  <p className="text-slate-700 font-medium leading-relaxed text-xs md:text-base">
-                    Designers with AI rendering skills charge <strong className="text-orange-500">$2,000–$5,000 per project</strong>. Designers without it compete for $200 gigs on Fiverr. This one upgrade is the difference.
-                  </p>
-                </div>
-
-                {/* Hero Video */}
-                <div className="w-full mt-5 mb-4 overflow-hidden rounded-xl shadow-xl" style={{ position: 'relative', paddingTop: '56.25%' }}>
-                  <iframe src="https://iframe.mediadelivery.net/embed/489113/a214b199-e64a-4eaf-af70-edfbc586e5fd?autoplay=true&loop=true&muted=true&preload=true&responsive=true" loading="lazy" style={{ border: 0, position: 'absolute', top: 0, height: '100%', width: '100%' }} allow="accelerometer;gyroscope;autoplay;encrypted-media;picture-in-picture;" allowFullScreen={true} />
-                </div>
-
-                <div className="flex items-start gap-3 p-3 md:p-4 bg-slate-50 border border-slate-200 rounded-xl">
-                  <span className="text-xl md:text-2xl mt-0.5 shrink-0">🤖</span>
-                  <p className="text-slate-700 font-medium leading-relaxed text-xs md:text-base">
-                    V-Ray AI and D5 Render AI use artificial intelligence to generate <strong className="text-slate-900">photorealistic lighting, shadows, materials and 4K video walkthroughs</strong> — in minutes, not days.
-                  </p>
-                </div>
+                <p className="text-sm md:text-base font-bold text-slate-400 uppercase tracking-widest mt-1">No Bullshit.</p>
               </div>
-
-              {/* CTA */}
-              <div className="flex flex-col items-center gap-2 mb-3 w-full">
-                <button disabled={isProcessingUpSell} onClick={openPaymentModal} className="w-full sm:w-auto px-8 py-3.5 md:py-4 bg-gradient-to-r from-orange-500 to-orange-600 text-white rounded-2xl font-bold text-sm md:text-lg shadow-xl shadow-orange-500/20 hover:shadow-orange-500/30 hover:scale-[1.03] transition-all flex items-center justify-center gap-3 group premium-stroke whitespace-nowrap disabled:opacity-70 disabled:cursor-wait">
-                  <Download size={18} className="shrink-0" />
-                  {isProcessingUpSell ? 'Processing...' : 'Yes! I want it.'} {!isProcessingUpSell && <ArrowRight className="group-hover:translate-x-1 transition-transform" size={18} />}
-                </button>
-                {!isConfirmingSkip && (
-                  <button onClick={() => setIsConfirmingSkip(true)} className="text-xs text-slate-400 hover:text-slate-600 font-medium underline underline-offset-4 decoration-slate-300 transition-colors">
-                    No thanks, I don’t want renders →
-                  </button>
-                )}
-                {isConfirmingSkip && (
-                  <div className="w-full bg-red-50 border border-red-200 rounded-xl p-4 text-center">
-                    <p className="text-red-700 font-bold text-sm mb-1">Are you sure?</p>
-                    <p className="text-gray-600 text-xs mb-3">This discount will never be shown again. You can buy later at ${FRONT_END_ORIGINAL_PRICE}.</p>
-                    <div className="flex gap-2">
-                      <button disabled={isProcessingUpSell} onClick={openPaymentModal} className="flex-1 py-2.5 bg-emerald-500 text-white text-xs font-bold rounded-xl">{isProcessingUpSell ? 'Processing...' : 'Yes, I want the discount'}</button>
-                      <button onClick={handleSkipUpsell} className="flex-1 py-2.5 bg-red-100 text-red-600 text-xs font-bold rounded-xl">Cancel, I don’t want it</button>
-                    </div>
-                  </div>
-                )}
-              </div>
-              <p className="text-[10px] md:text-xs text-slate-500 mb-7 md:mb-10 font-bold">24/7 Team Support • Free AI Software • 7-Day Money-Back Guarantee</p>
 
               {/* Outcome strip */}
               <div className="w-full mb-4 flex gap-2">
                 <div className="flex-1 bg-amber-50 border border-amber-200 rounded-xl px-3 py-3 text-left">
-                  <p className="text-base font-black text-slate-900">💼 Get a Better Job</p>
-                  <p className="text-[11px] text-slate-500 mt-0.5">Higher-paying design roles</p>
+                  <p className="text-base font-black text-slate-900">💼 Land Higher-Paying Jobs</p>
+                  <p className="text-[11px] text-slate-500 mt-0.5">Firms pay premium for rendering skills</p>
                 </div>
                 <div className="flex-1 bg-amber-50 border border-amber-200 rounded-xl px-3 py-3 text-left">
-                  <p className="text-base font-black text-slate-900">🏢 Own Design Firm</p>
-                  <p className="text-[11px] text-slate-500 mt-0.5">Freelance & studio projects</p>
+                  <p className="text-base font-black text-slate-900">🏢 Start Your Own Studio</p>
+                  <p className="text-[11px] text-slate-500 mt-0.5">Full pipeline for freelance & studio work</p>
                 </div>
               </div>
 
-              <div className="w-full mb-2 md:mb-6 bg-orange-50 border border-orange-200 rounded-2xl px-4 py-4 text-left">
-                <p className="text-xs font-bold uppercase tracking-widest text-orange-500 mb-3">✨ Best Part</p>
+              <div className="w-full mb-5 bg-orange-50 border border-orange-200 rounded-2xl px-4 py-4 text-left">
+                <p className="text-xs font-bold uppercase tracking-widest text-orange-500 mb-3">✨ Why This Bundle Is Different</p>
                 <ul className="space-y-2">
-                  <li className="flex items-start gap-2 text-sm md:text-base font-semibold text-slate-800"><span className="text-orange-400 shrink-0">—</span> Just a Laptop or Computer is all you need</li>
-                  <li className="flex items-start gap-2 text-sm md:text-base font-semibold text-slate-800"><span className="text-orange-400 shrink-0">—</span> We teach everything from the absolute basics</li>
-                  <li className="flex items-start gap-2 text-sm md:text-base font-semibold text-slate-800"><span className="text-orange-400 shrink-0">—</span> Go from zero to client-ready renders in weeks</li>
+                  <li className="flex items-start gap-2 text-sm md:text-base font-semibold text-slate-800"><span className="text-orange-400 shrink-0">—</span> 3 courses that form one seamless workflow: Design → Render → Deliver</li>
+                  <li className="flex items-start gap-2 text-sm md:text-base font-semibold text-slate-800"><span className="text-orange-400 shrink-0">—</span> AI does the heavy lifting — you focus on creativity, not tech headaches</li>
+                  <li className="flex items-start gap-2 text-sm md:text-base font-semibold text-slate-800"><span className="text-orange-400 shrink-0">—</span> Go from zero to client-ready renders in just 15 days</li>
                 </ul>
               </div>
+
+              {/* CTA */}
+              <button onClick={openPaymentModal} className="w-full sm:w-auto px-8 py-4 bg-gradient-to-r from-orange-500 to-orange-600 text-white rounded-2xl font-bold text-base md:text-lg shadow-xl shadow-orange-500/20 hover:shadow-orange-500/30 hover:scale-[1.03] transition-all flex items-center justify-center gap-3 group premium-stroke">
+                <Download size={18} className="shrink-0" />
+                Get All 3 Courses — ${FRONT_END_PRICE} <ArrowRight className="group-hover:translate-x-1 transition-transform" size={18} />
+              </button>
+              <p className="text-[11px] md:text-xs text-slate-400 mt-3 font-medium">24/7 Support • Free AI Software • 7-Day Money-Back Guarantee</p>
 
             </div>
           </div>
@@ -273,11 +199,12 @@ const LandingPage: React.FC = () => {
                    <Sparkles size={14} />
                    3 Premium Courses Included
                  </div>
-                 <h2 className="text-2xl md:text-4xl font-display font-black text-gray-900 leading-tight">Master the Complete<br/>Rendering Pipeline</h2>
+                 <h2 className="text-2xl md:text-4xl font-display font-black text-gray-900 leading-tight">Master the Complete<br/>Design-to-Render Pipeline</h2>
+                 <p className="text-slate-500 mt-3 text-sm md:text-base max-w-2xl mx-auto">From your first 3D floor plan to stunning photorealistic renders — everything you need in one bundle.</p>
              </div>
            </div>
            
-           {/* Course cards — 3 courses, no scroll needed */}
+           {/* Course cards — 3 courses */}
            <div className="max-w-4xl mx-auto px-4">
              <div className="grid grid-cols-3 gap-3 md:gap-6">
                {FRONT_END_COURSES.map((course, i) => (
@@ -365,7 +292,7 @@ const LandingPage: React.FC = () => {
         <section className="py-16 bg-white border-b border-slate-200">
           <div className="max-w-5xl mx-auto px-5">
             <div className="reveal text-center mb-10">
-              <h2 className="text-3xl md:text-5xl font-display font-bold text-slate-900 tracking-tight mb-4">Time is Money <br className="hidden md:block" /><span className="text-orange-600">and this program saves you time.</span></h2>
+              <h2 className="text-3xl md:text-5xl font-display font-bold text-slate-900 tracking-tight mb-4">Your ${FRONT_END_PRICE} Investment <br className="hidden md:block" /><span className="text-orange-600">Pays for Itself 100x Over</span></h2>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
               {INCOME_TIERS.map((tier, i) => (
@@ -387,8 +314,8 @@ const LandingPage: React.FC = () => {
           <div className="max-w-5xl mx-auto px-5">
             <div className="reveal text-center mb-10">
               <p className="text-orange-500 text-xs font-mono uppercase tracking-widest mb-3">Included with enrollment</p>
-              <h2 className="text-3xl md:text-5xl font-display font-bold text-slate-900 tracking-tight mb-4">Everything You Need to Succeed, <span className="text-orange-600">Provided Today</span></h2>
-              <p className="text-slate-600 text-base md:text-lg max-w-2xl mx-auto">The complete rendering toolkit — courses, software, support, and resources.</p>
+              <h2 className="text-3xl md:text-5xl font-display font-bold text-slate-900 tracking-tight mb-4">Everything You Need to Succeed, <span className="text-orange-600">Included Today</span></h2>
+              <p className="text-slate-600 text-base md:text-lg max-w-2xl mx-auto">The complete design-to-render toolkit — courses, software, support, and resources.</p>
             </div>
             <div className="reveal max-w-3xl mx-auto bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-soft">
               {VALUE_STACK_ITEMS.map((item, i) => (
@@ -408,7 +335,7 @@ const LandingPage: React.FC = () => {
                   <span className="text-slate-900 font-bold text-center">Lifetime Access + Free Updates</span>
                 </div>
                 <button onClick={openPaymentModal} className="w-full sm:w-auto px-10 py-4 bg-gradient-to-r from-orange-500 to-orange-600 text-white rounded-xl font-bold text-lg shadow-xl shadow-orange-500/20 hover:scale-[1.02] transition-all flex items-center justify-center gap-3 group premium-stroke whitespace-nowrap">
-                  <Download size={16} /> Get Instant Access — ${FRONT_END_PRICE} <ArrowRight className="group-hover:translate-x-1 transition-transform" size={18} />
+                  <Download size={16} /> Get All 3 Courses — ${FRONT_END_PRICE} <ArrowRight className="group-hover:translate-x-1 transition-transform" size={18} />
                 </button>
               </div>
             </div>
@@ -443,28 +370,28 @@ const LandingPage: React.FC = () => {
           <div className="max-w-3xl mx-auto px-5">
             <div className="reveal text-center mb-12">
               <p className="text-orange-500 text-xs font-mono uppercase tracking-widest mb-4">A Supportive Message from Our Team</p>
-              <h2 className="text-3xl md:text-5xl font-serif italic text-slate-900 mb-8 leading-snug">"We believe in practical, hands-on learning with experts who are always ready to help you."</h2>
+              <h2 className="text-3xl md:text-5xl font-serif italic text-slate-900 mb-8 leading-snug">"We believe every designer deserves restaurant-quality tools at street-food prices."</h2>
             </div>
             <div className="reveal space-y-6 text-slate-600 text-base md:text-lg leading-relaxed">
-              <p>Learning complex software can feel overwhelming <strong className="text-slate-900">when you're doing it alone.</strong></p>
-              <p>That's why our program is built differently. You aren't just getting tutorial videos; you're joining a community where our team reviews your work, answers your technical questions, and cheers you on as you improve.</p>
-              <p>Whether you are a student, a freelancer, or a studio owner, <strong className="text-orange-600">we are here to support your transition</strong> into modern, high-quality 3D rendering. No more struggling with endless YouTube tutorials that leave you confused.</p>
-              <p>You don't need to spend thousands of dollars on expensive, outdated courses to build a portfolio you can be incredibly proud of.</p>
+              <p>Learning SketchUp, V-Ray, and D5 Render separately? That's <strong className="text-slate-900">$300+ in courses, months of confusion, and a dozen browser tabs</strong> you'll never close.</p>
+              <p>We built this bundle because <strong className="text-orange-600">the rendering pipeline shouldn't be gatekept</strong>. Whether you're a student, a freelancer, or a studio owner — you deserve a clear, guided path from 3D model to photorealistic render.</p>
+              <p>Every lesson is designed so you build <strong className="text-slate-900">real projects</strong>. Not theory. Not fluff. Actual rooms, actual renders, actual portfolio pieces.</p>
               
               <div className="my-10 bg-gradient-to-br from-orange-50 to-orange-50 border border-orange-200 rounded-2xl p-6 md:p-8 shadow-soft">
-                <p className="font-bold text-slate-900 text-xl mb-4">Here is How We Support You:</p>
+                <p className="font-bold text-slate-900 text-xl mb-4">Here's What Makes This Bundle Special:</p>
                 <ul className="space-y-3">
-                  <li className="flex items-center gap-3"><CheckCircle size={18} className="text-orange-500 shrink-0" /><span className="text-slate-800">3 Comprehensive Courses — SketchUp, V-Ray & D5 Render AI — structured for beginners.</span></li>
-                  <li className="flex items-center gap-3"><CheckCircle size={18} className="text-orange-500 shrink-0" /><span className="text-slate-800">Direct links to free/student versions so you save your money.</span></li>
-                  <li className="flex items-center gap-3"><CheckCircle size={18} className="text-orange-500 shrink-0" /><span className="text-slate-800">24/7 support from team, installation help to course doubts—whenever you're stuck, we're here.</span></li>
+                  <li className="flex items-center gap-3"><CheckCircle size={18} className="text-orange-500 shrink-0" /><span className="text-slate-800"><strong>SketchUp</strong> — Design stunning 3D models from scratch, even if you've never opened the software.</span></li>
+                  <li className="flex items-center gap-3"><CheckCircle size={18} className="text-orange-500 shrink-0" /><span className="text-slate-800"><strong>V-Ray</strong> — Turn those models into magazine-quality photorealistic images.</span></li>
+                  <li className="flex items-center gap-3"><CheckCircle size={18} className="text-orange-500 shrink-0" /><span className="text-slate-800"><strong>D5 Render AI</strong> — Real-time AI rendering: see changes instantly, generate 4K images in seconds.</span></li>
+                  <li className="flex items-center gap-3"><CheckCircle size={18} className="text-orange-500 shrink-0" /><span className="text-slate-800">24/7 support, free software links, and a community that's always got your back.</span></li>
                 </ul>
                 <div className="mt-6 pt-6 border-t border-orange-100 flex items-center justify-between">
-                  <span className="text-slate-600 text-sm italic font-bold">A complete rendering ecosystem for just ${FRONT_END_PRICE}.</span>
-                  <button onClick={openPaymentModal} className="text-orange-600 font-bold text-sm hover:text-orange-600 flex items-center gap-1 group">Join Our Community <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" /></button>
+                  <span className="text-slate-600 text-sm italic font-bold">The complete design-to-render ecosystem for just ${FRONT_END_PRICE}.</span>
+                  <button onClick={openPaymentModal} className="text-orange-600 font-bold text-sm hover:text-orange-600 flex items-center gap-1 group">Get Started <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" /></button>
                 </div>
               </div>
 
-              <p className="text-slate-900 font-semibold text-lg md:text-xl border-l-4 border-orange-500 pl-4 bg-orange-50 p-4 rounded-r-xl">Investing in your education is the best step you can take for your creative journey. Our team is excited to welcome you and help you build something amazing.</p>
+              <p className="text-slate-900 font-semibold text-lg md:text-xl border-l-4 border-orange-500 pl-4 bg-orange-50 p-4 rounded-r-xl">Stop collecting bookmarks. Start building a portfolio. 50,000+ students already did — and they started with the same ${FRONT_END_PRICE} decision you're about to make.</p>
             </div>
           </div>
         </section>
@@ -473,7 +400,7 @@ const LandingPage: React.FC = () => {
         {/* 5. OLD vs NEW — The Contrast */}
         <section className="py-16 md:py-24 bg-white grid-bg">
           <div className="max-w-5xl mx-auto px-5">
-            <div className="reveal text-center mb-12"><h2 className="text-3xl md:text-5xl font-display font-bold text-slate-900 tracking-tight mb-4">The Lonely, Frustrating Path <br className="hidden md:block" />vs. <span className="text-orange-600">Our Hand-Holding Blueprint</span></h2></div>
+            <div className="reveal text-center mb-12"><h2 className="text-3xl md:text-5xl font-display font-bold text-slate-900 tracking-tight mb-4">The Slow, Expensive Path <br className="hidden md:block" />vs. <span className="text-orange-600">Our ${FRONT_END_PRICE} Shortcut</span></h2></div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="reveal grid-bg border border-red-200 rounded-2xl p-8 shadow-soft">
                 <div className="flex items-center gap-3 mb-6"><div className="w-10 h-10 rounded-xl bg-red-50 flex items-center justify-center"><X size={20} className="text-red-500" /></div><h3 className="text-xl font-bold text-red-500">The Old Struggle</h3></div>
@@ -487,9 +414,9 @@ const LandingPage: React.FC = () => {
                 </ul>
               </div>
               <div className="reveal bg-gradient-to-br from-orange-50 to-slate-50 border border-orange-200 rounded-2xl p-8 shadow-soft">
-                <div className="flex items-center gap-3 mb-6"><div className="w-10 h-10 rounded-xl bg-orange-100 flex items-center justify-center"><CheckCircle size={20} className="text-orange-600" /></div><h3 className="text-xl font-bold text-slate-900">Our Supportive System</h3></div>
+                <div className="flex items-center gap-3 mb-6"><div className="w-10 h-10 rounded-xl bg-orange-100 flex items-center justify-center"><CheckCircle size={20} className="text-orange-600" /></div><h3 className="text-xl font-bold text-slate-900">The ${FRONT_END_PRICE} Bundle</h3></div>
                 <ul className="space-y-4">
-                  {['A clear rendering pipeline: SketchUp → V-Ray → D5 Render AI', 'AI handles the heavy lifting. You focus on creativity. 10x your output stress-free.', 'A stunning, professional portfolio built safely in just 15 days—even from zero', 'All necessary software links provided—say goodbye to expensive licenses', '24/7 support from team, installation help to course doubts'].map((item, i) => (
+                  {['SketchUp: Build 3D models from floor plans in minutes', 'V-Ray: One-click photorealistic lighting, materials & shadows', 'D5 Render AI: Real-time renders — see it as you design it', 'All software links provided — no expensive licenses needed', '24/7 team support — stuck on a render? We fix it with you'].map((item, i) => (
                     <li key={i} className="flex items-start gap-3 text-slate-700 text-sm"><CheckCircle size={14} className="text-orange-500 mt-1 shrink-0" />{item}</li>
                   ))}
                 </ul>
@@ -564,8 +491,8 @@ const LandingPage: React.FC = () => {
           {/* ═══════ CTA #3 — Final CTA ═══════ */}
           <div className="max-w-3xl mx-auto px-4 md:px-5">
             <div className="text-center mb-6 md:mb-8">
-              <h3 className="text-xl md:text-3xl font-display font-bold text-slate-900 mb-2">Let us hold your hand towards a brighter future.</h3>
-              <p className="text-slate-500 text-xs md:text-sm">AI is moving fast, but you don't have to face it alone. 50,000+ students chose our supportive community.</p>
+              <h3 className="text-xl md:text-3xl font-display font-bold text-slate-900 mb-2">Your future portfolio is one click away.</h3>
+              <p className="text-slate-500 text-xs md:text-sm">50,000+ students chose this path. SketchUp + V-Ray + D5 Render AI for ${FRONT_END_PRICE}. Lifetime access. Zero risk.</p>
             </div>
             <CtaWithTimer timeLeft={timeLeft} onClick={openPaymentModal} variant="dark" />
           </div>
@@ -587,21 +514,8 @@ const LandingPage: React.FC = () => {
 
       {/* ═══ STICKY BOTTOM BAR ═══ */}
       <div className={`fixed bottom-0 left-0 right-0 z-[70] transition-transform duration-500 ${showStickyBar ? 'translate-y-0' : 'translate-y-full'}`}>
-
-        {/* Downsell confirmation overlay */}
-        {isConfirmingSkip && (
-          <div className="bg-red-50 border-t-2 border-red-300 px-4 py-4 text-center">
-            <p className="text-red-800 font-bold text-sm mb-1">Are you sure?</p>
-            <p className="text-gray-600 text-xs mb-3">This discount will not be available again. You can buy later at regular price (${FRONT_END_ORIGINAL_PRICE}).</p>
-            <div className="flex gap-2 max-w-sm mx-auto">
-              <button disabled={isProcessingUpSell} onClick={openPaymentModal} className="flex-1 py-2.5 bg-emerald-500 text-white text-xs font-bold rounded-xl">{isProcessingUpSell ? 'Processing...' : 'Yes, I want the discount'}</button>
-              <button onClick={handleSkipUpsell} className="flex-1 py-2.5 bg-red-100 text-red-600 text-xs font-bold rounded-xl">No, skip it</button>
-            </div>
-          </div>
-        )}
-
         <div className="w-full bg-white/98 backdrop-blur-2xl border-t border-slate-100 shadow-[0_-1px_40px_rgba(15,23,42,0.12)] px-4 py-2.5 flex items-center gap-3">
-          {/* Left: price + label + timer */}
+          {/* Left: price + timer */}
           <div className="flex flex-col items-start gap-0.5 shrink-0">
             <div className="flex items-baseline gap-1.5">
               <span className="text-base font-black text-slate-900">${FRONT_END_PRICE}</span>
@@ -617,16 +531,13 @@ const LandingPage: React.FC = () => {
             </div>
           </div>
 
-          {/* Right: two buttons when from free tier */}
+          {/* Right: CTA button */}
           <div className="flex-1 flex flex-col gap-1">
-            <button disabled={isProcessingUpSell} onClick={openPaymentModal} className="flex-1 flex items-center justify-center gap-1.5 bg-slate-900 text-white text-xs font-bold py-3 rounded-xl hover:bg-black transition-all disabled:opacity-70"
+            <button onClick={openPaymentModal} className="flex-1 flex items-center justify-center gap-1.5 bg-slate-900 text-white text-xs font-bold py-3 rounded-xl hover:bg-black transition-all"
               style={{ boxShadow: '0 0 0 2px #f97316, 0 0 12px rgba(249,115,22,0.35)' }}>
-              {isProcessingUpSell ? 'Processing...' : 'Yes! I want it.'}
-              {!isProcessingUpSell && <ArrowRight size={13} />}
+              Get All 3 Courses — ${FRONT_END_PRICE}
+              <ArrowRight size={13} />
             </button>
-            {!isConfirmingSkip && (
-              <button onClick={() => setIsConfirmingSkip(true)} className="text-[10px] text-slate-400 font-medium underline underline-offset-2">No thanks, skip →</button>
-            )}
           </div>
         </div>
       </div>

@@ -32,7 +32,7 @@ const CheckoutPage: React.FC = () => {
 
   const handleSuccess = (customerId?: string) => {
     if ((window as any).fbq) (window as any).fbq("track", "Purchase", { value: FRONT_END_PRICE, currency: "USD" });
-    sendStageEmail(email, 'render-bundle');
+    sendStageEmail(email, 'sketchup-vray-d5-bundle');
     navigate("/onetime", { state: { customerId } });
   };
 
@@ -61,7 +61,7 @@ const CheckoutPage: React.FC = () => {
             className="w-full h-full object-cover"
           />
         </div>
-        <p className="text-xs font-semibold text-gray-600 mt-2 text-center max-w-[160px]">🎨 SketchUp + V-Ray + D5 Render AI</p>
+        <p className="text-xs font-semibold text-gray-600 mt-2 text-center max-w-[200px]">🎨 SketchUp + V-Ray + D5 Render AI Bundle</p>
       </div>
 
       <div className="checkout-card w-full max-w-md bg-white rounded-3xl shadow-2xl overflow-hidden">

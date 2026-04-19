@@ -17,14 +17,14 @@ export const RAW_JOINERS = [
 ];
 
 export const PROBLEM_POINTS = [
-  { emoji: "⏰", text: "Spending countless frustrating hours on a single 3D view while clients constantly ask for more revisions?" },
-  { emoji: "😰", text: "Feeling overwhelmed by complex software, fearing you'll never catch up to the top studios?" },
-  { emoji: "🤖", text: "Watching AI generate beautiful designs in seconds and worrying your traditional skills will soon be irrelevant?" }
+  { emoji: "⏰", text: "Spending days on a single 3D view because you don't know SketchUp, V-Ray, or D5 Render — and clients keep asking for revisions?" },
+  { emoji: "😰", text: "Feeling overwhelmed by the sheer number of tools studios expect you to know — modeling, rendering, AI — where do you even start?" },
+  { emoji: "🤖", text: "Watching AI generate stunning renders in seconds and worrying your traditional skills will become obsolete before you catch up?" }
 ];
 
 export const TRANSFORMATION_STORIES = [
-  { name: "Emma R.", role: "Freelance Designer", before: "Struggling alone with YouTube tutorials. Designs looked fake, took days, and clients wouldn't pay well without arguments.", after: "Joined our community. With 24/7 team support, she mastered V-Ray + D5 Render AI. She now charges premium rates and finishes in a fraction of the time.", emoji: "✨" },
-  { name: "Daniel C.", role: "Architecture Student", before: "Terrified of AI taking his future job. Felt his college degree wasn't teaching practical, modern software skills.", after: "We held his hand through the SketchUp → V-Ray → D5 workflow. He now uses AI to generate concepts and renders for final polish. Just landed a massive internship.", emoji: "🎓" }
+  { name: "Emma R.", role: "Freelance Designer", before: "Struggling alone with YouTube tutorials for months. Her SketchUp models looked amateur, V-Ray kept crashing, and clients wouldn't pay more than $200.", after: "Mastered the full SketchUp → V-Ray → D5 Render AI pipeline with 24/7 team support. Now charges $3,500+ per room and delivers in 48 hours instead of 2 weeks.", emoji: "✨" },
+  { name: "Daniel C.", role: "Architecture Student", before: "Terrified of AI replacing his future job. College taught outdated software. Had no rendering skills and zero portfolio pieces worth showing.", after: "We walked him through the entire design-to-render workflow. He now uses SketchUp for modeling, V-Ray for stills, and D5 AI for real-time client presentations. Just landed a dream internship.", emoji: "🎓" }
 ];
 
 export const PAGE_PREVIEWS_ROW1 = [
@@ -42,10 +42,10 @@ export const PAGE_PREVIEWS_ROW2 = [
 ];
 
 export const FEAR_STATS = [
-  { stat: '82%', label: 'of traditional 3D visualization tasks are actively being replaced by AI rendering tools right now.', icon: '📉' },
-  { stat: '10x', label: 'faster output when you learn to comfortably partner with AI instead of fearing it.', icon: '🚀' },
-  { stat: '24/7', label: 'Support from our team. We hold your hand through every single software hurdle so you never feel alone.', icon: '🤝' },
-  { stat: '15 Days', label: 'From feeling stuck and overwhelmed, to creating portfolio-ready designs with total confidence.', icon: '⏳' },
+  { stat: '82%', label: 'of visualization jobs now require rendering skills alongside 3D modeling. SketchUp alone isn\'t enough.', icon: '📉' },
+  { stat: '10x', label: 'faster output when you use the SketchUp + V-Ray + D5 Render AI pipeline together.', icon: '🚀' },
+  { stat: '24/7', label: 'Team support. We guide you through every installation, render, and software question personally.', icon: '🤝' },
+  { stat: '15 Days', label: 'From opening SketchUp for the first time to creating portfolio-ready photorealistic renders.', icon: '⏳' },
 ];
 
 /* ─── LOGO ─── */
@@ -72,7 +72,7 @@ export const CallToActionWidget = ({ timeLeft, onClick, headline, subtext }: { t
       <div className="max-w-2xl mx-auto relative z-10 text-center">
         {headline && <h3 className="text-2xl md:text-3xl font-display font-bold text-white mb-2 tracking-tight">{headline}</h3>}
         {subtext && <p className="text-zinc-400 text-sm mb-6">{subtext}</p>}
-        {!headline && <p className="text-zinc-500 text-xs font-mono uppercase tracking-widest mb-6">🚨 TIMER IS TICKING. DON'T REGRET MISSING THIS.</p>}
+        {!headline && <p className="text-zinc-500 text-xs font-mono uppercase tracking-widest mb-6">🚨 TIMER IS TICKING. DON'T MISS THIS.</p>}
         <div className="flex items-center justify-center gap-1 md:gap-2 mb-6">
           <div className="flip-clock-group"><div className="flex gap-1"><FlipDigit value={h[0]} /><FlipDigit value={h[1]} /></div><span className="flip-clock-label">HRS</span></div>
           <span className="text-xl md:text-3xl font-bold text-zinc-600 -mt-4">:</span>
@@ -81,11 +81,11 @@ export const CallToActionWidget = ({ timeLeft, onClick, headline, subtext }: { t
           <div className="flip-clock-group"><div className="flex gap-1"><FlipDigit value={s[0]} /><FlipDigit value={s[1]} /></div><span className="flip-clock-label">SEC</span></div>
         </div>
         <div className="mb-6">
-          <p className="text-red-400 font-semibold text-sm mt-2">Special Offer — Don't miss this $9 deal</p>
+          <p className="text-red-400 font-semibold text-sm mt-2">SketchUp + V-Ray + D5 Render AI — All 3 Courses for Just $9</p>
         </div>
         <div className="w-full max-w-md mx-auto">
           <button onClick={onClick} className="cta-primary w-full text-white px-8 py-4 md:py-5 rounded-2xl transition-all duration-300 flex items-center justify-center gap-3 group hover:scale-[1.03] active:scale-[0.98] premium-stroke" style={{ background: 'linear-gradient(135deg, #f7a440 0%, #f7931e 100%)', boxShadow: '0 6px 20px -4px rgba(247,164,68,0.5), 0 12px 40px -8px rgba(247,147,30,0.25)', border: '1px solid rgba(255,255,255,0.15)' }}>
-            <span className="text-lg md:text-xl font-display font-bold uppercase tracking-widest relative z-10">Start Your Rendering Career</span>
+            <span className="text-lg md:text-xl font-display font-bold uppercase tracking-widest relative z-10">Get Instant Access — $9</span>
             <ArrowRight size={20} className="relative z-10 group-hover:translate-x-1 transition-transform" />
           </button>
         </div>
@@ -124,9 +124,9 @@ export const SocialProofToast: React.FC = () => {
 
 /* ─── CONSTANTS ─── */
 export const VALUE_STACK_ITEMS = [
-  { name: 'SketchUp 3D Modeling Course', value: 'Included' },
+  { name: 'SketchUp 3D Modeling — Complete Course', value: 'Included' },
   { name: 'V-Ray Photo-Realism Masterclass', value: 'Included' },
-  { name: 'D5 Real-Time AI Rendering', value: 'Included' },
+  { name: 'D5 Real-Time AI Rendering Course', value: 'Included' },
   { name: '10,000+ Premium Texture Library', value: 'Included' },
   { name: '2,000+ Drag-and-Drop 3D Models', value: 'Included' },
   { name: 'Software Installation Hub', value: 'Included' },
@@ -135,55 +135,55 @@ export const VALUE_STACK_ITEMS = [
 ];
 
 export const TESTIMONIALS_LANDING = [
-  { name: 'Emma R.', role: 'Freelance Designer', location: 'Los Angeles, USA', content: 'I used to cry when V-Ray crashed. Literally. The support team is so incredibly kind and patient. Now I use D5 Render AI so well that I feel completely secure in my career.' },
-  { name: 'James C.', role: 'Senior Architect', location: 'New York, USA', content: 'I feared AI would replace my studio. But Avada held my hand through the transition. We now use SketchUp + D5 Render to generate gorgeous concepts for clients in minutes.' },
-  { name: 'Sophie L.', role: '3D Visualizer', location: 'London, UK', content: 'The step-by-step guidance is amazing for beginners. Whenever my scene looks dark or weird, I just ask the support team. They are absolute lifesavers.' },
-  { name: 'Daniel C.', role: 'Architecture Student', location: 'Toronto, Canada', content: 'I felt so behind in college because they still teach completely outdated methods. Within two weeks here, I gained the confidence to start taking well-paying projects.' },
-  { name: 'Olivia B.', role: 'Interior Designer', location: 'Sydney, Australia', content: 'To have someone to actually look at your screen and say "Oh, simply press this button" saves weeks of frustration. Best $9 I ever spent.' },
-  { name: 'Marco R.', role: 'Landscape Architect', location: 'Milan, Italy', content: 'The continuous support makes learning stress-free. D5 Render combined with V-Ray is just magical. It took away all my anxiety about falling behind.' },
-  { name: 'Sarah K.', role: 'Studio Owner', location: 'Berlin, Germany', content: 'My team of 4 now works with zero stress because we integrated the SketchUp-V-Ray-D5 pipeline. No more late nights before client meetings.' },
-  { name: 'Ryan M.', role: 'Freelance Visualizer', location: 'Dubai, UAE', content: 'I almost quit 3D entirely because it felt too overwhelming. The friendly support team here broke it down to be so simple. I owe them my entire successful freelance business.' },
-  { name: 'Chloe P.', role: 'Design Student', location: 'Singapore', content: 'Started from absolute zero. I didn\'t even know what SketchUp was. 15 days later, thanks to their constant hand-holding, my portfolio landed me a paid studio gig.' },
-  { name: 'Alex D.', role: 'Architect & Educator', location: 'Barcelona, Spain', content: 'I teach at a university, and sadly, we don\'t provide this level of modern, practical support. I genuinely recommend this to all my students to secure their futures.' },
+  { name: 'Emma R.', role: 'Freelance Designer', location: 'Los Angeles, USA', content: 'I went from zero SketchUp knowledge to delivering photorealistic V-Ray renders in 3 weeks. The 24/7 support team patiently walked me through every crash and weird shadow. Now I use D5 Render AI and feel completely secure in my career.' },
+  { name: 'James C.', role: 'Senior Architect', location: 'New York, USA', content: 'Having SketchUp, V-Ray, and D5 Render in one bundle is genius. My studio now uses the full pipeline to generate gorgeous client presentations in minutes. Best $9 our firm ever invested.' },
+  { name: 'Sophie L.', role: '3D Visualizer', location: 'London, UK', content: 'The step-by-step guidance from SketchUp modeling to final V-Ray render is incredible. The D5 Render course lets me make real-time changes during client meetings. Complete game-changer.' },
+  { name: 'Daniel C.', role: 'Architecture Student', location: 'Toronto, Canada', content: 'College taught me outdated software. This bundle gave me SketchUp + two rendering engines in two weeks. I started freelancing before graduation and now earn more than some employed architects.' },
+  { name: 'Olivia B.', role: 'Interior Designer', location: 'Sydney, Australia', content: 'To have someone look at your screen and say "press this button" saves weeks of frustration. The SketchUp course builds the model, V-Ray makes it stunning, D5 makes it instant. All for $9.' },
+  { name: 'Marco R.', role: 'Landscape Architect', location: 'Milan, Italy', content: 'D5 Render combined with V-Ray is just magical. I model in SketchUp, do beauty shots in V-Ray, and use D5 for real-time client walkthroughs. It took away all my anxiety about falling behind.' },
+  { name: 'Sarah K.', role: 'Studio Owner', location: 'Berlin, Germany', content: 'My team of 4 now works with zero stress because we integrated the SketchUp → V-Ray → D5 pipeline. No more late nights before client meetings. We deliver faster, charge more.' },
+  { name: 'Ryan M.', role: 'Freelance Visualizer', location: 'Dubai, UAE', content: 'I almost quit 3D entirely because I couldn\'t connect the dots between modeling and rendering. This bundle connected everything. SketchUp for structure, V-Ray for polish, D5 AI for speed.' },
+  { name: 'Chloe P.', role: 'Design Student', location: 'Singapore', content: 'Started from absolute zero. Didn\'t even know what SketchUp was. 15 days later, my portfolio had photorealistic renders from V-Ray and real-time walkthroughs from D5 that landed me a paid studio gig.' },
+  { name: 'Alex D.', role: 'Architect & Educator', location: 'Barcelona, Spain', content: 'Universities don\'t teach this pipeline. SketchUp + V-Ray + D5 Render AI is the modern standard. I recommend this $9 bundle to all my students — it\'s more practical than their entire semester.' },
 ];
 
 export const FAQ_ITEMS_LANDING = [
-  { question: "I'm terrified of AI taking my job. Will this help?", answer: "We completely understand that fear! AI is scary if you ignore it, but it's an incredible superpower when you master it. We will hold your hand and teach you exactly how to use D5 Render AI as your personal assistant, making you brilliantly fast and completely irreplaceable." },
-  { question: "I am a complete beginner and get overwhelmed easily. Is this for me?", answer: "Yes, this program was built exactly with you in mind. We know learning software can be intimidating. We start from the absolute basics ('how to click here') and our team is always a WhatsApp message away to hold your hand when you feel stuck." },
-  { question: "Are you really going to help me, or is this just another course?", answer: "This is a true 24/7 support community. When your render looks weird or your software crashes, you don't have to figure it out alone. You reach out to us, and we patiently help you fix it. Your success is our personal mission." },
-  { question: "Is it really just $9? What's the catch?", answer: "No catch! We simply want to make high-quality, supportive design education accessible to everyone. It's a one-time payment of $9 for lifetime access to SketchUp + V-Ray + D5 Render courses and our 24/7 support team." },
-  { question: "Do I need to buy expensive software subscriptions?", answer: "Not at all. We will show you exactly how to easily access official free or student versions of the software. We want you earning, not spending unnecessarily on expensive licenses." },
-  { question: "What if I feel like it's not working for me?", answer: "We want this to be completely stress-free for you. If you join and feel it's not a comforting and productive fit, just email us within 7 days. We will refund your $9 immediately, no questions asked, and we'll still be rooting for you!" },
-  { question: "Can I access the training safely on my mobile?", answer: "Yes! All courses are hosted clearly online and work perfectly on any device — laptop, tablet, or phone. You can learn comfortably at your own pace anywhere." },
+  { question: "What exactly do I get for $9?", answer: "You get 3 complete courses: SketchUp Pro (3D modeling from scratch), V-Ray Photorealism (magazine-quality renders), and D5 Render AI (real-time AI rendering). Plus 10,000+ textures, 2,000+ 3D models, all software download links, a certified diploma, and 24/7 team support. Lifetime access, one-time payment." },
+  { question: "I'm a complete beginner — is this for me?", answer: "Absolutely! The SketchUp course starts from 'how to open the software' and builds up to full 3D interiors. V-Ray and D5 Render courses follow the same beginner-friendly approach. Our 24/7 support team is always a WhatsApp message away whenever you feel stuck." },
+  { question: "Why is it so cheap? What's the catch?", answer: "No catch. We believe high-quality design education shouldn't cost $300+. We've served 50,000+ students at this price point and it works — low price, high volume, massive impact. You get the same content other platforms charge hundreds for." },
+  { question: "Do I need to buy expensive software?", answer: "Not at all. We provide links to official free or student versions of SketchUp, V-Ray, and D5 Render. You won't spend a single extra dollar on software licenses." },
+  { question: "Will this actually help me get clients or a job?", answer: "Yes. The #1 reason designers struggle to land clients is they can't produce photorealistic renders. This bundle teaches you the full pipeline — SketchUp to model, V-Ray for beauty shots, D5 AI for real-time presentations. Designers with these skills charge $2,000–$5,000 per project." },
+  { question: "How long does it take to finish all 3 courses?", answer: "Most students complete the full pipeline in 2–3 weeks at 1–2 hours per day. SketchUp takes about 5 days, V-Ray about 4, and D5 Render about 3. By day 15, you'll have portfolio-ready renders." },
+  { question: "What if it's not for me?", answer: "We offer a 100% money-back guarantee within 7 days. If you feel it's not a good fit, just email us and we'll refund your $9 immediately — no questions asked. Zero risk." },
 ];
 
 export const INCOME_TIERS = [
-  { label: 'Single Render Charge', before: 'Struggling to ask $20', after: 'Confidently quoting $200+', icon: '🖼️' },
-  { label: 'Interior Design Project', before: 'Rejected for poor 3D quality', after: 'Winning $2,000+ contracts', icon: '🏠' },
-  { label: 'Time to Finish a Room', before: '3 Frustrating, Sleepless Nights', after: '2 Easy Hours with D5 Render AI', icon: '⏱️' },
-  { label: 'Your Career Confidence', before: 'Constantly Anxious & Overwhelmed', after: 'Relaxed, In-Demand Professional', icon: '🌟' },
+  { label: 'Single Render Charge', before: 'Can\'t render at all', after: 'Confidently quoting $200+', icon: '🖼️' },
+  { label: 'Interior Design Project', before: 'Rejected for poor visuals', after: 'Winning $2,000–$5,000 contracts', icon: '🏠' },
+  { label: 'Time to Finish a Room', before: '3 Frustrating Nights', after: '2 Hours with D5 Render AI', icon: '⏱️' },
+  { label: 'Your Career Confidence', before: 'Anxious & Overwhelmed', after: 'In-Demand Professional', icon: '🌟' },
 ];
 
 export const COURSES_LANDING = [
   {
     id: '3', title: 'SketchUp 3D', software: 'SketchUp', students: '55k',
-    description: 'Struggling to visualize your 2D ideas? Let us guide you through building your first 3D home. It\'s much easier than building blocks when shown correctly.',
+    description: 'Build stunning 3D models from scratch — walls, furniture, kitchens, bathrooms. The foundation of every great render starts here.',
     imageUrl: 'https://lh3.googleusercontent.com/d/1wl6by5AO5MiPeoYsZ8F6Zi5AJahoeTQo',
-    learningPoints: ['Overcome the anxiety of a blank 3D screen', 'Organize models safely so they never crash your PC', 'Download beautiful pre-made models effortlessly'],
-    workflowImpact: 'See your imagination comfortably come to life instantly.'
+    learningPoints: ['Build complete 3D interiors from a blank canvas', 'Apply textures, materials & furniture with confidence', 'Export professional scenes ready for V-Ray & D5 Render'],
+    workflowImpact: 'See your imagination come to life in 3D — no experience needed.'
   },
   {
     id: '5', title: 'V-Ray Realism', software: 'V-Ray', students: '48k',
-    description: 'Are your renders feeling cartoonish or fake looking? We\'ll hold your hand through the scary lighting settings until your images look like real photography.',
+    description: 'Transform your SketchUp models into jaw-dropping photorealistic images. The industry standard for beauty shots that close deals.',
     imageUrl: 'https://lh3.googleusercontent.com/d/1aHEt_z78tYD_0Cn66DiduAnhwn-o8El8',
-    learningPoints: ['Simple lighting setups that always work reliably', 'Creating comforting materials that feel real to touch', 'Gentle editing tricks to make any render pop beautifully'],
-    workflowImpact: 'Relax and watch your clients gasp when they see their future home.'
+    learningPoints: ['Master realistic sunlight, night lighting & shadows', 'Create materials that look like real wood, glass & stone', 'Produce magazine-quality images that sell projects'],
+    workflowImpact: 'Watch clients gasp when they see their future home in photorealistic detail.'
   },
   {
     id: '7', title: 'D5 Render AI', software: 'D5 Render', students: '19k',
-    description: 'Hate waiting frustrating hours for a single image to load? We\'ll teach you this AI-powered real-time engine safely so you can see your beautiful changes instantly as you work.',
+    description: 'AI-powered real-time rendering. See your changes instantly. Generate 4K images in seconds. The future of architectural visualization.',
     imageUrl: 'https://lh3.googleusercontent.com/d/1vbV4j6K9sgzbbZ7qlRdgqPTXWiHBPLsr',
-    learningPoints: ['Set up D5 safely without overwhelming your computer', 'Painting comforting lights and materials in real-time', 'Creating cinematic 4K images effortlessly in seconds'],
-    workflowImpact: 'Confidently make live design changes while the client watches.'
+    learningPoints: ['Real-time rendering — see changes as you make them', 'AI-assisted lighting, materials & scene composition', 'Create cinematic 4K images & video walkthroughs in seconds'],
+    workflowImpact: 'Make live design changes while the client watches — mind blown every time.'
   },
 ];

@@ -16,16 +16,16 @@ const RAW_COURSES: Course[] = [
     id: '5',
     title: 'V-Ray Photorealism',
     software: 'V-Ray',
-    description: 'Make your 3D models look like real photos.',
+    description: 'Turn your SketchUp models into magazine-quality photorealistic images that close deals.',
     imageUrl: 'https://lh3.googleusercontent.com/d/1aHEt_z78tYD_0Cn66DiduAnhwn-o8El8',
     color: 'from-blue-600 to-indigo-500',
     students: '48k',
     price: 9,
     originalPrice: 49,
     learningPoints: [
-      'Set up realistic sunlight and night lighting',
-      'Make materials look like real wood and glass',
-      'Take "photographs" of your 3D house'
+      'Master realistic sunlight, night lighting & shadows',
+      'Create materials that look like real wood, glass & stone',
+      'Produce beauty shots that sell $5,000 projects'
     ],
     workflowImpact: 'Sell your design before it exists.'
   },
@@ -67,16 +67,16 @@ const RAW_COURSES: Course[] = [
     id: '3',
     title: 'SketchUp Pro',
     software: 'SketchUp',
-    description: 'The easiest way to design 3D houses.',
+    description: 'Build complete 3D interiors from scratch — the foundation of every great render.',
     imageUrl: 'https://drive.google.com/file/d/1wl6by5AO5MiPeoYsZ8F6Zi5AJahoeTQo/view?usp=drive_link',
     color: 'from-blue-500 to-cyan-400',
     students: '55k',
     price: 9,
     originalPrice: 49,
     learningPoints: [
-      'Pull simple shapes into 3D houses instantly',
-      'Add furniture, colors, and textures easily',
-      'Create 3D views to show your clients'
+      'Build 3D rooms, kitchens & full homes from a blank canvas',
+      'Apply realistic textures, furniture & materials',
+      'Export scenes ready for V-Ray & D5 Render'
     ],
     workflowImpact: 'Model their dream kitchen or bedroom in just minutes.'
   },
@@ -116,20 +116,20 @@ const RAW_COURSES: Course[] = [
   },
   {
     id: '7',
-    title: 'D5 Render Realtime',
+    title: 'D5 Render AI',
     software: 'D5 Render',
-    description: 'See the final result instantly while you work.',
+    description: 'AI-powered real-time rendering. See changes instantly. Generate 4K images in seconds.',
     imageUrl: 'https://drive.google.com/file/d/1vbV4j6K9sgzbbZ7qlRdgqPTXWiHBPLsr/view?usp=drive_link',
     color: 'from-purple-500 to-pink-500',
     students: '19k',
     price: 9,
     originalPrice: 49,
     learningPoints: [
-      'Real-time lighting (see it as you work)',
-      'Drag and drop thousands of free furniture items',
-      'Make 4K images in seconds'
+      'Real-time AI rendering — see changes as you make them',
+      'AI-assisted lighting, materials & scene composition',
+      'Generate cinematic 4K images & video walkthroughs in seconds'
     ],
-    workflowImpact: 'Change the floor material and see how it looks instantly.'
+    workflowImpact: 'Make live design changes while the client watches.'
   },
   {
     id: '8',
@@ -364,56 +364,60 @@ export const TESTIMONIALS: Testimonial[] = [
     name: 'James Carter',
     role: 'Senior Architect',
     location: 'New York, USA',
-    content: 'The V-Ray workflow section alone saved our firm countless hours. Undeniable value for any professional design project.'
+    content: 'Having SketchUp, V-Ray and D5 Render in one bundle changed how our entire studio works. We model, render, and present — all from this $9 course.'
   },
   {
     name: 'Sophie Laurent',
     role: '3D Visualizer',
     location: 'London, UK',
-    content: 'V-Ray + D5 Render combo is a game-changer. My clients in the real estate sector are blown away by the realism.'
+    content: 'The SketchUp-to-V-Ray pipeline is so well taught. D5 Render AI lets me do real-time walkthroughs in client meetings. My close rate doubled.'
   },
   {
     name: 'Emma Rodriguez',
     role: 'Freelance Designer',
     location: 'Los Angeles, USA',
-    content: 'Built my entire freelance portfolio using these courses. Now I charge 3x what I used to for luxury interiors.'
+    content: 'I went from flat 2D drawings to photorealistic V-Ray renders in 2 weeks. Built my entire freelance portfolio from these 3 courses. Now I charge 3x more.'
   },
   {
     name: 'Daniel Chen',
     role: 'Architecture Student',
     location: 'Toronto, Canada',
-    content: 'Landed my dream internship at a top firm because I was the only one who knew SketchUp + V-Ray + D5 Render AI.'
+    content: 'SketchUp + V-Ray + D5 Render AI — this pipeline is what firms actually use. I was the only student who knew all three. Landed my dream internship immediately.'
   },
   {
     name: 'Olivia Brooks',
     role: 'Interior Designer',
     location: 'Sydney, Australia',
-    content: 'I can now present 10 variations to clients in the time it used to take for one. Best $9 I ever spent.'
+    content: 'I can model a room in SketchUp, render it in V-Ray, and show 10 variations in D5 — all in the time it used to take for one basic drawing. Best $9 ever.'
   },
   {
     name: 'Marco Rossi',
     role: 'Landscape Architect',
     location: 'Milan, Italy',
-    content: 'D5 Render lets me make changes during client meetings. Blows them away every time. Highly recommended.'
+    content: 'D5 Render AI for real-time changes during meetings, V-Ray for portfolio-grade shots, SketchUp for the foundation. This bundle covers everything.'
   }
 ];
 
 export const FAQ_ITEMS: FaqItem[] = [
   {
-    question: "How do I access the courses after buying?",
-    answer: "You'll receive instant access via email with download links and login credentials within 5 minutes of payment."
+    question: "What exactly do I get for $9?",
+    answer: "You get 3 complete courses: SketchUp Pro (3D modeling), V-Ray Photorealism (beauty shots), and D5 Render AI (real-time AI rendering). Plus 10,000+ textures, 2,000+ 3D models, all software links, a certified diploma, and 24/7 team support. Lifetime access."
   },
   {
-    question: "Which courses are included?",
-    answer: "You get 3 premium courses — SketchUp Pro, V-Ray Photorealism, and D5 Render AI — everything you need to design and render stunning interiors and exteriors."
+    question: "How do I access the courses after buying?",
+    answer: "You'll receive instant access via email with download links and login credentials within 5 minutes of payment."
   },
   {
     question: "Are project files included?",
     answer: "Yes, all 3D models, textures, and source files used in tutorials are included for download."
   },
   {
+    question: "Do I need to buy expensive software?",
+    answer: "Not at all. We provide links to official free or student versions of SketchUp, V-Ray, and D5 Render. No extra cost."
+  },
+  {
     question: "Do I get a certificate?",
-    answer: "Yes, industry-recognized certificates are provided upon course completion."
+    answer: "Yes, industry-recognized certificates are provided upon completion of each course."
   },
   {
     question: "Is there a refund policy?",

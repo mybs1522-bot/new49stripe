@@ -5,6 +5,7 @@ import ModernPaymentForm from "../components/ui/modern-payment-form";
 import { useNavigate, useLocation } from "react-router-dom";
 import { chargeSavedCardUpsell } from "../services/stripe";
 import { sendStageEmail } from "../services/email";
+import FunnelProgressBar from "../components/FunnelProgressBar";
 
 const OfferPage: React.FC = () => {
   const navigate = useNavigate();
@@ -209,8 +210,11 @@ const OfferPage: React.FC = () => {
         .upsell-fade { animation: fadeIn 0.6s ease-out both; }
       `}</style>
 
+      {/* ─── FUNNEL PROGRESS BAR ─── */}
+      <FunnelProgressBar step={3} />
+
       {/* ─── URGENCY TOP BAR ─── */}
-      <div className="bg-orange-500 text-white text-center py-2.5 px-4 sticky top-0 z-[60]">
+      <div className="bg-orange-500 text-white text-center py-2 px-4">
         <div className="flex items-center justify-center gap-2 text-sm font-bold">
           <Timer size={14} className="animate-pulse" />
           <span>LAST STEP: This is a One-Time Offer — Expires in {f(timeLeft.m)}:{f(timeLeft.s)}</span>
@@ -219,13 +223,23 @@ const OfferPage: React.FC = () => {
 
       {/* ─── HERO SECTION ─── */}
       <div className="max-w-6xl mx-auto px-5 pt-8 md:pt-16 pb-8">
-        {/* Top Collage Image */}
-        <div className="reveal mb-8 md:mb-12 upsell-fade">
+        {/* Top Collage Image + Video side by side */}
+        <div className="reveal mb-8 md:mb-12 upsell-fade grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 items-stretch">
           <img
             src="/images/hero-collage.png"
             alt="6 Books For Interior/Exterior Designing"
-            className="w-full h-auto rounded-3xl shadow-lg border border-gray-100"
+            className="w-full h-full object-cover rounded-3xl shadow-lg border border-gray-100"
           />
+          <div className="relative w-full overflow-hidden rounded-2xl shadow-xl border border-gray-200 bg-black" style={{ paddingBottom: '56.25%' }}>
+            <iframe
+              title="Book flip-through preview"
+              src="https://iframe.mediadelivery.net/embed/494628/223e3dd8-1052-49ec-99f4-c326b50108e6?autoplay=true&loop=true&muted=true&preload=true&responsive=true"
+              loading="lazy"
+              style={{ border: 'none', position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}
+              allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture"
+              allowFullScreen
+            />
+          </div>
         </div>
         
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-center">
@@ -325,25 +339,7 @@ const OfferPage: React.FC = () => {
           </div>
         </section>
 
-        {/* ─── VIDEO SECTION ─── */}
-        <section className="py-6 md:py-12">
-          <div className="max-w-4xl mx-auto">
-            <div className="reveal text-center mb-6">
-               <h2 className="text-3xl md:text-5xl font-display font-black text-gray-900 tracking-tightest">Look <span className="font-serif italic font-normal text-orange-500">inside</span></h2>
-               <p className="text-gray-600 text-base md:text-lg mt-3">800+ pages of dimensions, clearances, and layouts.</p>
-            </div>
-            <div className="reveal relative overflow-hidden rounded-2xl shadow-2xl border border-gray-200" style={{ paddingBottom: '56.25%' }}>
-              <iframe
-                title="Book flip-through preview"
-                src="https://iframe.mediadelivery.net/embed/494628/223e3dd8-1052-49ec-99f4-c326b50108e6?autoplay=true&loop=true&muted=true&preload=true&responsive=true"
-                loading="lazy"
-                style={{ border: 'none', position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}
-                allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture"
-                allowFullScreen
-              />
-            </div>
-          </div>
-        </section>
+
 
 
         {/* ─── WHAT'S INCLUDED ─── */}

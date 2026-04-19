@@ -5,6 +5,7 @@ import ModernPaymentForm from "../components/ui/modern-payment-form";
 import { useNavigate, useLocation } from "react-router-dom";
 import { chargeSavedCardUpsell } from "../services/stripe";
 import { sendStageEmail } from "../services/email";
+import FunnelProgressBar from "../components/FunnelProgressBar";
 
 const OnetimePage: React.FC = () => {
   const navigate = useNavigate();
@@ -56,8 +57,11 @@ const OnetimePage: React.FC = () => {
         .upsell-fade { animation: fadeIn 0.6s ease-out both; }
       `}</style>
 
+      {/* ─── FUNNEL PROGRESS BAR ─── */}
+      <FunnelProgressBar step={2} />
+
       {/* ─── URGENCY TOP BAR ─── */}
-      <div className="bg-orange-500 text-white text-center py-2.5 px-4 sticky top-0 z-[60]">
+      <div className="bg-orange-500 text-white text-center py-2 px-4">
         <div className="flex items-center justify-center gap-2 text-sm font-bold">
           <Timer size={14} className="animate-pulse" />
           <span>WAIT! One-Time Exclusive Offer — Expires in {f(timeLeft.m)}:{f(timeLeft.s)}</span>

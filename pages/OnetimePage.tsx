@@ -56,6 +56,11 @@ const OnetimePage: React.FC = () => {
       <style>{`
         @keyframes fadeIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
         .upsell-fade { animation: fadeIn 0.6s ease-out both; }
+        @keyframes subtlePulse { 
+          0%, 100% { transform: scale(1); box-shadow: 0 4px 14px 0 rgba(249,115,22,0.2); } 
+          50% { transform: scale(1.02); box-shadow: 0 6px 20px rgba(249,115,22,0.4); } 
+        }
+        .btn-pulse { animation: subtlePulse 2.5s ease-in-out infinite; }
       `}</style>
 
       {/* ─── FUNNEL PROGRESS BAR ─── */}
@@ -180,7 +185,7 @@ const OnetimePage: React.FC = () => {
                     setShowPayment(true);
                   }
                 }}
-                className="w-full py-4 bg-gradient-to-r from-orange-500 to-amber-500 shadow-xl shadow-orange-500/20 text-white font-bold text-lg rounded-2xl flex items-center justify-center gap-3 group hover:scale-[1.02] active:scale-[0.98] transition-all disabled:opacity-70 disabled:cursor-wait"
+                className="w-full py-4 bg-gradient-to-r from-orange-500 to-amber-500 text-white font-bold text-lg rounded-2xl flex items-center justify-center gap-3 group active:scale-[0.98] transition-all disabled:opacity-70 disabled:cursor-wait btn-pulse"
               >
                 <Gift size={20} />
                 {isProcessingUpSell ? "Processing Upgrade..." : "Yes! I want it."}
@@ -361,12 +366,23 @@ const OnetimePage: React.FC = () => {
               const el = document.getElementById('cta-section');
               if (el) el.scrollIntoView({ behavior: 'smooth' });
             }}
-            className="w-full py-4 text-white font-bold text-lg rounded-2xl flex items-center justify-center gap-3 transition-all hover:scale-[1.02] active:scale-[0.98]"
-            style={{ background: 'linear-gradient(135deg,#f97316,#ea580c)', boxShadow: '0 0 20px rgba(249,115,22,0.45)' }}
+            className="w-full py-4 text-white font-bold text-lg rounded-2xl flex items-center justify-center gap-3 active:scale-[0.98] btn-pulse"
+            style={{ background: 'linear-gradient(135deg,#f97316,#ea580c)' }}
           >
             <Gift size={20} />
             Yes! Unlock All 9 Courses Now
             <ArrowRight size={20} />
+          </button>
+
+          <button
+            onClick={() => {
+              setIsConfirmingSkip(true);
+              const el = document.getElementById('cta-section');
+              if (el) el.scrollIntoView({ behavior: 'smooth' });
+            }}
+            className="block w-full mt-4 py-3 text-center text-gray-500 hover:text-gray-700 text-sm font-medium transition-colors underline underline-offset-4 decoration-gray-300 disabled:opacity-50"
+          >
+            No thanks, I'll stick with my 3 courses →
           </button>
         </div>
 

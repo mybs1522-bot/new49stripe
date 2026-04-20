@@ -52,7 +52,7 @@ const OnetimePage: React.FC = () => {
   // Removed Success Screen since it redirects to /offer instead
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-50 via-slate-50 to-white text-gray-900 overflow-clip">
+    <div className="min-h-screen bg-gradient-to-b from-slate-50 via-slate-50 to-white text-gray-900">
       <style>{`
         @keyframes fadeIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
         .upsell-fade { animation: fadeIn 0.6s ease-out both; }

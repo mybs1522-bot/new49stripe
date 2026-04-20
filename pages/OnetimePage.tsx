@@ -111,6 +111,21 @@ const OnetimePage: React.FC = () => {
             </div>
           </div>
         </div>
+        {/* ─── SECONDARY CTA (Above Grid) ─── */}
+        <div className="upsell-fade mb-8 w-full max-w-xl mx-auto" style={{ animationDelay: '0.2s' }}>
+          <button
+            onClick={() => {
+              const el = document.getElementById('cta-section');
+              if (el) el.scrollIntoView({ behavior: 'smooth' });
+            }}
+            className="w-full py-4 text-white font-bold text-lg rounded-2xl flex items-center justify-center gap-3 active:scale-[0.98] btn-pulse"
+            style={{ background: 'linear-gradient(135deg,#f97316,#ea580c)' }}
+          >
+            <Gift size={20} />
+            Yes! Unlock All 9 Courses Now
+            <ArrowRight size={20} />
+          </button>
+        </div>
 
         {/* ─── COURSES GRID ─── */}
         <div className="upsell-fade mb-8" style={{ animationDelay: '0.3s' }}>

@@ -274,10 +274,53 @@ const OnetimePage: React.FC = () => {
         </div>
 
         {/* ─── VALUE JUSTIFICATION ─── */}
-        <div className="upsell-fade mt-8 bg-orange-50/50 border border-orange-100 rounded-2xl p-6 text-center max-w-2xl mx-auto shadow-sm" style={{ animationDelay: '0.6s' }}>
-          <h4 className="text-orange-900 font-bold text-lg mb-2">What you'll actually be able to do:</h4>
-          <p className="text-sm text-gray-700 leading-relaxed font-medium">
-            With this complete bundle, you'll be able to draft precise floor plans in <strong>AutoCAD</strong>, build structurally accurate BIM models in <strong>Revit</strong>, create photorealistic 3D rendering in <strong>3ds Max</strong> and <strong>Lumion</strong>, and present interactive VR walkthroughs in <strong>Enscape</strong>. You'll master the exact software pipeline needed to manage a project from the first client sketch to the final cinematic presentation—allowing you to confidently charge premium studio rates.
+        <div className="upsell-fade mt-8 bg-orange-50/50 border border-orange-200 rounded-3xl p-6 md:p-8 max-w-2xl mx-auto shadow-sm" style={{ animationDelay: '0.6s' }}>
+          <h4 className="text-orange-900 font-black text-xl mb-6 text-center">Here is exactly what happens when you unlock this:</h4>
+          
+          <div className="space-y-4 text-left">
+            <div className="flex gap-4 items-start">
+              <div className="w-8 h-8 rounded-full bg-emerald-100 flex items-center justify-center flex-shrink-0 mt-0.5">
+                <Check className="text-emerald-600" size={16} strokeWidth={3} />
+              </div>
+              <div>
+                <h5 className="font-bold text-gray-900 text-base">You stop losing clients to basic 2D pitches</h5>
+                <p className="text-sm text-gray-600 mt-1 leading-relaxed">Turn fast sketches into precise, professional <strong>AutoCAD</strong> floor plans that easily pass any local planning authority.</p>
+              </div>
+            </div>
+
+            <div className="flex gap-4 items-start">
+              <div className="w-8 h-8 rounded-full bg-emerald-100 flex items-center justify-center flex-shrink-0 mt-0.5">
+                <Check className="text-emerald-600" size={16} strokeWidth={3} />
+              </div>
+              <div>
+                <h5 className="font-bold text-gray-900 text-base">You qualify for high-paying studio jobs</h5>
+                <p className="text-sm text-gray-600 mt-1 leading-relaxed">Most top-tier architecture firms legally require <strong>Revit (BIM)</strong> experience. You'll now have the exact credential they look for on your resume.</p>
+              </div>
+            </div>
+
+            <div className="flex gap-4 items-start">
+              <div className="w-8 h-8 rounded-full bg-emerald-100 flex items-center justify-center flex-shrink-0 mt-0.5">
+                <Check className="text-emerald-600" size={16} strokeWidth={3} />
+              </div>
+              <div>
+                <h5 className="font-bold text-gray-900 text-base">You can charge $2k–$5k per rendering</h5>
+                <p className="text-sm text-gray-600 mt-1 leading-relaxed">With <strong>3ds Max</strong> and <strong>Lumion</strong>, you aren't just giving clients an image—you're giving them a cinematic 4K walkthrough they can't say no to.</p>
+              </div>
+            </div>
+
+            <div className="flex gap-4 items-start">
+              <div className="w-8 h-8 rounded-full bg-emerald-100 flex items-center justify-center flex-shrink-0 mt-0.5">
+                <Check className="text-emerald-600" size={16} strokeWidth={3} />
+              </div>
+              <div>
+                <h5 className="font-bold text-gray-900 text-base">You own the entire project pipeline</h5>
+                <p className="text-sm text-gray-600 mt-1 leading-relaxed">From the first empty lot to the final premium interior lighting setup in <strong>Enscape VR</strong>. You will never need to outsource work again.</p>
+              </div>
+            </div>
+          </div>
+          
+          <p className="text-center font-bold text-orange-900 mt-8 text-sm italic">
+            "Designers who master this exact toolkit make 4x more than those who only know SketchUp."
           </p>
         </div>
 

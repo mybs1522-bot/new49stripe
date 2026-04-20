@@ -275,7 +275,7 @@ const OnetimePage: React.FC = () => {
 
         {/* ─── VALUE JUSTIFICATION ─── */}
         <div className="upsell-fade mt-8 bg-orange-50/50 border border-orange-200 rounded-3xl p-6 md:p-8 max-w-2xl mx-auto shadow-sm" style={{ animationDelay: '0.6s' }}>
-          <h4 className="text-orange-900 font-black text-xl mb-6 text-center">Here is exactly what happens when you unlock this:</h4>
+          <h4 className="text-orange-900 font-black text-xl mb-6 text-center">The Exact Software Workflow We Will Build Together:</h4>
           
           <div className="space-y-4 text-left">
             <div className="flex gap-4 items-start">
@@ -283,8 +283,8 @@ const OnetimePage: React.FC = () => {
                 <Check className="text-emerald-600" size={16} strokeWidth={3} />
               </div>
               <div>
-                <h5 className="font-bold text-gray-900 text-base">You stop losing clients to basic 2D pitches</h5>
-                <p className="text-sm text-gray-600 mt-1 leading-relaxed">Turn fast sketches into precise, professional <strong>AutoCAD</strong> floor plans that easily pass any local planning authority.</p>
+                <h5 className="font-bold text-gray-900 text-base">AutoCAD <span className="font-medium text-gray-500">— Precision 2D Drafting</span></h5>
+                <p className="text-sm text-gray-600 mt-1 leading-relaxed">Every contractor reads DWG files. You'll learn to draft dimensionally perfect floor plans, sections, and working drawings that serve as the structural blueprint for real-world execution.</p>
               </div>
             </div>
 
@@ -293,8 +293,8 @@ const OnetimePage: React.FC = () => {
                 <Check className="text-emerald-600" size={16} strokeWidth={3} />
               </div>
               <div>
-                <h5 className="font-bold text-gray-900 text-base">You qualify for high-paying studio jobs</h5>
-                <p className="text-sm text-gray-600 mt-1 leading-relaxed">Most top-tier architecture firms legally require <strong>Revit (BIM)</strong> experience. You'll now have the exact credential they look for on your resume.</p>
+                <h5 className="font-bold text-gray-900 text-base">Revit <span className="font-medium text-gray-500">— Intelligent BIM Modeling</span></h5>
+                <p className="text-sm text-gray-600 mt-1 leading-relaxed">Stop drawing static lines and start building smart 3D models. When you move a wall in Revit, your floor plans, elevations, and material schedules update automatically. This skill alone makes you globally hirable.</p>
               </div>
             </div>
 
@@ -303,8 +303,8 @@ const OnetimePage: React.FC = () => {
                 <Check className="text-emerald-600" size={16} strokeWidth={3} />
               </div>
               <div>
-                <h5 className="font-bold text-gray-900 text-base">You can charge $2k–$5k per rendering</h5>
-                <p className="text-sm text-gray-600 mt-1 leading-relaxed">With <strong>3ds Max</strong> and <strong>Lumion</strong>, you aren't just giving clients an image—you're giving them a cinematic 4K walkthrough they can't say no to.</p>
+                <h5 className="font-bold text-gray-900 text-base">3ds Max & Corona <span className="font-medium text-gray-500">— Hyper-Realistic Visuals</span></h5>
+                <p className="text-sm text-gray-600 mt-1 leading-relaxed">When standard rendering isn't enough for luxury clients. You'll learn advanced organic modeling for furniture and how to apply complex textiles and lighting that make your renders indistinguishable from reality.</p>
               </div>
             </div>
 
@@ -313,8 +313,8 @@ const OnetimePage: React.FC = () => {
                 <Check className="text-emerald-600" size={16} strokeWidth={3} />
               </div>
               <div>
-                <h5 className="font-bold text-gray-900 text-base">You own the entire project pipeline</h5>
-                <p className="text-sm text-gray-600 mt-1 leading-relaxed">From the first empty lot to the final premium interior lighting setup in <strong>Enscape VR</strong>. You will never need to outsource work again.</p>
+                <h5 className="font-bold text-gray-900 text-base">Lumion & Enscape <span className="font-medium text-gray-500">— Cinematic Walkthroughs</span></h5>
+                <p className="text-sm text-gray-600 mt-1 leading-relaxed">Don't pitch with just static PDFs. We'll teach you how to turn your raw 3D models into immersive, animated video presentations and real-time VR walkthroughs that clients instantly fall in love with.</p>
               </div>
             </div>
           </div>

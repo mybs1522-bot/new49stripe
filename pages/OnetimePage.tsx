@@ -86,6 +86,43 @@ const OnetimePage: React.FC = () => {
           </p>
         </div>
 
+        {/* ─── VIDEO ─── */}
+        <div className="upsell-fade relative w-full max-w-3xl mx-auto rounded-3xl overflow-hidden shadow-2xl mb-6 border border-slate-100" style={{ animationDelay: '0.1s' }}>
+          <div style={{ position: 'relative', paddingTop: '56.25%' }}>
+            <iframe 
+              src="https://iframe.mediadelivery.net/embed/494628/e4f3024d-0d84-4568-942d-036d2c9dd8b7?autoplay=true&loop=true&muted=true&preload=true&responsive=true" 
+              loading="lazy" 
+              style={{ border: 0, position: 'absolute', top: 0, height: '100%', width: '100%' }} 
+              allow="accelerometer;gyroscope;autoplay;encrypted-media;picture-in-picture;" 
+              allowFullScreen={true}>
+            </iframe>
+          </div>
+          {/* Black gradient at bottom */}
+          <div className="absolute inset-x-0 bottom-0 h-2/5 md:h-1/3 bg-gradient-to-t from-black/80 via-black/40 to-transparent pointer-events-none" />
+          <div className="absolute inset-x-0 bottom-0 p-4 md:p-6 text-left">
+            <h2 className="text-white font-display font-black text-xl md:text-2xl leading-tight drop-shadow-md">
+              Your Complete<br />
+              <span className="text-orange-400">Design Arsenal.</span>
+            </h2>
+          </div>
+        </div>
+
+        {/* ─── SECONDARY CTA (Jump to payment) ─── */}
+        <div className="upsell-fade mb-10" style={{ animationDelay: '0.12s' }}>
+          <button
+            onClick={() => {
+              const el = document.getElementById('cta-section');
+              if (el) el.scrollIntoView({ behavior: 'smooth' });
+            }}
+            className="w-full py-4 text-white font-bold text-lg rounded-2xl flex items-center justify-center gap-3 transition-all hover:scale-[1.02] active:scale-[0.98]"
+            style={{ background: 'linear-gradient(135deg,#f97316,#ea580c)', boxShadow: '0 0 20px rgba(249,115,22,0.45)' }}
+          >
+            <Gift size={20} />
+            Yes! Unlock All 9 Courses Now
+            <ArrowRight size={20} />
+          </button>
+        </div>
+
         {/* ─── PRICE CARD ─── */}
         <div className="upsell-fade bg-white shadow-xl shadow-gray-200/50 border border-gray-200 rounded-2xl p-6 mb-8 relative overflow-hidden" style={{ animationDelay: '0.15s' }}>
           <div className="absolute top-0 right-0 w-40 h-40 bg-orange-500/10 rounded-full blur-[60px] -mr-10 -mt-10" />
@@ -158,7 +195,7 @@ const OnetimePage: React.FC = () => {
         </div>
 
         {/* ─── CTA SECTION ─── */}
-        <div className="upsell-fade" style={{ animationDelay: '0.6s' }}>
+        <div id="cta-section" className="upsell-fade" style={{ animationDelay: '0.6s' }}>
           {!showPayment ? (
             <div className="space-y-3">
               {/* Primary CTA */}

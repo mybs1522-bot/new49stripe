@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { RAW_BOOKS, UPSELL2_PRICE, UPSELL2_ORIGINAL_PRICE, DOWNSELL_BOOKS_PRICE } from "../constants";
-import { Sparkles, Timer, CheckCircle2, Mail, Lock, Check, ArrowRight, Gift, Zap, Star, ShieldCheck, BookOpen } from "lucide-react";
+import { Sparkles, Timer, CheckCircle2, Mail, Lock, Check, ArrowRight, Gift, Zap, Star, ShieldCheck, BookOpen, X } from "lucide-react";
 import ModernPaymentForm from "../components/ui/modern-payment-form";
 import { useNavigate, useLocation } from "react-router-dom";
 import { chargeSavedCardUpsell } from "../services/stripe";
@@ -28,7 +28,7 @@ const OfferPage: React.FC = () => {
   // 15-minute countdown timer (resets on page load)
   useEffect(() => {
     const start = Date.now();
-    const duration = 15 * 60 * 1000; // 15 minutes
+    const duration = 10 * 60 * 1000; // 10 minutes
     const calc = () => {
       const elapsed = Date.now() - start;
       const remaining = Math.max(0, duration - elapsed);
@@ -62,12 +62,13 @@ const OfferPage: React.FC = () => {
           handleSuccess();
         } catch (err) {
           console.error("One-click upsell failed", err);
-          // Fallback to manual checkout
-          setShowPayment(true);
           setIsProcessingUpSell(false);
+          setShowPayment(true);
+          setIsConfirmingSkip(false);
         }
       } else {
         setShowPayment(true);
+        setIsConfirmingSkip(false);
       }
   };
 
@@ -80,12 +81,13 @@ const OfferPage: React.FC = () => {
           handleSuccess();
         } catch (err) {
           console.error("One-click downsell failed", err);
-          // Fallback to manual checkout
-          setShowPayment(true);
           setIsProcessingDownsell(false);
+          setShowPayment(true);
+          setIsConfirmingSkip(false);
         }
       } else {
         setShowPayment(true);
+        setIsConfirmingSkip(false);
       }
   };
 
@@ -116,91 +118,42 @@ const OfferPage: React.FC = () => {
     </div>
   );
 
-  const renderFormOrCTA = () => (
+  const renderFormOrCTA = (isBottom: boolean = false) => (
     <div className="upsell-fade" style={{ animationDelay: '0.6s' }}>
-      {!showPayment ? (
-        <div className="space-y-3">
-          {/* Primary CTA */}
-          <button
-            disabled={isProcessingUpSell}
-            onClick={executeUpsell}
-            className="w-full py-4 bg-gradient-to-r from-orange-500 to-amber-500 shadow-xl shadow-orange-500/20 text-white font-bold text-lg rounded-2xl flex items-center justify-center gap-3 group hover:scale-[1.02] active:scale-[0.98] transition-all disabled:opacity-70 disabled:cursor-wait"
-          >
-            <BookOpen size={20} />
-            {isProcessingUpSell ? "Processing Upgrade..." : "Yes! I want it."}
-            {!isProcessingUpSell && <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />}
-          </button>
+      <div className="space-y-3">
+        {/* Primary CTA */}
+        <button
+          disabled={isProcessingUpSell}
+          onClick={executeUpsell}
+          className="w-full py-4 bg-gradient-to-r from-orange-500 to-amber-500 shadow-xl shadow-orange-500/20 text-white font-bold text-lg rounded-2xl flex items-center justify-center gap-3 group hover:scale-[1.02] active:scale-[0.98] transition-all disabled:opacity-70 disabled:cursor-wait"
+        >
+          <BookOpen size={20} />
+          {isProcessingUpSell ? "Processing Upgrade..." : "Yes! I want it."}
+          {!isProcessingUpSell && <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />}
+        </button>
 
-          {/* Secondary — Skip / Confirm State */}
-          {isConfirmingSkip ? (
-            <div className="bg-orange-50 border border-orange-200 rounded-2xl p-6 text-center animate-in fade-in zoom-in duration-300 mt-6 shadow-lg shadow-orange-500/10">
-              <h4 className="text-orange-900 font-black text-xl mb-2">Wait! What if you only took our bestsellers?</h4>
-              <p className="text-gray-800 text-sm mb-5 font-medium leading-relaxed">
-                If the full bundle is too much right now, you can get <strong className="text-gray-900">just the Kitchen & Bedroom Design Books</strong> for only ${DOWNSELL_BOOKS_PRICE}. You can always add the other 4 books later for $24.
-              </p>
-              <div className="space-y-3">
-                <button
-                  disabled={isProcessingDownsell || isProcessingUpSell}
-                  onClick={executeDownsell}
-                  className="w-full py-4 bg-emerald-500 hover:bg-emerald-600 shadow-xl shadow-emerald-500/20 text-white font-bold text-lg rounded-xl transition-all"
-                >
-                  {isProcessingDownsell ? "Processing..." : `Yes, add the 2 books for $${DOWNSELL_BOOKS_PRICE}`}
-                </button>
-                <button
-                  disabled={isProcessingDownsell || isProcessingUpSell}
-                  onClick={handleSkip}
-                  className="block w-full py-3 text-center text-red-500 hover:text-red-700 text-sm font-bold transition-colors underline underline-offset-4 decoration-red-200"
-                >
-                  No thanks, I don't want any books at all
-                </button>
-              </div>
-            </div>
-          ) : (
-            <button
-              onClick={() => setIsConfirmingSkip(true)}
-              className="block w-full py-3 text-center text-gray-500 hover:text-gray-700 text-sm font-medium transition-colors underline underline-offset-4 decoration-gray-300 disabled:opacity-50"
-            >
-              No thanks, I don't need the design theory books →
-            </button>
-          )}
+        <button
+          onClick={() => {
+            if (isBottom) {
+              setIsConfirmingSkip(true);
+            } else {
+              const el = document.getElementById('final-bottom-cta');
+              if (el) el.scrollIntoView({ behavior: 'smooth' });
+            }
+          }}
+          className="block w-full py-3 text-center text-gray-500 hover:text-gray-700 text-sm font-medium transition-colors underline underline-offset-4 decoration-gray-300 disabled:opacity-50"
+        >
+          No thanks, I don't need the design theory books →
+        </button>
 
-          <div className="flex items-center justify-center gap-4 text-[10px] text-gray-400 font-medium uppercase tracking-wide mt-2">
-            <span className="flex items-center gap-1"><ShieldCheck size={10} /> 7-Day Refund</span>
-            <span>•</span>
-            <span className="flex items-center gap-1"><Lock size={10} /> Secured</span>
-            <span>•</span>
-            <span>One-time charge</span>
-          </div>
+        <div className="flex items-center justify-center gap-4 text-[10px] text-gray-400 font-medium uppercase tracking-wide mt-2">
+          <span className="flex items-center gap-1"><ShieldCheck size={10} /> 7-Day Refund</span>
+          <span>•</span>
+          <span className="flex items-center gap-1"><Lock size={10} /> Secured</span>
+          <span>•</span>
+          <span>One-time charge</span>
         </div>
-      ) : (
-        <div className="bg-white rounded-2xl p-6 shadow-2xl border border-gray-100">
-          <div className="flex items-center justify-between mb-4">
-            <h3 className="text-lg font-bold text-gray-900">Complete Your Upgrade</h3>
-            <div className="bg-orange-100 text-orange-600 text-xs font-bold px-3 py-1 rounded-full">${UPSELL2_PRICE}</div>
-          </div>
-
-          <label className="block text-sm font-bold text-gray-900 mb-1.5">Email</label>
-          <div className="relative mb-3">
-            <Mail size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
-            <input
-              type="email"
-              placeholder="your@email.com"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="w-full pl-10 pr-4 py-3 bg-gray-50 border-2 border-gray-200 rounded-xl text-sm font-medium text-gray-900 placeholder:text-gray-400 focus:outline-none focus:border-orange-500 transition-all"
-            />
-          </div>
-
-          <ModernPaymentForm bare email={email} onSuccess={handleSuccess} amount={`$${UPSELL2_PRICE}`} />
-
-          <button
-            onClick={() => setShowPayment(false)}
-            className="w-full mt-3 py-2 text-center text-gray-400 hover:text-gray-600 text-xs font-medium transition-colors"
-          >
-            ← Go back
-          </button>
-        </div>
-      )}
+      </div>
     </div>
   );
 
@@ -366,9 +319,9 @@ const OfferPage: React.FC = () => {
         </div>
 
         {/* ─── SECOND CTA SECTION ─── */}
-        <div className="bg-gray-50 border border-gray-100 p-8 rounded-3xl shadow-sm">
+        <div id="final-bottom-cta" className="bg-gray-50 border border-gray-100 p-8 rounded-3xl shadow-sm">
           <h3 className="text-center text-xl font-black text-gray-900 mb-6">Final choice before accessing your library</h3>
-          {renderFormOrCTA()}
+          {renderFormOrCTA(true)}
         </div>
 
         {/* ─── SOCIAL PROOF ─── */}
@@ -381,6 +334,60 @@ const OfferPage: React.FC = () => {
         </div>
 
       </div>
+
+      {/* ─── MODAL OVERLAYS ─── */}
+      {showPayment && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-gray-900/60 backdrop-blur-sm animate-in fade-in duration-200">
+          <div className="bg-white rounded-2xl p-6 shadow-2xl border border-gray-100 w-full max-w-md relative max-h-[90vh] overflow-y-auto animate-in zoom-in-95 duration-200">
+            <button onClick={() => setShowPayment(false)} className="absolute top-4 right-4 text-gray-400 hover:text-gray-600"><X size={20}/></button>
+            <div className="flex items-center justify-between mb-4 mt-2">
+              <h3 className="text-lg font-bold text-gray-900">Complete Your Upgrade</h3>
+              <div className="bg-orange-100 text-orange-600 text-xs font-bold px-3 py-1 rounded-full">${UPSELL2_PRICE}</div>
+            </div>
+            <label className="block text-sm font-bold text-gray-900 mb-1.5">Email</label>
+            <div className="relative mb-3">
+              <Mail size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+              <input
+                type="email"
+                placeholder="your@email.com"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="w-full pl-10 pr-4 py-3 bg-gray-50 border-2 border-gray-200 rounded-xl text-sm font-medium text-gray-900 focus:outline-none transition-all"
+              />
+            </div>
+            <ModernPaymentForm bare email={email} onSuccess={handleSuccess} amount={`$${UPSELL2_PRICE}`} />
+          </div>
+        </div>
+      )}
+
+      {isConfirmingSkip && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-gray-900/60 backdrop-blur-sm animate-in fade-in duration-200">
+          <div className="bg-white border-2 border-orange-200 rounded-2xl p-8 text-center shadow-2xl w-full max-w-md animate-in zoom-in-95 duration-200 relative">
+            <button onClick={() => setIsConfirmingSkip(false)} className="absolute top-4 right-4 text-gray-400 hover:text-gray-600"><X size={20}/></button>
+            <h4 className="text-orange-900 font-black text-2xl mb-2 mt-4">Wait! What if you only took our bestsellers?</h4>
+            <p className="text-gray-800 text-sm mb-6 font-medium leading-relaxed">
+              If the full bundle is too much right now, you can get <strong className="text-gray-900">just the Kitchen & Bedroom Design Books</strong> for only ${DOWNSELL_BOOKS_PRICE}. You can always add the other 4 books later for $24.
+            </p>
+            <div className="space-y-3">
+              <button
+                disabled={isProcessingDownsell || isProcessingUpSell}
+                onClick={executeDownsell}
+                className="w-full py-4 bg-emerald-500 hover:bg-emerald-600 shadow-xl shadow-emerald-500/20 text-white font-bold text-lg rounded-xl transition-all"
+              >
+                {isProcessingDownsell ? "Processing..." : `Yes, add the 2 books for $${DOWNSELL_BOOKS_PRICE}`}
+              </button>
+              <button
+                disabled={isProcessingDownsell || isProcessingUpSell}
+                onClick={handleSkip}
+                className="block w-full py-3 text-center text-red-500 hover:text-red-700 text-sm font-bold transition-colors underline underline-offset-4 decoration-red-200"
+              >
+                No thanks, I don't want any books at all
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
     </div>
   );
 };

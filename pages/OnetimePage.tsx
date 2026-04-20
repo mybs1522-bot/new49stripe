@@ -140,7 +140,10 @@ const OnetimePage: React.FC = () => {
             {!isProcessingUpSell && <ArrowRight size={20} />}
           </button>
           <button
-            onClick={() => setIsConfirmingSkip(true)}
+            onClick={() => {
+              const el = document.getElementById('final-bottom-cta');
+              if (el) el.scrollIntoView({ behavior: 'smooth' });
+            }}
             className="block w-full mt-3 py-1 text-center text-gray-400 hover:text-gray-500 text-[11px] font-medium transition-colors"
           >
             No thanks, I'll pass on the 9 extra courses
@@ -212,7 +215,10 @@ const OnetimePage: React.FC = () => {
             </button>
 
             <button
-              onClick={() => setIsConfirmingSkip(true)}
+              onClick={() => {
+                const el = document.getElementById('final-bottom-cta');
+                if (el) el.scrollIntoView({ behavior: 'smooth' });
+              }}
               className="block w-full py-3 text-center text-gray-500 hover:text-gray-700 text-sm font-medium transition-colors underline underline-offset-4 decoration-gray-300 disabled:opacity-50"
             >
               No thanks, I'll stick with my 3 courses →
@@ -311,7 +317,7 @@ const OnetimePage: React.FC = () => {
         </div>
 
         {/* ─── SECONDARY CTA (Jump to payment) ─── */}
-        <div className="upsell-fade mb-10 w-full max-w-xl mx-auto" style={{ animationDelay: '0.12s' }}>
+        <div id="final-bottom-cta" className="upsell-fade mb-10 w-full max-w-xl mx-auto" style={{ animationDelay: '0.12s' }}>
           <button
             disabled={isProcessingUpSell}
             onClick={handleCTA}

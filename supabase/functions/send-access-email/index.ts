@@ -225,21 +225,20 @@ function tFullBundle(name?: string | null): { subject: string; html: string } {
   };
 }
 
-function tBooksBundle(name?: string | null): { subject: string; html: string } {
+function tBooks(name?: string | null): { subject: string; html: string } {
   return {
-    subject: 'Your Books are Here - Download Link',
+    subject: 'Your Interior Design Books are Ready',
     html: wrap(`
-      ${hdr("Your books are ready for download.", "You now own everything. Incredible.", '#065f46')}
+      ${hdr("Your books are ready for download.", "The 6 books used by real professionals.", '#065f46')}
       <tr><td style="padding:36px 40px;">
         <p style="margin:0 0 16px;color:#374151;font-size:16px;font-weight:600;">${getGreeting(name)}</p>
-        <p style="margin:0 0 12px;color:#374151;font-size:16px;line-height:1.7;">Congratulations — you now own the most complete interior design education package we've ever created.</p>
-        <p style="margin:0 0 6px;color:#374151;font-size:14px;line-height:2;">✅ SketchUp Pro<br/>✅ V-Ray AI + D5 Render AI<br/>✅ 9 Premium Courses<br/>✅ 6 Interior Design Books</p>
-        ${accessBtn(LINKS.books, 'Download Your Books')}
+        <p style="margin:0 0 12px;color:#374151;font-size:16px;line-height:1.7;">Your 6 premium interior design reference books are ready below.</p>
+        ${accessBtn(LINKS.books, 'Download 6 Books →')}
         <br/><br/>
         <table width="100%" cellpadding="0" cellspacing="0" style="background:#eff6ff;border:1px solid #bfdbfe;border-radius:12px;margin-top:24px;">
           <tr><td style="padding:22px 26px;">
-            <p style="margin:0 0 4px;color:#1e40af;font-weight:700;font-size:14px;">🎓 Recommended learning path</p>
-            <p style="margin:0;color:#1e3a8a;font-size:13px;line-height:1.7;">SketchUp → V-Ray AI → D5 Render AI → AutoCAD → Revit → read the Space Planning book alongside every project.</p>
+            <p style="margin:0 0 4px;color:#1e40af;font-weight:700;font-size:14px;">🎓 Pro Tip</p>
+            <p style="margin:0;color:#1e3a8a;font-size:13px;line-height:1.7;">Keep the Space Planning Fundamentals book open when working on your SketchUp projects!</p>
           </td></tr>
         </table>
         <br/>
@@ -248,7 +247,7 @@ function tBooksBundle(name?: string | null): { subject: string; html: string } {
   };
 }
 
-function tBooksDownsell(name?: string | null): { subject: string; html: string } {
+function tDownsell(name?: string | null): { subject: string; html: string } {
   return {
     subject: 'Your Books are Here - Access Inside',
     html: wrap(`
@@ -452,18 +451,14 @@ export function followupTemplate(stage: string, followupNumber: 1 | 2 | 3): { su
 
 function getTemplate(product: string, name?: string | null): { subject: string; html: string } {
   switch (product) {
-    case 'sketchup-free':    return tSketchupFree(name);
-    case 'render-bundle':    return tRenderBundle(name);
-    case 'full-bundle':      return tFullBundle(name);
-    case 'books-bundle':     return tBooksBundle(name);
-    case 'books-downsell':   return tBooksDownsell(name);
-    default:                 return tFullBundle(name); // legacy fallback
+    case 'sketchup':         return tSketchupFree(name);
+    case 'render':           return tRenderBundle(name);
+    case 'full':             return tFullBundle(name);
+    case 'books':            return tBooks(name);
+    case 'downsell':         return tDownsell(name);
+    default:                 return tRenderBundle(name); // safety fallback
   }
 }
-
-// Stage ordering for progression check
-const STAGE_ORDER = ['sketchup-free', 'render-bundle', 'full-bundle', 'books-bundle', 'books-downsell'];
-const stageRank = (s: string) => { const i = STAGE_ORDER.indexOf(s); return i === -1 ? 99 : i; };
 
 // ─────────────────────────────────────────────
 // SEND VIA RESEND
@@ -511,10 +506,15 @@ serve(async (req: Request) => {
       .eq('email', email)
       .maybeSingle();
 
-    // Only upgrade stage, never downgrade
-    const newStage = existing
-      ? (stageRank(product) > stageRank(existing.stage) ? product : existing.stage)
-      : product;
+    // stage is now a CSV of purchased products (e.g., 'render,full,books')
+    const currentStages = existing?.stage ? existing.stage.split(',').map(s => s.trim()) : [];
+    const isNewProduct = !currentStages.includes(product);
+    
+    if (isNewProduct) {
+      currentStages.push(product);
+    }
+    
+    const newStageString = currentStages.join(',');
 
     await supabase.from('leads').upsert(
       {
@@ -522,9 +522,8 @@ serve(async (req: Request) => {
         whatsapp: whatsapp ?? null,
         name: name ?? null,
         role: role ?? null,
-        stage: newStage,
-        // Reset follow-up counters when stage advances
-        ...(newStage !== existing?.stage ? { followup_1_at: null, followup_2_at: null, followup_3_at: null } : {}),
+        stage: newStageString,
+        ...(isNewProduct ? { followup_1_at: null, followup_2_at: null, followup_3_at: null } : {}),
         updated_at: new Date().toISOString(),
       },
       { onConflict: 'email' }

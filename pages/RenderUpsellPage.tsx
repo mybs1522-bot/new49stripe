@@ -4,17 +4,19 @@ import { Sparkles, Timer, CheckCircle2, Mail, Lock, Check, ArrowRight, Gift, Zap
 import ModernPaymentForm from "../components/ui/modern-payment-form";
 import { useNavigate, useLocation } from "react-router-dom";
 import { chargeSavedCardUpsell } from "../services/stripe";
+import { sendStageEmail } from "../services/email";
 import FunnelProgressBar from "../components/FunnelProgressBar";
 
 const RenderUpsellPage: React.FC = () => {
   const navigate = useNavigate();
   const [timeLeft, setTimeLeft] = useState({ m: 14, s: 59 });
-  const [email, setEmail] = useState("");
   const [showPayment, setShowPayment] = useState(false);
   const [isProcessingUpSell, setIsProcessingUpSell] = useState(false);
   const [isConfirmingSkip, setIsConfirmingSkip] = useState(false);
   const location = useLocation();
   const customerId = location.state?.customerId;
+  const emailFromState = location.state?.email ?? '';
+  const [email, setEmail] = useState(emailFromState);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -41,11 +43,12 @@ const RenderUpsellPage: React.FC = () => {
 
   const handleSuccess = () => {
     if ((window as any).fbq) (window as any).fbq("track", "Purchase", { value: FRONT_END_PRICE, currency: "USD" });
-    navigate("/onetime", { state: { customerId } });
+    sendStageEmail(email, 'render');
+    navigate("/onetime", { state: { customerId, email } });
   };
 
   const handleSkip = () => {
-    navigate("/onetime", { state: { customerId } });
+    navigate("/onetime", { state: { customerId, email } });
   };
 
   const executeUpsell = async () => {

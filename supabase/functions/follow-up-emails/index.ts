@@ -11,8 +11,6 @@ const FOLLOWUP_1_HOURS = 1;   // 1 hour after stage
 const FOLLOWUP_2_HOURS = 24;  // 24 hours after stage
 const FOLLOWUP_3_HOURS = 72;  // 72 hours after stage
 
-// Stages that warrant follow-ups (books-bundle = complete, no follow-ups)
-const FOLLOWUP_STAGES = ['sketchup-free', 'render-bundle', 'full-bundle'];
 
 // ── Buy links ──
 const BUY = {
@@ -182,50 +180,73 @@ serve(async (req: Request) => {
   const now = new Date();
   const results: string[] = [];
 
-  for (const stage of FOLLOWUP_STAGES) {
-    // Fetch leads at this stage who need follow-ups
-    const { data: leads, error } = await supabase
-      .from('leads')
-      .select('id, email, name, stage, updated_at, followup_1_at, followup_2_at, followup_3_at')
-      .eq('stage', stage);
+  // Fetch leads who still need follow-ups
+  const { data: leads, error } = await supabase
+    .from('leads')
+    .select('id, email, name, stage, updated_at, followup_1_at, followup_2_at, followup_3_at')
+    .is('followup_3_at', null);
 
-    if (error || !leads) continue;
+  if (error || !leads) return new Response(JSON.stringify({ error }), { status: 500, headers: corsHeaders });
 
-    for (const lead of leads) {
-      const stageAge = (now.getTime() - new Date(lead.updated_at).getTime()) / (1000 * 60 * 60);
+  for (const lead of leads) {
+    const stages = lead.stage ? lead.stage.split(',').map((s: string) => s.trim()) : [];
+    const hasRender = stages.includes('render');
+    const hasFull = stages.includes('full');
+    const hasBooks = stages.includes('books');
+    const hasDownsell = stages.includes('downsell');
 
-      // Determine which follow-up to send
-      let followupNum: 1 | 2 | 3 | null = null;
-      if (!lead.followup_1_at && stageAge >= FOLLOWUP_1_HOURS) followupNum = 1;
-      else if (lead.followup_1_at && !lead.followup_2_at && stageAge >= FOLLOWUP_2_HOURS) followupNum = 2;
-      else if (lead.followup_2_at && !lead.followup_3_at && stageAge >= FOLLOWUP_3_HOURS) followupNum = 3;
+    let targetPitchStage: string | null = null;
+    
+    if (hasRender && !hasFull) {
+      targetPitchStage = 'render-bundle'; // pitch $27 full courses
+    } else if (hasFull && !hasBooks && !hasDownsell) {
+      targetPitchStage = 'full-bundle'; // pitch $36 books
+    } else if (!hasRender && !hasFull && !hasBooks && !hasDownsell) {
+      targetPitchStage = 'sketchup-free'; // base fallback
+    }
 
-      if (!followupNum) continue;
+    if (!targetPitchStage) {
+      // Completed the funnel! Stop processing
+      await supabase.from('leads').update({
+        followup_1_at: '2099-01-01T00:00:00Z',
+        followup_2_at: '2099-01-01T00:00:00Z',
+        followup_3_at: '2099-01-01T00:00:00Z'
+      }).eq('id', lead.id);
+      results.push(`✅ Marked ${lead.email} as complete`);
+      continue;
+    }
 
-      const template = getFollowupTemplate(stage, followupNum, lead.name);
-      if (!template) continue;
+    const stageAge = (now.getTime() - new Date(lead.updated_at).getTime()) / (1000 * 60 * 60);
 
-      try {
-        await fetch('https://api.resend.com/emails', {
-          method: 'POST',
-          headers: { Authorization: `Bearer ${RESEND_API_KEY}`, 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            from: 'AVADA Courses <hello@archbysha.com>',
-            to: [lead.email],
-            subject: template.subject,
-            html: template.html,
-          }),
-        });
+    let followupNum: 1 | 2 | 3 | null = null;
+    if (!lead.followup_1_at && stageAge >= FOLLOWUP_1_HOURS) followupNum = 1;
+    else if (lead.followup_1_at && !lead.followup_2_at && stageAge >= FOLLOWUP_2_HOURS) followupNum = 2;
+    else if (lead.followup_2_at && !lead.followup_3_at && stageAge >= FOLLOWUP_3_HOURS) followupNum = 3;
 
-        // Mark follow-up as sent
-        await supabase.from('leads').update({
-          [`followup_${followupNum}_at`]: now.toISOString(),
-        }).eq('id', lead.id);
+    if (!followupNum) continue;
 
-        results.push(`✅ Sent followup ${followupNum} to ${lead.email} (${stage})`);
-      } catch (e: any) {
-        results.push(`❌ Failed for ${lead.email}: ${e.message}`);
-      }
+    const template = getFollowupTemplate(targetPitchStage, followupNum, lead.name);
+    if (!template) continue;
+
+    try {
+      await fetch('https://api.resend.com/emails', {
+        method: 'POST',
+        headers: { Authorization: `Bearer ${RESEND_API_KEY}`, 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          from: 'AVADA Courses <hello@archbysha.com>',
+          to: [lead.email],
+          subject: template.subject,
+          html: template.html,
+        }),
+      });
+
+      await supabase.from('leads').update({
+        [`followup_${followupNum}_at`]: now.toISOString(),
+      }).eq('id', lead.id);
+
+      results.push(`✅ Sent followup ${followupNum} to ${lead.email} (pitching ${targetPitchStage})`);
+    } catch (e: any) {
+      results.push(`❌ Failed for ${lead.email}: ${e.message}`);
     }
   }
 

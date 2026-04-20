@@ -9,14 +9,15 @@ import FunnelProgressBar from "../components/FunnelProgressBar";
 
 const OnetimePage: React.FC = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const customerId = location.state?.customerId;
+  const emailFromState = location.state?.email ?? '';
   const [timeLeft, setTimeLeft] = useState({ m: 14, s: 59 });
-  const [email, setEmail] = useState("");
+  const [email, setEmail] = useState(emailFromState);
   const [showPayment, setShowPayment] = useState(false);
   const [paymentSuccess, setPaymentSuccess] = useState(false);
   const [isProcessingUpSell, setIsProcessingUpSell] = useState(false);
   const [isConfirmingSkip, setIsConfirmingSkip] = useState(false);
-  const location = useLocation();
-  const customerId = location.state?.customerId;
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -44,8 +45,8 @@ const OnetimePage: React.FC = () => {
 
   const handleSuccess = () => {
     if ((window as any).fbq) (window as any).fbq("track", "Purchase", { value: UPSELL_PRICE, currency: "USD" });
-    sendStageEmail(email, 'full-bundle');
-    navigate("/offer", { state: { customerId } });
+    sendStageEmail(email, 'full');
+    navigate("/offer", { state: { customerId, email } });
   };
 
   // Removed Success Screen since it redirects to /offer instead
@@ -78,10 +79,10 @@ const OnetimePage: React.FC = () => {
             <span className="text-xs font-bold text-orange-600 uppercase tracking-widest">One-Time Upgrade</span>
           </div>
           <h1 className="text-3xl md:text-5xl font-display font-black mb-3 leading-tight text-gray-900">
-            Unlock the <span className="text-orange-500">Complete</span><br />Architecture Mastery Bundle
+            We have added all the programs you need for your <span className="text-orange-500">Interior Design</span> and Architecture career.
           </h1>
           <p className="text-gray-600 text-base md:text-lg max-w-lg mx-auto">
-            You already got SketchUp + V-Ray + D5 Render. Now add <strong className="text-gray-900">9 more premium courses</strong> at an exclusive discount — only available right now.
+            You may need <strong className="text-gray-900">AutoCAD</strong> or maybe <strong className="text-gray-900">3DS Max</strong> at times, why not take all at this amazing one time price.
           </p>
         </div>
 
@@ -216,7 +217,7 @@ const OnetimePage: React.FC = () => {
                     </button>
                     <button
                       disabled={isProcessingUpSell}
-                      onClick={() => navigate("/offer", { state: { customerId } })}
+                      onClick={() => navigate("/offer", { state: { customerId, email } })}
                       className="block w-full py-3 text-center text-red-500 hover:text-red-700 text-sm font-bold transition-colors underline underline-offset-4 decoration-red-200"
                     >
                       Cancel, I don't want it

@@ -9,15 +9,16 @@ import FunnelProgressBar from "../components/FunnelProgressBar";
 
 const OfferPage: React.FC = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const customerId = location.state?.customerId;
+  const emailFromState = location.state?.email ?? '';
   const [timeLeft, setTimeLeft] = useState({ m: 14, s: 59 });
-  const [email, setEmail] = useState("");
+  const [email, setEmail] = useState(emailFromState);
   const [showPayment, setShowPayment] = useState(false);
   const [paymentSuccess, setPaymentSuccess] = useState(false);
   const [isProcessingUpSell, setIsProcessingUpSell] = useState(false);
   const [isProcessingDownsell, setIsProcessingDownsell] = useState(false);
   const [isConfirmingSkip, setIsConfirmingSkip] = useState(false);
-  const location = useLocation();
-  const customerId = location.state?.customerId;
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -45,7 +46,7 @@ const OfferPage: React.FC = () => {
 
   const handleSuccess = () => {
     if ((window as any).fbq) (window as any).fbq("track", "Purchase", { value: UPSELL2_PRICE, currency: "USD" });
-    sendStageEmail(email, 'books-bundle');
+    sendStageEmail(email, 'books');
     setPaymentSuccess(true);
   };
 
@@ -75,7 +76,7 @@ const OfferPage: React.FC = () => {
         setIsProcessingDownsell(true);
         try {
           await chargeSavedCardUpsell(customerId, `$${DOWNSELL_BOOKS_PRICE}`);
-          sendStageEmail(email, 'books-downsell');
+          sendStageEmail(email, 'downsell');
           handleSuccess();
         } catch (err) {
           console.error("One-click downsell failed", err);
@@ -100,7 +101,7 @@ const OfferPage: React.FC = () => {
         <p className="text-gray-500 text-sm mb-6">Your order is complete. We've generated your custom access dashboard.</p>
         <div className="bg-emerald-50 border-2 border-emerald-200 rounded-2xl p-5 mb-4 text-left">
           <p className="text-emerald-800 text-sm font-black mb-1">Check Your Email Inbox Now</p>
-          <p className="text-emerald-700 text-xs leading-relaxed">Your secure layout and course access links have been successfully delivered to your email. Please check your inbox (and spam folder) to open your library.</p>
+          <p className="text-emerald-700 text-xs leading-relaxed">Your secure layout and course access links have been successfully delivered to your email. Please check your inbox (and spam folder) to open your library. Mail may take up to 5 minutes sometimes to arrive.</p>
         </div>
         
         <div className="bg-gray-50 border border-gray-200 rounded-xl p-4 mb-5 text-left text-xs font-medium text-gray-600">

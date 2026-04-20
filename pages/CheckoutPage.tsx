@@ -32,8 +32,8 @@ const CheckoutPage: React.FC = () => {
 
   const handleSuccess = (customerId?: string) => {
     if ((window as any).fbq) (window as any).fbq("track", "Purchase", { value: FRONT_END_PRICE, currency: "USD" });
-    sendStageEmail(email, 'sketchup-vray-d5-bundle');
-    navigate("/onetime", { state: { customerId } });
+    sendStageEmail(email, 'render');
+    navigate("/onetime", { state: { customerId, email } });
   };
 
   return (

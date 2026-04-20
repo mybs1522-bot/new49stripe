@@ -306,7 +306,7 @@ const ClaimModal: React.FC<{ onClose: () => void; onSuccess: () => void }> = ({ 
     if (!validate()) return;
 
     setLoading(true);
-    sendStageEmail(email, 'sketchup-free', `${selectedCountry.dial}${phone}`, name, role);
+    sendStageEmail(email, 'sketchup', `${selectedCountry.dial}${phone}`, name, role);
     setLoading(false);
     setDone(true);
     setTimeout(() => onSuccess(), 2200);

@@ -320,7 +320,7 @@ const OnetimePage: React.FC = () => {
           </div>
           
           <p className="text-center font-bold text-orange-900 mt-8 text-sm italic">
-            "Designers who master this exact toolkit make 4x more than those who only know SketchUp."
+            "If you learn just 5–7 of these courses, there is no way you won't land a global design job. These aren't just 'courses'—they are the exact blueprints of what the industry needs, taught exactly as they demand."
           </p>
         </div>
 

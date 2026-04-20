@@ -51,6 +51,26 @@ const OnetimePage: React.FC = () => {
 
   // Removed Success Screen since it redirects to /offer instead
 
+  const handleCTA = async () => {
+    if (customerId) {
+      setIsProcessingUpSell(true);
+      try {
+        await chargeSavedCardUpsell(customerId, `$${UPSELL_PRICE}`);
+        handleSuccess();
+      } catch (err) {
+        console.error("One-click upsell failed", err);
+        setShowPayment(true);
+        setIsProcessingUpSell(false);
+        const el = document.getElementById('cta-section');
+        if (el) el.scrollIntoView({ behavior: 'smooth' });
+      }
+    } else {
+      setShowPayment(true);
+      const el = document.getElementById('cta-section');
+      if (el) el.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-slate-50 via-slate-50 to-white text-gray-900">
       <style>{`
@@ -114,16 +134,14 @@ const OnetimePage: React.FC = () => {
         {/* ─── SECONDARY CTA (Above Grid) ─── */}
         <div className="upsell-fade mb-8 w-full max-w-xl mx-auto" style={{ animationDelay: '0.2s' }}>
           <button
-            onClick={() => {
-              const el = document.getElementById('cta-section');
-              if (el) el.scrollIntoView({ behavior: 'smooth' });
-            }}
-            className="w-full py-4 text-white font-bold text-lg rounded-2xl flex items-center justify-center gap-3 active:scale-[0.98] btn-pulse"
+            disabled={isProcessingUpSell}
+            onClick={handleCTA}
+            className="w-full py-4 text-white font-bold text-lg rounded-2xl flex items-center justify-center gap-3 active:scale-[0.98] btn-pulse disabled:opacity-70 disabled:cursor-wait"
             style={{ background: 'linear-gradient(135deg,#f97316,#ea580c)' }}
           >
             <Gift size={20} />
-            Yes! Unlock All 9 Courses Now
-            <ArrowRight size={20} />
+            {isProcessingUpSell ? "Processing Upgrade..." : "Yes! Unlock All 9 Courses Now"}
+            {!isProcessingUpSell && <ArrowRight size={20} />}
           </button>
           <button
             onClick={() => {
@@ -194,22 +212,7 @@ const OnetimePage: React.FC = () => {
               {/* Primary CTA */}
               <button
                 disabled={isProcessingUpSell}
-                onClick={async () => {
-                  if (customerId) {
-                    setIsProcessingUpSell(true);
-                    try {
-                      await chargeSavedCardUpsell(customerId, `$${UPSELL_PRICE}`);
-                      handleSuccess();
-                    } catch (err) {
-                      console.error("One-click upsell failed", err);
-                      // Fallback to manual checkout
-                      setShowPayment(true);
-                      setIsProcessingUpSell(false);
-                    }
-                  } else {
-                    setShowPayment(true);
-                  }
-                }}
+                onClick={handleCTA}
                 className="w-full py-4 bg-gradient-to-r from-orange-500 to-amber-500 text-white font-bold text-lg rounded-2xl flex items-center justify-center gap-3 group active:scale-[0.98] transition-all disabled:opacity-70 disabled:cursor-wait btn-pulse"
               >
                 <Gift size={20} />
@@ -387,16 +390,14 @@ const OnetimePage: React.FC = () => {
         {/* ─── SECONDARY CTA (Jump to payment) ─── */}
         <div className="upsell-fade mb-10 w-full max-w-xl mx-auto" style={{ animationDelay: '0.12s' }}>
           <button
-            onClick={() => {
-              const el = document.getElementById('cta-section');
-              if (el) el.scrollIntoView({ behavior: 'smooth' });
-            }}
-            className="w-full py-4 text-white font-bold text-lg rounded-2xl flex items-center justify-center gap-3 active:scale-[0.98] btn-pulse"
+            disabled={isProcessingUpSell}
+            onClick={handleCTA}
+            className="w-full py-4 text-white font-bold text-lg rounded-2xl flex items-center justify-center gap-3 active:scale-[0.98] btn-pulse disabled:opacity-70 disabled:cursor-wait"
             style={{ background: 'linear-gradient(135deg,#f97316,#ea580c)' }}
           >
             <Gift size={20} />
-            Yes! Unlock All 9 Courses Now
-            <ArrowRight size={20} />
+            {isProcessingUpSell ? "Processing Upgrade..." : "Yes! Unlock All 9 Courses Now"}
+            {!isProcessingUpSell && <ArrowRight size={20} />}
           </button>
 
           <button

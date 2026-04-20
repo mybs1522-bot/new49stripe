@@ -187,6 +187,12 @@ const OnetimePage: React.FC = () => {
                 {!isProcessingUpSell && <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />}
               </button>
 
+              <div className="bg-orange-50/50 border border-orange-100 rounded-xl p-4 mt-4 text-center mt-6 shadow-sm">
+                <p className="text-sm text-gray-700 leading-relaxed font-medium">
+                  Imagine being able to confidently say <strong>'Yes'</strong> to any architectural or interior design project. Whether your client needs precise 2D floor plans in AutoCAD, fully detailed BIM models in Revit, cinematic walkthroughs in Lumion, or cutting-edge VR presentations in Enscape. This one upgrade gives you the <strong className="text-orange-600">complete arsenal of tools used by top international studios</strong> to command premium fees.
+                </p>
+              </div>
+
               {/* Secondary — Skip / Confirm State */}
               {isConfirmingSkip ? (
                 <div className="bg-red-50 border border-red-200 rounded-2xl p-6 text-center animate-in fade-in zoom-in duration-300 mt-6">

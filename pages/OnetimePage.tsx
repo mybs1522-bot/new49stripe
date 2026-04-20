@@ -67,7 +67,7 @@ const OnetimePage: React.FC = () => {
       <FunnelProgressBar step={2} />
 
       {/* ─── URGENCY TOP BAR ─── */}
-      <div className="bg-orange-500 text-white text-center py-2 px-4">
+      <div className="sticky top-0 z-50 bg-orange-500 text-white text-center py-2 px-4 shadow-md">
         <div className="flex items-center justify-center gap-2 text-sm font-bold">
           <Timer size={14} className="animate-pulse" />
           <span>WAIT! One-Time Exclusive Offer — Expires in {f(timeLeft.m)}:{f(timeLeft.s)}</span>

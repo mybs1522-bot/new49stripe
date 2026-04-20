@@ -12,7 +12,7 @@ const OnetimePage: React.FC = () => {
   const location = useLocation();
   const customerId = location.state?.customerId;
   const emailFromState = location.state?.email ?? '';
-  const [timeLeft, setTimeLeft] = useState({ m: 14, s: 59 });
+  const [timeLeft, setTimeLeft] = useState({ m: 9, s: 59 });
   const [email, setEmail] = useState(emailFromState);
   const [showPayment, setShowPayment] = useState(false);
   const [paymentSuccess, setPaymentSuccess] = useState(false);
@@ -27,7 +27,7 @@ const OnetimePage: React.FC = () => {
   // 15-minute countdown timer (resets on page load)
   useEffect(() => {
     const start = Date.now();
-    const duration = 15 * 60 * 1000; // 15 minutes
+    const duration = 10 * 60 * 1000; // 10 minutes
     const calc = () => {
       const elapsed = Date.now() - start;
       const remaining = Math.max(0, duration - elapsed);
@@ -84,43 +84,6 @@ const OnetimePage: React.FC = () => {
           <p className="text-gray-600 text-base md:text-lg max-w-lg mx-auto">
             You may need <strong className="text-gray-900">AutoCAD</strong> or maybe <strong className="text-gray-900">3DS Max</strong> at times, why not take all at this amazing one time price.
           </p>
-        </div>
-
-        {/* ─── VIDEO ─── */}
-        <div className="upsell-fade relative w-full max-w-3xl mx-auto rounded-3xl overflow-hidden shadow-2xl mb-6 border border-slate-100" style={{ animationDelay: '0.1s' }}>
-          <div style={{ position: 'relative', paddingTop: '56.25%' }}>
-            <iframe 
-              src="https://iframe.mediadelivery.net/embed/494628/e4f3024d-0d84-4568-942d-036d2c9dd8b7?autoplay=true&loop=true&muted=true&preload=true&responsive=true" 
-              loading="lazy" 
-              style={{ border: 0, position: 'absolute', top: 0, height: '100%', width: '100%' }} 
-              allow="accelerometer;gyroscope;autoplay;encrypted-media;picture-in-picture;" 
-              allowFullScreen={true}>
-            </iframe>
-          </div>
-          {/* Black gradient at bottom */}
-          <div className="absolute inset-x-0 bottom-0 h-2/5 md:h-1/3 bg-gradient-to-t from-black/80 via-black/40 to-transparent pointer-events-none" />
-          <div className="absolute inset-x-0 bottom-0 p-4 md:p-6 text-left">
-            <h2 className="text-white font-display font-black text-xl md:text-2xl leading-tight drop-shadow-md">
-              Your Complete<br />
-              <span className="text-orange-400">Design Arsenal.</span>
-            </h2>
-          </div>
-        </div>
-
-        {/* ─── SECONDARY CTA (Jump to payment) ─── */}
-        <div className="upsell-fade mb-10" style={{ animationDelay: '0.12s' }}>
-          <button
-            onClick={() => {
-              const el = document.getElementById('cta-section');
-              if (el) el.scrollIntoView({ behavior: 'smooth' });
-            }}
-            className="w-full py-4 text-white font-bold text-lg rounded-2xl flex items-center justify-center gap-3 transition-all hover:scale-[1.02] active:scale-[0.98]"
-            style={{ background: 'linear-gradient(135deg,#f97316,#ea580c)', boxShadow: '0 0 20px rgba(249,115,22,0.45)' }}
-          >
-            <Gift size={20} />
-            Yes! Unlock All 9 Courses Now
-            <ArrowRight size={20} />
-          </button>
         </div>
 
         {/* ─── PRICE CARD ─── */}
@@ -310,6 +273,27 @@ const OnetimePage: React.FC = () => {
           )}
         </div>
 
+        {/* ─── VIDEO ─── */}
+        <div className="upsell-fade relative w-full max-w-3xl mx-auto rounded-3xl overflow-hidden shadow-2xl mt-10 mb-8 border border-slate-100" style={{ animationDelay: '0.1s' }}>
+          <div style={{ position: 'relative', paddingTop: '56.25%' }}>
+            <iframe 
+              src="https://iframe.mediadelivery.net/embed/494628/e4f3024d-0d84-4568-942d-036d2c9dd8b7?autoplay=true&loop=true&muted=true&preload=true&responsive=true" 
+              loading="lazy" 
+              style={{ border: 0, position: 'absolute', top: 0, height: '100%', width: '100%' }} 
+              allow="accelerometer;gyroscope;autoplay;encrypted-media;picture-in-picture;" 
+              allowFullScreen={true}>
+            </iframe>
+          </div>
+          {/* Black gradient at bottom */}
+          <div className="absolute inset-x-0 bottom-0 h-2/5 md:h-1/3 bg-gradient-to-t from-black/80 via-black/40 to-transparent pointer-events-none" />
+          <div className="absolute inset-x-0 bottom-0 p-4 md:p-6 text-left">
+            <h2 className="text-white font-display font-black text-xl md:text-2xl leading-tight drop-shadow-md">
+              Your Complete<br />
+              <span className="text-orange-400">Design Arsenal.</span>
+            </h2>
+          </div>
+        </div>
+
         {/* ─── VALUE JUSTIFICATION ─── */}
         <div className="upsell-fade mt-8 bg-orange-50/50 border border-orange-200 rounded-3xl p-6 md:p-8 max-w-2xl mx-auto shadow-sm" style={{ animationDelay: '0.6s' }}>
           <h4 className="text-orange-900 font-black text-xl mb-6 text-center">The Exact Software Workflow We Will Build Together:</h4>
@@ -368,6 +352,22 @@ const OnetimePage: React.FC = () => {
           </div>
           <p className="text-gray-600 text-sm italic">"I almost skipped this offer and I'm SO glad I didn't. The full bundle is worth 10x what I paid."</p>
           <p className="text-gray-500 text-xs mt-2 font-bold">— Sarah K., Studio Owner, Berlin</p>
+        </div>
+
+        {/* ─── SECONDARY CTA (Jump to payment) ─── */}
+        <div className="upsell-fade mb-10 w-full max-w-xl mx-auto" style={{ animationDelay: '0.12s' }}>
+          <button
+            onClick={() => {
+              const el = document.getElementById('cta-section');
+              if (el) el.scrollIntoView({ behavior: 'smooth' });
+            }}
+            className="w-full py-4 text-white font-bold text-lg rounded-2xl flex items-center justify-center gap-3 transition-all hover:scale-[1.02] active:scale-[0.98]"
+            style={{ background: 'linear-gradient(135deg,#f97316,#ea580c)', boxShadow: '0 0 20px rgba(249,115,22,0.45)' }}
+          >
+            <Gift size={20} />
+            Yes! Unlock All 9 Courses Now
+            <ArrowRight size={20} />
+          </button>
         </div>
 
       </div>

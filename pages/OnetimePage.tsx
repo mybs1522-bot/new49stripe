@@ -283,8 +283,8 @@ const OnetimePage: React.FC = () => {
                 <Check className="text-emerald-600" size={16} strokeWidth={3} />
               </div>
               <div>
-                <h5 className="font-bold text-gray-900 text-base">AutoCAD <span className="font-medium text-gray-500">— Precision 2D Drafting</span></h5>
-                <p className="text-sm text-gray-600 mt-1 leading-relaxed">Every contractor reads DWG files. You'll learn to draft dimensionally perfect floor plans, sections, and working drawings that serve as the structural blueprint for real-world execution.</p>
+                <h5 className="font-bold text-gray-900 text-base">AutoCAD & Revit <span className="font-medium text-gray-500">— Drafting & BIM</span></h5>
+                <p className="text-sm text-gray-600 mt-1 leading-relaxed">Master the global standards. Draft perfect 2D floor plans in AutoCAD and build intelligent, auto-updating 3D structural models in Revit.</p>
               </div>
             </div>
 
@@ -293,8 +293,8 @@ const OnetimePage: React.FC = () => {
                 <Check className="text-emerald-600" size={16} strokeWidth={3} />
               </div>
               <div>
-                <h5 className="font-bold text-gray-900 text-base">Revit <span className="font-medium text-gray-500">— Intelligent BIM Modeling</span></h5>
-                <p className="text-sm text-gray-600 mt-1 leading-relaxed">Stop drawing static lines and start building smart 3D models. When you move a wall in Revit, your floor plans, elevations, and material schedules update automatically. This skill alone makes you globally hirable.</p>
+                <h5 className="font-bold text-gray-900 text-base">3ds Max, Lumion & Enscape <span className="font-medium text-gray-500">— 3D & VR</span></h5>
+                <p className="text-sm text-gray-600 mt-1 leading-relaxed">Create hyper-realistic luxury interiors in 3ds Max, and turn your models into animated cinematic video tours and real-time VR walkthroughs.</p>
               </div>
             </div>
 
@@ -303,8 +303,8 @@ const OnetimePage: React.FC = () => {
                 <Check className="text-emerald-600" size={16} strokeWidth={3} />
               </div>
               <div>
-                <h5 className="font-bold text-gray-900 text-base">3ds Max & Corona <span className="font-medium text-gray-500">— Hyper-Realistic Visuals</span></h5>
-                <p className="text-sm text-gray-600 mt-1 leading-relaxed">When standard rendering isn't enough for luxury clients. You'll learn advanced organic modeling for furniture and how to apply complex textiles and lighting that make your renders indistinguishable from reality.</p>
+                <h5 className="font-bold text-gray-900 text-base">Midjourney & Stable Diffusion <span className="font-medium text-gray-500">— AI Design</span></h5>
+                <p className="text-sm text-gray-600 mt-1 leading-relaxed">Generate 100+ concepts in minutes. Instantly create client mood boards and turn rough hand sketches into realistic building ideas using AI.</p>
               </div>
             </div>
 
@@ -313,8 +313,8 @@ const OnetimePage: React.FC = () => {
                 <Check className="text-emerald-600" size={16} strokeWidth={3} />
               </div>
               <div>
-                <h5 className="font-bold text-gray-900 text-base">Lumion & Enscape <span className="font-medium text-gray-500">— Cinematic Walkthroughs</span></h5>
-                <p className="text-sm text-gray-600 mt-1 leading-relaxed">Don't pitch with just static PDFs. We'll teach you how to turn your raw 3D models into immersive, animated video presentations and real-time VR walkthroughs that clients instantly fall in love with.</p>
+                <h5 className="font-bold text-gray-900 text-base">Unreal Engine 5 & Photoshop <span className="font-medium text-gray-500">— Final Polish</span></h5>
+                <p className="text-sm text-gray-600 mt-1 leading-relaxed">Package your designs as interactive, playable walkthroughs in Unreal Engine, and use Photoshop to make average renders look like award-winning photography.</p>
               </div>
             </div>
           </div>

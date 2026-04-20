@@ -79,7 +79,7 @@ const OnetimePage: React.FC = () => {
             <span className="text-xs font-bold text-orange-600 uppercase tracking-widest">One-Time Upgrade</span>
           </div>
           <h1 className="text-3xl md:text-5xl font-display font-black mb-3 leading-tight text-gray-900">
-            We have added all the programs you need for your <span className="text-orange-500">Interior Design</span> and Architecture career.
+            Unlock 9 more courses to boost your <span className="text-orange-500">Interior Design</span> and Architecture career.
           </h1>
           <p className="text-gray-600 text-base md:text-lg max-w-lg mx-auto">
             You may need <strong className="text-gray-900">AutoCAD</strong> or maybe <strong className="text-gray-900">3DS Max</strong> at times, why not take all at this amazing one time price.

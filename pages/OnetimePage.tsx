@@ -125,6 +125,16 @@ const OnetimePage: React.FC = () => {
             Yes! Unlock All 9 Courses Now
             <ArrowRight size={20} />
           </button>
+          <button
+            onClick={() => {
+              setIsConfirmingSkip(true);
+              const el = document.getElementById('cta-section');
+              if (el) el.scrollIntoView({ behavior: 'smooth' });
+            }}
+            className="block w-full mt-3 py-1 text-center text-gray-400 hover:text-gray-500 text-[11px] font-medium transition-colors"
+          >
+            No thanks, I'll pass on the 9 extra courses
+          </button>
         </div>
 
         {/* ─── COURSES GRID ─── */}

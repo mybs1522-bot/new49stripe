@@ -187,12 +187,6 @@ const OnetimePage: React.FC = () => {
                 {!isProcessingUpSell && <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />}
               </button>
 
-              <div className="bg-orange-50/50 border border-orange-100 rounded-xl p-4 mt-4 text-center mt-6 shadow-sm">
-                <p className="text-sm text-gray-700 leading-relaxed font-medium">
-                  Imagine being able to confidently say <strong>'Yes'</strong> to any architectural or interior design project. Whether your client needs precise 2D floor plans in AutoCAD, fully detailed BIM models in Revit, cinematic walkthroughs in Lumion, or cutting-edge VR presentations in Enscape. This one upgrade gives you the <strong className="text-orange-600">complete arsenal of tools used by top international studios</strong> to command premium fees.
-                </p>
-              </div>
-
               {/* Secondary — Skip / Confirm State */}
               {isConfirmingSkip ? (
                 <div className="bg-red-50 border border-red-200 rounded-2xl p-6 text-center animate-in fade-in zoom-in duration-300 mt-6">
@@ -277,6 +271,14 @@ const OnetimePage: React.FC = () => {
               </button>
             </div>
           )}
+        </div>
+
+        {/* ─── VALUE JUSTIFICATION ─── */}
+        <div className="upsell-fade mt-8 bg-orange-50/50 border border-orange-100 rounded-2xl p-6 text-center max-w-2xl mx-auto shadow-sm" style={{ animationDelay: '0.6s' }}>
+          <h4 className="text-orange-900 font-bold text-lg mb-2">What you'll actually be able to do:</h4>
+          <p className="text-sm text-gray-700 leading-relaxed font-medium">
+            With this complete bundle, you'll be able to draft precise floor plans in <strong>AutoCAD</strong>, build structurally accurate BIM models in <strong>Revit</strong>, create photorealistic 3D rendering in <strong>3ds Max</strong> and <strong>Lumion</strong>, and present interactive VR walkthroughs in <strong>Enscape</strong>. You'll master the exact software pipeline needed to manage a project from the first client sketch to the final cinematic presentation—allowing you to confidently charge premium studio rates.
+          </p>
         </div>
 
         {/* ─── SOCIAL PROOF ─── */}

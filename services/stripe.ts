@@ -45,7 +45,7 @@ export const createPaymentIntent = async (email: string, amount: string = '$9'):
   return { clientSecret: data.clientSecret, customerId: data.customerId };
 };
 
-export const chargeSavedCardUpsell = async (customerId: string, amount: string = '$27'): Promise<boolean> => {
+export const chargeSavedCardUpsell = async (customerId: string, amount: string = '$27', paymentMethodId?: string, paymentIntentId?: string): Promise<boolean> => {
   let res: Response;
   try {
     res = await fetch(`${SUPABASE_URL}/functions/v1/charge-saved-card-upsell`, {
@@ -55,7 +55,7 @@ export const chargeSavedCardUpsell = async (customerId: string, amount: string =
         Authorization: `Bearer ${SUPABASE_ANON_KEY}`,
         apikey: SUPABASE_ANON_KEY,
       },
-      body: JSON.stringify({ customerId, amount }),
+      body: JSON.stringify({ customerId, amount, paymentMethodId, paymentIntentId }),
     });
   } catch (netErr) {
     console.error('[Stripe] Network error calling edge function:', netErr);

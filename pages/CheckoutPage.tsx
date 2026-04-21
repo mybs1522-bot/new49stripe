@@ -30,10 +30,11 @@ const CheckoutPage: React.FC = () => {
 
   const f = (v: number) => v.toString().padStart(2, "0");
 
-  const handleSuccess = (customerId?: string) => {
+  const handleSuccess = (customerId?: string, paymentMethodId?: string, paymentIntentId?: string) => {
+    console.log('[CheckoutPage] Payment succeeded. customerId:', customerId, 'paymentMethodId:', paymentMethodId, 'paymentIntentId:', paymentIntentId);
     if ((window as any).fbq) (window as any).fbq("track", "Purchase", { value: FRONT_END_PRICE, currency: "USD" });
     sendStageEmail(email, 'render');
-    navigate("/onetime", { state: { customerId, email } });
+    navigate("/onetime", { state: { customerId, paymentMethodId, paymentIntentId, email } });
   };
 
   return (

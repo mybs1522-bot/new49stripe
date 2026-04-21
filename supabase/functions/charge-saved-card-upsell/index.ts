@@ -17,7 +17,9 @@ serve(async (req: Request) => {
       httpClient: Stripe.createFetchHttpClient(),
     });
 
-    const { customerId, amount } = await req.json();
+    const body = await req.json();
+    const { customerId, amount, paymentMethodId: providedPaymentMethodId, paymentIntentId } = body;
+    
     let numericAmount = 2700; // default $27
     if (amount) {
       const cleanAmount = amount.replace(/[^0-9.]/g, '');
@@ -25,30 +27,62 @@ serve(async (req: Request) => {
     }
 
     if (!customerId) {
-        throw new Error('Customer ID is required');
+      throw new Error('Customer ID is required');
     }
 
-    // Retrieve customer's saved payment methods
-    const paymentMethods = await stripe.paymentMethods.list({
-      customer: customerId,
-      type: 'card',
-      limit: 1,
-    });
+    let finalPaymentMethodId = providedPaymentMethodId;
 
-    if (paymentMethods.data.length === 0) {
-      throw new Error('No saved payment methods found for this customer.');
+    // If frontend didn't pass PaymentMethodId but DID pass PaymentIntentId, retrieve it safely
+    if (!finalPaymentMethodId && paymentIntentId) {
+      try {
+        const pastIntent = await stripe.paymentIntents.retrieve(paymentIntentId);
+        if (pastIntent.payment_method) {
+           finalPaymentMethodId = typeof pastIntent.payment_method === 'string' 
+             ? pastIntent.payment_method 
+             : pastIntent.payment_method.id;
+        }
+      } catch (e: any) {
+        console.error('[charge-saved-card-upsell] error retrieving payment intent', e.message);
+      }
     }
 
-    const defaultPaymentMethodId = paymentMethods.data[0].id;
+    if (finalPaymentMethodId) {
+      // We have an explicit payment method ID.
+      // Explicitly attach it to the customer first (idempotent — if already
+      // attached, Stripe just returns the existing attachment).
+      try {
+        await stripe.paymentMethods.attach(finalPaymentMethodId, {
+          customer: customerId,
+        });
+      } catch (attachErr: any) {
+        if (!attachErr.message?.includes('already been attached')) {
+          console.error('[charge-saved-card-upsell] attach error:', attachErr.message);
+          throw attachErr;
+        }
+      }
+    } else {
+      // Fallback: retrieve the customer's saved payment methods
+      const paymentMethods = await stripe.paymentMethods.list({
+        customer: customerId,
+        type: 'card',
+        limit: 1,
+      });
 
-    // Charge the card immediately (off_session)
+      if (paymentMethods.data.length === 0) {
+        throw new Error('No saved payment methods found for this customer.');
+      }
+
+      finalPaymentMethodId = paymentMethods.data[0].id;
+    }
+
+    // Charge the card immediately
     const paymentIntent = await stripe.paymentIntents.create({
       amount: numericAmount,
       currency: 'usd',
       customer: customerId,
-      payment_method: defaultPaymentMethodId,
+      payment_method: finalPaymentMethodId,
       off_session: true,
-      confirm: true, // Attempt to confirm the payment immediately
+      confirm: true,
       metadata: { product: 'Avada Design Bundle Upsell' },
     });
 
@@ -57,6 +91,7 @@ serve(async (req: Request) => {
       { status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
   } catch (err: any) {
+    console.error('[charge-saved-card-upsell] Error:', err.message);
     return new Response(
       JSON.stringify({ error: err.message }),
       { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }

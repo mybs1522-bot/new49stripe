@@ -11,6 +11,8 @@ const OnetimePage: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const customerId = location.state?.customerId;
+  const paymentMethodId = location.state?.paymentMethodId;
+  const paymentIntentId = location.state?.paymentIntentId;
   const emailFromState = location.state?.email ?? '';
   const [timeLeft, setTimeLeft] = useState({ m: 9, s: 59 });
   const [email, setEmail] = useState(emailFromState);
@@ -43,17 +45,22 @@ const OnetimePage: React.FC = () => {
 
   const f = (v: number) => v.toString().padStart(2, "0");
 
-  const handleSuccess = () => {
+  const handleSuccess = (newCustomerId?: string, newPaymentMethodId?: string) => {
     if ((window as any).fbq) (window as any).fbq("track", "Purchase", { value: UPSELL_PRICE, currency: "USD" });
     sendStageEmail(email, 'full');
-    navigate("/offer", { state: { customerId, email } });
+    navigate("/offer", { state: { customerId: newCustomerId ?? customerId, paymentMethodId: newPaymentMethodId ?? paymentMethodId, paymentIntentId, email } });
+  };
+
+  const handleSkip = () => {
+    navigate("/offer", { state: { customerId, paymentMethodId, paymentIntentId, email } });
   };
 
   const handleCTA = async () => {
+    console.log('[OnetimePage] handleCTA called. customerId:', customerId, 'paymentMethodId:', paymentMethodId, 'paymentIntentId:', paymentIntentId);
     if (customerId) {
       setIsProcessingUpSell(true);
       try {
-        await chargeSavedCardUpsell(customerId, `$${UPSELL_PRICE}`);
+        await chargeSavedCardUpsell(customerId, `$${UPSELL_PRICE}`, paymentMethodId, paymentIntentId);
         handleSuccess();
       } catch (err) {
         console.error("One-click upsell failed", err);
@@ -62,6 +69,7 @@ const OnetimePage: React.FC = () => {
         setIsConfirmingSkip(false);
       }
     } else {
+      console.warn('[OnetimePage] No customerId — showing payment form as fallback');
       setShowPayment(true);
       setIsConfirmingSkip(false);
     }
@@ -381,7 +389,7 @@ const OnetimePage: React.FC = () => {
               </button>
               <button
                 disabled={isProcessingUpSell}
-                onClick={() => navigate("/offer", { state: { customerId, email } })}
+                onClick={() => navigate("/offer", { state: { customerId, paymentMethodId, email } })}
                 className="block w-full py-3 text-center text-red-500 hover:text-red-700 text-sm font-bold transition-colors underline underline-offset-4 decoration-red-200"
               >
                 Cancel, I don't want it

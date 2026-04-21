@@ -28,10 +28,11 @@ const SketchupPage: React.FC = () => {
 
   const f = (v: number) => v.toString().padStart(2, "0");
 
-  const handleSuccess = (customerId?: string) => {
+  const handleSuccess = (customerId?: string, paymentMethodId?: string, paymentIntentId?: string) => {
+    console.log('[SketchupCheckoutPage] Payment succeeded. customerId:', customerId, 'paymentMethodId:', paymentMethodId, 'paymentIntentId:', paymentIntentId);
     if ((window as any).fbq) (window as any).fbq("track", "Purchase", { value: 1.56, currency: "USD" });
-    // Redirect to upsell page, passing customerId via state for one-click upsell
-    navigate("/", { state: { customerId } });
+    // Redirect to upsell page, passing customerId, paymentMethodId, and paymentIntentId via state for one-click upsell
+    navigate("/", { state: { customerId, paymentMethodId, paymentIntentId } });
   };
 
   return (

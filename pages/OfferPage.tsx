@@ -11,10 +11,12 @@ const OfferPage: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const customerId = location.state?.customerId;
+  const paymentMethodId = location.state?.paymentMethodId;
+  const paymentIntentId = location.state?.paymentIntentId;
   const emailFromState = location.state?.email ?? '';
   const [timeLeft, setTimeLeft] = useState({ m: 14, s: 59 });
   const [email, setEmail] = useState(emailFromState);
-  const [showPayment, setShowPayment] = useState(false);
+  const [showPayment, setShowPayment] = useState<false | 'books' | 'downsell'>(false);
   const [paymentSuccess, setPaymentSuccess] = useState(false);
   const [isProcessingUpSell, setIsProcessingUpSell] = useState(false);
   const [isProcessingDownsell, setIsProcessingDownsell] = useState(false);
@@ -44,9 +46,9 @@ const OfferPage: React.FC = () => {
 
   const f = (v: number) => v.toString().padStart(2, "0");
 
-  const handleSuccess = () => {
-    if ((window as any).fbq) (window as any).fbq("track", "Purchase", { value: UPSELL2_PRICE, currency: "USD" });
-    sendStageEmail(email, 'books');
+  const handleSuccess = (productMode: 'books' | 'downsell') => {
+    if ((window as any).fbq) (window as any).fbq("track", "Purchase", { value: productMode === 'downsell' ? DOWNSELL_BOOKS_PRICE : UPSELL2_PRICE, currency: "USD" });
+    sendStageEmail(email, productMode);
     setPaymentSuccess(true);
   };
 
@@ -58,16 +60,16 @@ const OfferPage: React.FC = () => {
     if (customerId) {
         setIsProcessingUpSell(true);
         try {
-          await chargeSavedCardUpsell(customerId, `$${UPSELL2_PRICE}`);
-          handleSuccess();
+          await chargeSavedCardUpsell(customerId, `$${UPSELL2_PRICE}`, paymentMethodId, paymentIntentId);
+          handleSuccess('books');
         } catch (err) {
           console.error("One-click upsell failed", err);
           setIsProcessingUpSell(false);
-          setShowPayment(true);
+          setShowPayment('books');
           setIsConfirmingSkip(false);
         }
       } else {
-        setShowPayment(true);
+        setShowPayment('books');
         setIsConfirmingSkip(false);
       }
   };
@@ -76,17 +78,16 @@ const OfferPage: React.FC = () => {
     if (customerId) {
         setIsProcessingDownsell(true);
         try {
-          await chargeSavedCardUpsell(customerId, `$${DOWNSELL_BOOKS_PRICE}`);
-          sendStageEmail(email, 'downsell');
-          handleSuccess();
+          await chargeSavedCardUpsell(customerId, `$${DOWNSELL_BOOKS_PRICE}`, paymentMethodId, paymentIntentId);
+          handleSuccess('downsell');
         } catch (err) {
           console.error("One-click downsell failed", err);
           setIsProcessingDownsell(false);
-          setShowPayment(true);
+          setShowPayment('downsell');
           setIsConfirmingSkip(false);
         }
       } else {
-        setShowPayment(true);
+        setShowPayment('downsell');
         setIsConfirmingSkip(false);
       }
   };
@@ -342,7 +343,7 @@ const OfferPage: React.FC = () => {
             <button onClick={() => setShowPayment(false)} className="absolute top-4 right-4 text-gray-400 hover:text-gray-600"><X size={20}/></button>
             <div className="flex items-center justify-between mb-4 mt-2">
               <h3 className="text-lg font-bold text-gray-900">Complete Your Upgrade</h3>
-              <div className="bg-orange-100 text-orange-600 text-xs font-bold px-3 py-1 rounded-full">${UPSELL2_PRICE}</div>
+              <div className="bg-orange-100 text-orange-600 text-xs font-bold px-3 py-1 rounded-full">${showPayment === 'books' ? UPSELL2_PRICE : DOWNSELL_BOOKS_PRICE}</div>
             </div>
             <label className="block text-sm font-bold text-gray-900 mb-1.5">Email</label>
             <div className="relative mb-3">
@@ -355,7 +356,7 @@ const OfferPage: React.FC = () => {
                 className="w-full pl-10 pr-4 py-3 bg-gray-50 border-2 border-gray-200 rounded-xl text-sm font-medium text-gray-900 focus:outline-none transition-all"
               />
             </div>
-            <ModernPaymentForm bare email={email} onSuccess={handleSuccess} amount={`$${UPSELL2_PRICE}`} />
+            <ModernPaymentForm bare email={email} onSuccess={() => handleSuccess(showPayment)} amount={`$${showPayment === 'books' ? UPSELL2_PRICE : DOWNSELL_BOOKS_PRICE}`} />
           </div>
         </div>
       )}

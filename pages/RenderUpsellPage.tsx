@@ -15,6 +15,7 @@ const RenderUpsellPage: React.FC = () => {
   const [isConfirmingSkip, setIsConfirmingSkip] = useState(false);
   const location = useLocation();
   const customerId = location.state?.customerId;
+  const paymentMethodId = location.state?.paymentMethodId;
   const emailFromState = location.state?.email ?? '';
   const [email, setEmail] = useState(emailFromState);
 
@@ -41,21 +42,21 @@ const RenderUpsellPage: React.FC = () => {
 
   const f = (v: number) => v.toString().padStart(2, "0");
 
-  const handleSuccess = () => {
+  const handleSuccess = (newCustomerId?: string, newPaymentMethodId?: string) => {
     if ((window as any).fbq) (window as any).fbq("track", "Purchase", { value: FRONT_END_PRICE, currency: "USD" });
     sendStageEmail(email, 'render');
-    navigate("/onetime", { state: { customerId, email } });
+    navigate("/onetime", { state: { customerId: newCustomerId ?? customerId, paymentMethodId: newPaymentMethodId ?? paymentMethodId, email } });
   };
 
   const handleSkip = () => {
-    navigate("/onetime", { state: { customerId, email } });
+    navigate("/onetime", { state: { customerId, paymentMethodId, email } });
   };
 
   const executeUpsell = async () => {
     if (customerId) {
       setIsProcessingUpSell(true);
       try {
-        await chargeSavedCardUpsell(customerId, `$${FRONT_END_PRICE}`);
+        await chargeSavedCardUpsell(customerId, `$${FRONT_END_PRICE}`, paymentMethodId);
         handleSuccess();
       } catch (err) {
         console.error("One-click render upsell failed", err);

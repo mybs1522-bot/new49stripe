@@ -91,7 +91,7 @@ const StripeInputWrap = ({ children }: { children: React.ReactNode }) => (
 
 interface CheckoutFormProps {
   email: string;
-  onSuccess: (customerId?: string) => void;
+  onSuccess: (customerId?: string, paymentMethodId?: string, paymentIntentId?: string) => void;
   onBack?: () => void;
   amount: string;
 }
@@ -139,7 +139,12 @@ function CheckoutForm({ email, onSuccess, onBack, amount }: CheckoutFormProps) {
     } else if (paymentIntent?.status === "succeeded") {
       const numericAmount = parseInt(amount.replace(/[^0-9]/g, ''), 10) || 9;
       if ((window as any).fbq) (window as any).fbq('track', 'Purchase', { value: numericAmount, currency: 'USD' });
-      onSuccess(customerId);
+      // Extract the payment method ID from the confirmed intent so upsell pages
+      // can charge it directly without waiting for Stripe's async card-save flow.
+      const paymentMethodId = typeof paymentIntent.payment_method === 'string'
+        ? paymentIntent.payment_method
+        : paymentIntent.payment_method?.id;
+      onSuccess(customerId, paymentMethodId, paymentIntent.id);
     } else {
       setMessage("Unexpected state — please contact support.");
       setIsLoading(false);
@@ -210,7 +215,7 @@ function CheckoutForm({ email, onSuccess, onBack, amount }: CheckoutFormProps) {
 
 interface ModernPaymentFormProps {
   email: string;
-  onSuccess: (customerId?: string) => void;
+  onSuccess: (customerId?: string, paymentMethodId?: string, paymentIntentId?: string) => void;
   onBack?: () => void;
   amount?: string;
   bare?: boolean;

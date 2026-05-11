@@ -269,10 +269,12 @@ export default function ModernPaymentForm({
   const [customerId, setCustomerId] = useState<string | undefined>();
   const [initError, setInitError] = useState('');
 
-  // Fetch PaymentIntent immediately (no email gate)
+  // Create PaymentIntent once email is valid (customer needed for saved card upsell)
+  const validEmail = email && email.includes('@') && email.includes('.');
   useEffect(() => {
+    if (!validEmail) return;
     let cancelled = false;
-    createPaymentIntent(email || '', amount)
+    createPaymentIntent(email, amount)
       .then((res) => {
         if (!cancelled) {
           setClientSecret(res.clientSecret);
@@ -284,7 +286,7 @@ export default function ModernPaymentForm({
       });
     return () => { cancelled = true; };
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [amount]);
+  }, [validEmail, amount]);
 
   const wrap = (content: React.ReactNode) =>
     bare ? (

@@ -17,7 +17,7 @@ serve(async (req: Request) => {
       httpClient: Stripe.createFetchHttpClient(),
     });
 
-    const { email, amount, currency, paymentMethodConfiguration } = await req.json();
+    const { email, amount, currency } = await req.json();
     let numericAmount = 900; // default $9
     if (amount) {
       const cleanAmount = amount.replace(/[^0-9.]/g, '');
@@ -43,10 +43,7 @@ serve(async (req: Request) => {
       setup_future_usage: 'off_session', // THIS IS CRITICAL FOR ONE-CLICK UPSELL
       receipt_email: email || undefined,
       metadata: { product: 'Avada Design Bundle' },
-      automatic_payment_methods: { enabled: true },
-      ...(paymentMethodConfiguration
-        ? { payment_method_configuration: paymentMethodConfiguration }
-        : {}),
+      payment_method_types: ['card', 'amazon_pay', 'cashapp', 'link'],
     });
 
     return new Response(

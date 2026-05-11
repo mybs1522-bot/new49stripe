@@ -259,7 +259,7 @@ export default function ModernPaymentForm({
   // Fetch PaymentIntent immediately (no email gate)
   useEffect(() => {
     let cancelled = false;
-    createPaymentIntent(email || '', amount, undefined, 'pmc_1TVz0fGGsoQTkhyve6oTQ6jG')
+    createPaymentIntent(email || '', amount)
       .then((res) => {
         if (!cancelled) {
           setClientSecret(res.clientSecret);

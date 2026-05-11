@@ -18,7 +18,7 @@ serve(async (req: Request) => {
     });
 
     const body = await req.json();
-    const { customerId, amount, paymentMethodId: providedPaymentMethodId, paymentIntentId } = body;
+    const { customerId, amount, paymentMethodId: providedPaymentMethodId, paymentIntentId, currency } = body;
     
     let numericAmount = 2700; // default $27
     if (amount) {
@@ -78,7 +78,7 @@ serve(async (req: Request) => {
     // Charge the card immediately
     const paymentIntent = await stripe.paymentIntents.create({
       amount: numericAmount,
-      currency: 'usd',
+      currency: currency || 'usd',
       customer: customerId,
       payment_method: finalPaymentMethodId,
       off_session: true,

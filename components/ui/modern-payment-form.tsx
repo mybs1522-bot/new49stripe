@@ -199,6 +199,7 @@ function CheckoutForm({ email, onSuccess, onBack, amount, customerId }: Checkout
         layout: { type: 'accordion', defaultCollapsed: false, spacedAccordionItems: true },
         defaultValues: { billingDetails: { email: email || undefined } },
         terms: { card: 'never', auBecsDebit: 'never', bancontact: 'never', ideal: 'never', sepaDebit: 'never', sofort: 'never', usBankAccount: 'never' },
+        wallets: { applePay: 'auto', googlePay: 'auto', link: 'never' },
       }} />
 
       {email && (

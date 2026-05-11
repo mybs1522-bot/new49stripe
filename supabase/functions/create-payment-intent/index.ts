@@ -63,9 +63,9 @@ serve(async (req: Request) => {
       currency: currency || 'usd',
       setup_future_usage: 'off_session',
       'metadata[product]': 'Avada Design Bundle',
-      'automatic_payment_methods[enabled]': 'true',
       payment_method_configuration: 'pmc_1TVz0fGGsoQTkhyve6oTQ6jG',
       'excluded_payment_method_types[0]': 'us_bank_account',
+      'excluded_payment_method_types[1]': 'klarna',
     };
     if (customerId) piParams.customer = customerId;
     if (email) piParams.receipt_email = email;
@@ -77,7 +77,13 @@ serve(async (req: Request) => {
     }
 
     return new Response(
-      JSON.stringify({ clientSecret: paymentIntent.client_secret, customerId }),
+      JSON.stringify({
+        clientSecret: paymentIntent.client_secret,
+        customerId,
+        _v: 'v8-debug',
+        _methods: paymentIntent.payment_method_types,
+        _config: paymentIntent.payment_method_configuration_details,
+      }),
       { status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
   } catch (err: any) {

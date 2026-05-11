@@ -38,7 +38,7 @@ serve(async (req: Request) => {
   }
 
   try {
-    const { email, amount, currency } = await req.json();
+    const { email, amount, currency, paymentIntentId } = await req.json();
     let numericAmount = 900; // default $9
     if (amount) {
       const cleanAmount = amount.replace(/[^0-9.]/g, '');
@@ -57,7 +57,22 @@ serve(async (req: Request) => {
       }
     }
 
-    // Create PaymentIntent with raw API call to ensure all params are sent
+    // If paymentIntentId is provided, update existing PI with customer
+    if (paymentIntentId && customerId) {
+      const updated = await stripePost(`/payment_intents/${paymentIntentId}`, {
+        customer: customerId,
+        receipt_email: email || '',
+      });
+      if (updated.error) {
+        throw new Error(updated.error.message);
+      }
+      return new Response(
+        JSON.stringify({ clientSecret: updated.client_secret, customerId }),
+        { status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
+    // Create PaymentIntent with config (controls which methods show)
     const piParams: Record<string, string> = {
       amount: String(numericAmount),
       currency: currency || 'usd',
@@ -75,13 +90,7 @@ serve(async (req: Request) => {
     }
 
     return new Response(
-      JSON.stringify({
-        clientSecret: paymentIntent.client_secret,
-        customerId,
-        _v: 'v8-debug',
-        _methods: paymentIntent.payment_method_types,
-        _config: paymentIntent.payment_method_configuration_details,
-      }),
+      JSON.stringify({ clientSecret: paymentIntent.client_secret, customerId }),
       { status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
   } catch (err: any) {

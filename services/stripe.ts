@@ -14,7 +14,7 @@ export const createPaymentIntent = async (
   email: string,
   amount: string = '$9',
   currency?: string,
-  paymentMethodConfiguration?: string,
+  paymentIntentId?: string,
 ): Promise<{clientSecret: string, customerId: string}> => {
   let res: Response;
   try {
@@ -25,7 +25,7 @@ export const createPaymentIntent = async (
         Authorization: `Bearer ${SUPABASE_ANON_KEY}`,
         apikey: SUPABASE_ANON_KEY,
       },
-      body: JSON.stringify({ email, amount, currency, paymentMethodConfiguration }),
+      body: JSON.stringify({ email, amount, currency, paymentIntentId }),
     });
   } catch (netErr) {
     console.error('[Stripe] Network error calling edge function:', netErr);

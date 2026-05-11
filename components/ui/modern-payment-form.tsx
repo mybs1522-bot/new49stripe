@@ -221,8 +221,6 @@ function CheckoutForm({ email, onSuccess, onBack, amount }: CheckoutFormProps) {
       <PaymentElement options={{
         layout: { type: 'accordion', defaultCollapsed: false, spacedAccordionItems: true },
         defaultValues: { billingDetails: { email: email || undefined } },
-        terms: { card: 'never', auBecsDebit: 'never', bancontact: 'never', ideal: 'never', sepaDebit: 'never', sofort: 'never', usBankAccount: 'never' },
-        wallets: { applePay: 'auto', googlePay: 'auto', link: 'never' },
       }} />
 
       {email && (
@@ -289,7 +287,7 @@ export default function ModernPaymentForm({
     );
 
   return wrap(
-    <Elements stripe={stripePromise} options={{ appearance, mode: 'payment', amount: numericAmount, currency: 'usd', setupFutureUsage: 'off_session', paymentMethodCreation: 'manual', paymentMethodTypes: ['card', 'amazon_pay', 'link'] }}>
+    <Elements stripe={stripePromise} options={{ appearance, mode: 'payment', amount: numericAmount, currency: 'usd', setupFutureUsage: 'off_session', paymentMethodCreation: 'manual' }}>
       <CheckoutForm email={email} onSuccess={onSuccess} onBack={onBack} amount={amount} />
     </Elements>
   );

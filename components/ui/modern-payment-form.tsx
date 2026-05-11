@@ -289,7 +289,7 @@ export default function ModernPaymentForm({
     );
 
   return wrap(
-    <Elements stripe={stripePromise} options={{ appearance, mode: 'payment', amount: numericAmount, currency: 'usd', setupFutureUsage: 'off_session', paymentMethodCreation: 'manual', paymentMethodTypes: ['card', 'amazon_pay'] }}>
+    <Elements stripe={stripePromise} options={{ appearance, mode: 'payment', amount: numericAmount, currency: 'usd', setupFutureUsage: 'off_session', paymentMethodCreation: 'manual' }}>
       <CheckoutForm email={email} onSuccess={onSuccess} onBack={onBack} amount={amount} />
     </Elements>
   );

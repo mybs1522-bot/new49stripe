@@ -220,6 +220,7 @@ function CheckoutForm({ email, onSuccess, onBack, amount }: CheckoutFormProps) {
       <PaymentElement options={{
         layout: { type: 'accordion', defaultCollapsed: false, spacedAccordionItems: true },
         defaultValues: { billingDetails: { email: email || undefined } },
+        terms: { card: 'never', googlePay: 'never', applePay: 'never', auBecsDebit: 'never', bancontact: 'never', ideal: 'never', sepaDebit: 'never', sofort: 'never', usBankAccount: 'never', cashapp: 'never' },
       }} />
 
       {email && (

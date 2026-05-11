@@ -126,10 +126,9 @@ interface CheckoutFormProps {
   onSuccess: (customerId?: string, paymentMethodId?: string, paymentIntentId?: string) => void;
   onBack?: () => void;
   amount: string;
-  customerId?: string;
 }
 
-function CheckoutForm({ email, onSuccess, onBack, amount, customerId }: CheckoutFormProps) {
+function CheckoutForm({ email, onSuccess, onBack, amount }: CheckoutFormProps) {
   const stripe = useStripe();
   const elements = useElements();
   const [isLoading, setIsLoading] = useState(false);
@@ -164,8 +163,31 @@ function CheckoutForm({ email, onSuccess, onBack, amount, customerId }: Checkout
     setIsLoading(true);
     setMessage("");
 
+    // 1. Validate the form (deferred intent mode)
+    const { error: submitError } = await elements.submit();
+    if (submitError) {
+      setMessage(submitError.message ?? "Please check your payment details.");
+      setIsLoading(false);
+      return;
+    }
+
+    // 2. Create PaymentIntent now (with email → creates customer → saves card)
+    let clientSecret: string;
+    let newCustomerId: string | undefined;
+    try {
+      const res = await createPaymentIntent(email || '', amount);
+      clientSecret = res.clientSecret;
+      newCustomerId = res.customerId;
+    } catch (err: any) {
+      setMessage(err.message ?? "Could not create payment. Please try again.");
+      setIsLoading(false);
+      return;
+    }
+
+    // 3. Confirm the payment with the clientSecret
     const { error, paymentIntent } = await stripe.confirmPayment({
       elements,
+      clientSecret,
       confirmParams: {
         return_url: window.location.href,
         payment_method_data: {
@@ -181,22 +203,11 @@ function CheckoutForm({ email, onSuccess, onBack, amount, customerId }: Checkout
     } else if (paymentIntent?.status === "succeeded") {
       const numericAmount = parseInt(amount.replace(/[^0-9]/g, ''), 10) || 9;
       if ((window as any).fbq) (window as any).fbq('track', 'Purchase', { value: numericAmount, currency: 'USD' });
-      let paymentMethodId = typeof paymentIntent.payment_method === 'string'
+      const paymentMethodId = typeof paymentIntent.payment_method === 'string'
         ? paymentIntent.payment_method
         : paymentIntent.payment_method?.id;
-      // If payment_method not in response, retrieve the PaymentIntent to get it
-      if (!paymentMethodId && paymentIntent.id && stripe) {
-        try {
-          const retrieved = await stripe.retrievePaymentIntent(paymentIntent.client_secret || '');
-          if (retrieved.paymentIntent?.payment_method) {
-            paymentMethodId = typeof retrieved.paymentIntent.payment_method === 'string'
-              ? retrieved.paymentIntent.payment_method
-              : retrieved.paymentIntent.payment_method?.id;
-          }
-        } catch (e) { console.warn('[Stripe] Could not retrieve paymentMethod:', e); }
-      }
-      console.log('[CheckoutForm] paymentMethodId:', paymentMethodId, 'paymentIntentId:', paymentIntent.id);
-      onSuccess(customerId, paymentMethodId, paymentIntent.id);
+      console.log('[CheckoutForm] customerId:', newCustomerId, 'paymentMethodId:', paymentMethodId, 'paymentIntentId:', paymentIntent.id);
+      onSuccess(newCustomerId, paymentMethodId, paymentIntent.id);
     } else {
       setMessage("Unexpected state — please contact support.");
       setIsLoading(false);
@@ -265,36 +276,8 @@ export default function ModernPaymentForm({
   amount = "$9",
   bare = false,
 }: ModernPaymentFormProps) {
-  const [clientSecret, setClientSecret] = useState<string | null>(null);
-  const [customerId, setCustomerId] = useState<string | undefined>();
-  const [initError, setInitError] = useState('');
-
-  // Create PaymentIntent after email is fully typed (debounced 800ms + strict regex)
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
-  const isEmailValid = emailRegex.test(email);
-  const [debouncedEmail, setDebouncedEmail] = useState('');
-
-  useEffect(() => {
-    if (!isEmailValid) return;
-    const timer = setTimeout(() => setDebouncedEmail(email), 800);
-    return () => clearTimeout(timer);
-  }, [email, isEmailValid]);
-
-  useEffect(() => {
-    if (!debouncedEmail) return;
-    let cancelled = false;
-    createPaymentIntent(debouncedEmail, amount)
-      .then((res) => {
-        if (!cancelled) {
-          setClientSecret(res.clientSecret);
-          setCustomerId(res.customerId);
-        }
-      })
-      .catch((err) => {
-        if (!cancelled) setInitError(err?.message ?? 'Failed to initialise payment.');
-      });
-    return () => { cancelled = true; };
-  }, [debouncedEmail, amount]);
+  // Parse amount to cents for deferred mode
+  const numericAmount = Math.round(parseFloat(amount.replace(/[^0-9.]/g, '')) * 100) || 900;
 
   const wrap = (content: React.ReactNode) =>
     bare ? (
@@ -305,20 +288,9 @@ export default function ModernPaymentForm({
       </Card>
     );
 
-  if (initError) return wrap(
-    <p className="text-red-500 text-sm text-center py-4">{initError}</p>
-  );
-
-  if (!clientSecret) return wrap(
-    <div className="flex flex-col items-center gap-3 py-6">
-      <Loader2 size={24} className="animate-spin text-gray-400" />
-      <p className="text-xs text-gray-400">Preparing secure checkout…</p>
-    </div>
-  );
-
   return wrap(
-    <Elements stripe={stripePromise} options={{ appearance, clientSecret }}>
-      <CheckoutForm email={email} onSuccess={onSuccess} onBack={onBack} amount={amount} customerId={customerId} />
+    <Elements stripe={stripePromise} options={{ appearance, mode: 'payment', amount: numericAmount, currency: 'usd', paymentMethodCreation: 'manual' }}>
+      <CheckoutForm email={email} onSuccess={onSuccess} onBack={onBack} amount={amount} />
     </Elements>
   );
 }

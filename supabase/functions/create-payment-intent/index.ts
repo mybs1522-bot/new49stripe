@@ -43,7 +43,7 @@ serve(async (req: Request) => {
       setup_future_usage: 'off_session', // THIS IS CRITICAL FOR ONE-CLICK UPSELL
       receipt_email: email || undefined,
       metadata: { product: 'Avada Design Bundle' },
-      payment_method_types: ['card', 'amazon_pay', 'cashapp', 'link'],
+      payment_method_types: ['card', 'apple_pay', 'google_pay', 'amazon_pay', 'cashapp'],
     });
 
     return new Response(

@@ -126,10 +126,9 @@ interface CheckoutFormProps {
   onSuccess: (customerId?: string, paymentMethodId?: string, paymentIntentId?: string) => void;
   onBack?: () => void;
   amount: string;
-  clientSecret: string;
 }
 
-function CheckoutForm({ email, onSuccess, onBack, amount, clientSecret }: CheckoutFormProps) {
+function CheckoutForm({ email, onSuccess, onBack, amount }: CheckoutFormProps) {
   const stripe = useStripe();
   const elements = useElements();
   const [isLoading, setIsLoading] = useState(false);
@@ -164,18 +163,30 @@ function CheckoutForm({ email, onSuccess, onBack, amount, clientSecret }: Checko
     setIsLoading(true);
     setMessage("");
 
-    // Update the existing PI with customer before confirming (so card is saved for upsell)
+    // Validate form first (deferred mode)
+    const { error: submitError } = await elements.submit();
+    if (submitError) {
+      setMessage(submitError.message ?? "Please check your payment details.");
+      setIsLoading(false);
+      return;
+    }
+
+    // Create PI with email (creates customer + saves card for upsell)
+    let piClientSecret: string;
     let customerId: string | undefined;
-    if (email) {
-      try {
-        const piId = clientSecret.split('_secret_')[0];
-        const res = await createPaymentIntent(email, amount, undefined, piId);
-        customerId = res.customerId;
-      } catch { /* continue without customer — payment still works */ }
+    try {
+      const res = await createPaymentIntent(email || '', amount);
+      piClientSecret = res.clientSecret;
+      customerId = res.customerId;
+    } catch (err: any) {
+      setMessage(err.message ?? "Could not create payment. Please try again.");
+      setIsLoading(false);
+      return;
     }
 
     const { error, paymentIntent } = await stripe.confirmPayment({
       elements,
+      clientSecret: piClientSecret,
       confirmParams: {
         return_url: window.location.href,
         payment_method_data: {
@@ -262,17 +273,7 @@ export default function ModernPaymentForm({
   amount = "$9",
   bare = false,
 }: ModernPaymentFormProps) {
-  const [clientSecret, setClientSecret] = useState<string | null>(null);
-  const [initError, setInitError] = useState('');
-
-  // Create a display PI on load (no email) so the config controls which methods show
-  useEffect(() => {
-    let cancelled = false;
-    createPaymentIntent('', amount)
-      .then((res) => { if (!cancelled) setClientSecret(res.clientSecret); })
-      .catch((err) => { if (!cancelled) setInitError(err?.message ?? 'Failed to initialise payment.'); });
-    return () => { cancelled = true; };
-  }, [amount]);
+  const numericAmount = Math.round(parseFloat(amount.replace(/[^0-9.]/g, '')) * 100) || 900;
 
   const wrap = (content: React.ReactNode) =>
     bare ? (
@@ -283,20 +284,9 @@ export default function ModernPaymentForm({
       </Card>
     );
 
-  if (initError) return wrap(
-    <p className="text-red-500 text-sm text-center py-4">{initError}</p>
-  );
-
-  if (!clientSecret) return wrap(
-    <div className="flex flex-col items-center gap-3 py-6">
-      <Loader2 size={24} className="animate-spin text-gray-400" />
-      <p className="text-xs text-gray-400">Preparing secure checkout…</p>
-    </div>
-  );
-
   return wrap(
-    <Elements stripe={stripePromise} options={{ appearance, clientSecret }}>
-      <CheckoutForm email={email} onSuccess={onSuccess} onBack={onBack} amount={amount} clientSecret={clientSecret} />
+    <Elements stripe={stripePromise} options={{ appearance, mode: 'payment', amount: numericAmount, currency: 'usd', setupFutureUsage: 'off_session' }}>
+      <CheckoutForm email={email} onSuccess={onSuccess} onBack={onBack} amount={amount} />
     </Elements>
   );
 }

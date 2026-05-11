@@ -181,9 +181,21 @@ function CheckoutForm({ email, onSuccess, onBack, amount, customerId }: Checkout
     } else if (paymentIntent?.status === "succeeded") {
       const numericAmount = parseInt(amount.replace(/[^0-9]/g, ''), 10) || 9;
       if ((window as any).fbq) (window as any).fbq('track', 'Purchase', { value: numericAmount, currency: 'USD' });
-      const paymentMethodId = typeof paymentIntent.payment_method === 'string'
+      let paymentMethodId = typeof paymentIntent.payment_method === 'string'
         ? paymentIntent.payment_method
         : paymentIntent.payment_method?.id;
+      // If payment_method not in response, retrieve the PaymentIntent to get it
+      if (!paymentMethodId && paymentIntent.id && stripe) {
+        try {
+          const retrieved = await stripe.retrievePaymentIntent(paymentIntent.client_secret || '');
+          if (retrieved.paymentIntent?.payment_method) {
+            paymentMethodId = typeof retrieved.paymentIntent.payment_method === 'string'
+              ? retrieved.paymentIntent.payment_method
+              : retrieved.paymentIntent.payment_method?.id;
+          }
+        } catch (e) { console.warn('[Stripe] Could not retrieve paymentMethod:', e); }
+      }
+      console.log('[CheckoutForm] paymentMethodId:', paymentMethodId, 'paymentIntentId:', paymentIntent.id);
       onSuccess(customerId, paymentMethodId, paymentIntent.id);
     } else {
       setMessage("Unexpected state — please contact support.");

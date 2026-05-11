@@ -45,6 +45,7 @@ serve(async (req: Request) => {
       metadata: { product: 'Avada Design Bundle' },
       automatic_payment_methods: { enabled: true },
       payment_method_configuration: 'pmc_1TVz0fGGsoQTkhyve6oTQ6jG',
+      excluded_payment_method_types: ['us_bank_account'],
     });
 
     return new Response(

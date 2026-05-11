@@ -269,12 +269,21 @@ export default function ModernPaymentForm({
   const [customerId, setCustomerId] = useState<string | undefined>();
   const [initError, setInitError] = useState('');
 
-  // Create PaymentIntent once email is valid (customer needed for saved card upsell)
-  const validEmail = email && email.includes('@') && email.includes('.');
+  // Create PaymentIntent after email is fully typed (debounced 800ms + strict regex)
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+  const isEmailValid = emailRegex.test(email);
+  const [debouncedEmail, setDebouncedEmail] = useState('');
+
   useEffect(() => {
-    if (!validEmail) return;
+    if (!isEmailValid) return;
+    const timer = setTimeout(() => setDebouncedEmail(email), 800);
+    return () => clearTimeout(timer);
+  }, [email, isEmailValid]);
+
+  useEffect(() => {
+    if (!debouncedEmail) return;
     let cancelled = false;
-    createPaymentIntent(email, amount)
+    createPaymentIntent(debouncedEmail, amount)
       .then((res) => {
         if (!cancelled) {
           setClientSecret(res.clientSecret);
@@ -285,8 +294,7 @@ export default function ModernPaymentForm({
         if (!cancelled) setInitError(err?.message ?? 'Failed to initialise payment.');
       });
     return () => { cancelled = true; };
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [validEmail, amount]);
+  }, [debouncedEmail, amount]);
 
   const wrap = (content: React.ReactNode) =>
     bare ? (

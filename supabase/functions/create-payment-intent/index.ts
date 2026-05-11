@@ -63,7 +63,7 @@ serve(async (req: Request) => {
       currency: currency || 'usd',
       setup_future_usage: 'off_session',
       'metadata[product]': 'Avada Design Bundle',
-      'automatic_payment_methods[enabled]': 'true',
+      payment_method_configuration: 'pmc_1TVz0fGGsoQTkhyve6oTQ6jG',
     };
     if (customerId) piParams.customer = customerId;
     if (email) piParams.receipt_email = email;

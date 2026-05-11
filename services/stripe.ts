@@ -10,7 +10,12 @@ export const stripePromise = loadStripe(
   'pk_live_51PRJCsGGsoQTkhyv6OrT4zvnaaB5Y0MSSkTXi0ytj33oygsfW3dcu6aOFa9q3dr2mXYTCJErnFQJcOcyuDAsQd4B00lIAdclbB'
 );
 
-export const createPaymentIntent = async (email: string, amount: string = '$9'): Promise<{clientSecret: string, customerId: string}> => {
+export const createPaymentIntent = async (
+  email: string,
+  amount: string = '$9',
+  currency?: string,
+  paymentMethodConfiguration?: string,
+): Promise<{clientSecret: string, customerId: string}> => {
   let res: Response;
   try {
     res = await fetch(`${SUPABASE_URL}/functions/v1/create-payment-intent`, {
@@ -20,7 +25,7 @@ export const createPaymentIntent = async (email: string, amount: string = '$9'):
         Authorization: `Bearer ${SUPABASE_ANON_KEY}`,
         apikey: SUPABASE_ANON_KEY,
       },
-      body: JSON.stringify({ email, amount }),
+      body: JSON.stringify({ email, amount, currency, paymentMethodConfiguration }),
     });
   } catch (netErr) {
     console.error('[Stripe] Network error calling edge function:', netErr);

@@ -1,4 +1,3 @@
-import Stripe from 'https://esm.sh/stripe@15.0.0?target=deno&no-check';
 import { serve } from 'https://deno.land/std@0.208.0/http/server.ts';
 
 const corsHeaders = {
@@ -6,17 +5,39 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
 
+const STRIPE_SECRET = () => Deno.env.get('STRIPE_SECRET_KEY') ?? '';
+const STRIPE_API = 'https://api.stripe.com/v1';
+
+async function stripePost(endpoint: string, params: Record<string, string>) {
+  const res = await fetch(`${STRIPE_API}${endpoint}`, {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${STRIPE_SECRET()}`,
+      'Content-Type': 'application/x-www-form-urlencoded',
+      'Stripe-Version': '2024-12-18.acacia',
+    },
+    body: new URLSearchParams(params).toString(),
+  });
+  return res.json();
+}
+
+async function stripeGet(endpoint: string, params?: Record<string, string>) {
+  const qs = params ? '?' + new URLSearchParams(params).toString() : '';
+  const res = await fetch(`${STRIPE_API}${endpoint}${qs}`, {
+    headers: {
+      Authorization: `Bearer ${STRIPE_SECRET()}`,
+      'Stripe-Version': '2024-12-18.acacia',
+    },
+  });
+  return res.json();
+}
+
 serve(async (req: Request) => {
   if (req.method === 'OPTIONS') {
     return new Response('ok', { headers: corsHeaders });
   }
 
   try {
-    const stripe = new Stripe(Deno.env.get('STRIPE_SECRET_KEY') ?? '', {
-      apiVersion: '2024-12-18.acacia',
-      httpClient: Stripe.createFetchHttpClient(),
-    });
-
     const { email, amount, currency } = await req.json();
     let numericAmount = 900; // default $9
     if (amount) {
@@ -25,28 +46,35 @@ serve(async (req: Request) => {
     }
 
     // Find or create customer (required to save card)
-    let customerId = undefined;
+    let customerId: string | undefined = undefined;
     if (email) {
-      const existingCustomers = await stripe.customers.list({ email, limit: 1 });
-      if (existingCustomers.data.length > 0) {
-        customerId = existingCustomers.data[0].id;
+      const existing = await stripeGet('/customers', { email, limit: '1' });
+      if (existing.data?.length > 0) {
+        customerId = existing.data[0].id;
       } else {
-        const newCustomer = await stripe.customers.create({ email });
-        customerId = newCustomer.id;
+        const newCust = await stripePost('/customers', { email });
+        customerId = newCust.id;
       }
     }
 
-    const paymentIntent = await stripe.paymentIntents.create({
-      amount: numericAmount,
+    // Create PaymentIntent with raw API call to ensure all params are sent
+    const piParams: Record<string, string> = {
+      amount: String(numericAmount),
       currency: currency || 'usd',
-      customer: customerId,
-      setup_future_usage: 'off_session', // THIS IS CRITICAL FOR ONE-CLICK UPSELL
-      receipt_email: email || undefined,
-      metadata: { product: 'Avada Design Bundle' },
-      automatic_payment_methods: { enabled: true },
+      setup_future_usage: 'off_session',
+      'metadata[product]': 'Avada Design Bundle',
+      'automatic_payment_methods[enabled]': 'true',
       payment_method_configuration: 'pmc_1TVz0fGGsoQTkhyve6oTQ6jG',
-      excluded_payment_method_types: ['us_bank_account'],
-    });
+      'excluded_payment_method_types[0]': 'us_bank_account',
+    };
+    if (customerId) piParams.customer = customerId;
+    if (email) piParams.receipt_email = email;
+
+    const paymentIntent = await stripePost('/payment_intents', piParams);
+
+    if (paymentIntent.error) {
+      throw new Error(paymentIntent.error.message);
+    }
 
     return new Response(
       JSON.stringify({ clientSecret: paymentIntent.client_secret, customerId }),

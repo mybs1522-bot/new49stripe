@@ -43,9 +43,10 @@ serve(async (req: Request) => {
       setup_future_usage: 'off_session', // THIS IS CRITICAL FOR ONE-CLICK UPSELL
       receipt_email: email || undefined,
       metadata: { product: 'Avada Design Bundle' },
+      automatic_payment_methods: { enabled: true },
       ...(paymentMethodConfiguration
         ? { payment_method_configuration: paymentMethodConfiguration }
-        : { automatic_payment_methods: { enabled: true } }),
+        : {}),
     });
 
     return new Response(

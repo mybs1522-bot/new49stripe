@@ -134,6 +134,27 @@ function CheckoutForm({ email, onSuccess, onBack, amount, customerId }: Checkout
   const elements = useElements();
   const [isLoading, setIsLoading] = useState(false);
   const [message, setMessage] = useState("");
+  const formRef = useRef<HTMLFormElement>(null);
+
+  // Hide Stripe mandate / terms text (e.g. Amazon Pay, card save disclosures)
+  useEffect(() => {
+    const hide = () => {
+      if (!formRef.current) return;
+      formRef.current.querySelectorAll('div, p').forEach((el) => {
+        const text = (el as HTMLElement).innerText || '';
+        if (
+          /by (confirming|providing|submitting)/i.test(text) &&
+          /future payments|in accordance/i.test(text)
+        ) {
+          (el as HTMLElement).style.display = 'none';
+        }
+      });
+    };
+    hide();
+    const observer = new MutationObserver(hide);
+    if (formRef.current) observer.observe(formRef.current, { childList: true, subtree: true });
+    return () => observer.disconnect();
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -171,12 +192,13 @@ function CheckoutForm({ email, onSuccess, onBack, amount, customerId }: Checkout
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
+    <form ref={formRef} onSubmit={handleSubmit} className="space-y-4">
 
       {/* Stripe PaymentElement — renders card, iDEAL, Bancontact, etc. based on location */}
       <PaymentElement options={{
-        layout: 'tabs',
+        layout: { type: 'accordion', defaultCollapsed: false, spacedAccordionItems: true },
         defaultValues: { billingDetails: { email: email || undefined } },
+        terms: { card: 'never', auBecsDebit: 'never', bancontact: 'never', ideal: 'never', sepaDebit: 'never', sofort: 'never', usBankAccount: 'never' },
       }} />
 
       {email && (
@@ -234,11 +256,10 @@ export default function ModernPaymentForm({
   const [customerId, setCustomerId] = useState<string | undefined>();
   const [initError, setInitError] = useState('');
 
-  // Fetch PaymentIntent as soon as we have an email
+  // Fetch PaymentIntent immediately (no email gate)
   useEffect(() => {
-    if (!email || !email.includes('@')) return;
     let cancelled = false;
-    createPaymentIntent(email, amount, undefined, 'pmc_1TVz0fGGsoQTkhyve6oTQ6jG')
+    createPaymentIntent(email || '', amount, undefined, 'pmc_1TVz0fGGsoQTkhyve6oTQ6jG')
       .then((res) => {
         if (!cancelled) {
           setClientSecret(res.clientSecret);
@@ -249,7 +270,8 @@ export default function ModernPaymentForm({
         if (!cancelled) setInitError(err?.message ?? 'Failed to initialise payment.');
       });
     return () => { cancelled = true; };
-  }, [email, amount]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [amount]);
 
   const wrap = (content: React.ReactNode) =>
     bare ? (
@@ -267,7 +289,7 @@ export default function ModernPaymentForm({
   if (!clientSecret) return wrap(
     <div className="flex flex-col items-center gap-3 py-6">
       <Loader2 size={24} className="animate-spin text-gray-400" />
-      <p className="text-xs text-gray-400">{email?.includes('@') ? 'Preparing secure checkout…' : 'Enter your email to continue'}</p>
+      <p className="text-xs text-gray-400">Preparing secure checkout…</p>
     </div>
   );
 

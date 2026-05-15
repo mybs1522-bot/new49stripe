@@ -6,6 +6,7 @@ import OnetimePage from './pages/OnetimePage';
 import OfferPage from './pages/OfferPage';
 import RenderUpsellPage from './pages/RenderUpsellPage';
 import AdminPage from './pages/AdminPage';
+import ThankYouPage from './pages/ThankYouPage';
 
 const App: React.FC = () => {
   const { pathname } = useLocation();
@@ -25,6 +26,7 @@ const App: React.FC = () => {
       <Route path="/sketchup-checkout" element={<Navigate to="/checkout" replace />} />
       <Route path="/onetime" element={<OnetimePage />} />
       <Route path="/offer" element={<OfferPage />} />
+      <Route path="/thankyou" element={<ThankYouPage />} />
       <Route path="/admin" element={<AdminPage />} />
     </Routes>
   );

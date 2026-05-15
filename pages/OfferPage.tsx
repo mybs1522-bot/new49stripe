@@ -14,6 +14,7 @@ const OfferPage: React.FC = () => {
   const paymentMethodId = location.state?.paymentMethodId;
   const paymentIntentId = location.state?.paymentIntentId;
   const emailFromState = location.state?.email ?? '';
+  const prevPurchased: string[] = location.state?.purchased ?? ['render'];
   const [timeLeft, setTimeLeft] = useState({ m: 14, s: 59 });
   const [email, setEmail] = useState(emailFromState);
   const [showPayment, setShowPayment] = useState<false | 'books' | 'downsell'>(false);
@@ -49,11 +50,11 @@ const OfferPage: React.FC = () => {
   const handleSuccess = (productMode: 'books' | 'downsell') => {
     if ((window as any).fbq) (window as any).fbq("track", "Purchase", { value: productMode === 'downsell' ? DOWNSELL_BOOKS_PRICE : UPSELL2_PRICE, currency: "USD" });
     sendStageEmail(email, productMode);
-    setPaymentSuccess(true);
+    navigate("/thankyou", { state: { customerId, paymentMethodId, paymentIntentId, email, purchased: [...prevPurchased, productMode] } });
   };
 
   const handleSkip = () => {
-    setPaymentSuccess(true);
+    navigate("/thankyou", { state: { customerId, paymentMethodId, paymentIntentId, email, purchased: prevPurchased } });
   };
 
   const executeUpsell = async () => {
@@ -92,32 +93,11 @@ const OfferPage: React.FC = () => {
       }
   };
 
-  // ─── SUCCESS SCREEN ───
-  if (paymentSuccess) return (
-    <div className="min-h-screen bg-slate-50 flex items-center justify-center p-4">
-      <div className="bg-white rounded-3xl p-8 max-w-md w-full text-center shadow-2xl border border-gray-100 relative overflow-hidden">
-        <div className="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-orange-500 to-orange-400" />
-        <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-5">
-          <Check size={40} className="text-green-600" strokeWidth={2.5} />
-        </div>
-        <h2 className="text-2xl font-display font-black text-gray-900 mb-2">You're All Set!</h2>
-        <p className="text-gray-500 text-sm mb-6">Your order is complete. We've generated your custom access dashboard.</p>
-        <div className="bg-emerald-50 border-2 border-emerald-200 rounded-2xl p-5 mb-4 text-left">
-          <p className="text-emerald-800 text-sm font-black mb-1">Check Your Email Inbox Now</p>
-          <p className="text-emerald-700 text-xs leading-relaxed">Your secure layout and course access links have been successfully delivered to your email. Please check your inbox (and spam folder) to open your library. Mail may take up to 5 minutes sometimes to arrive.</p>
-        </div>
-        
-        <div className="bg-gray-50 border border-gray-200 rounded-xl p-4 mb-5 text-left text-xs font-medium text-gray-600">
-          Didn't receive the email? Wait 2 minutes. If it's still missing, please take a screenshot of this page and WhatsApp us at <strong className="text-gray-900">+91 91987 47810</strong> for manual activation.
-        </div>
-        
-        <button onClick={() => window.location.href = "mailto:"}
-          className="block w-full bg-gray-900 hover:bg-black text-white font-bold py-3.5 rounded-xl text-center text-sm transition-colors">
-          Open Email App
-        </button>
-      </div>
-    </div>
-  );
+  // Redirect to ThankYou if already completed
+  if (paymentSuccess) {
+    navigate("/thankyou", { state: { customerId, paymentMethodId, paymentIntentId, email, purchased: prevPurchased } });
+    return null;
+  }
 
   const renderFormOrCTA = (isBottom: boolean = false) => (
     <div className="upsell-fade" style={{ animationDelay: '0.6s' }}>

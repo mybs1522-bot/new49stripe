@@ -10,12 +10,7 @@ export const stripePromise = loadStripe(
   'pk_live_51PRJCsGGsoQTkhyv6OrT4zvnaaB5Y0MSSkTXi0ytj33oygsfW3dcu6aOFa9q3dr2mXYTCJErnFQJcOcyuDAsQd4B00lIAdclbB'
 );
 
-export const createPaymentIntent = async (
-  email: string,
-  amount: string = '$9',
-  currency?: string,
-  paymentIntentId?: string,
-): Promise<{clientSecret: string, customerId: string}> => {
+export const createPaymentIntent = async (email: string, amount: string = '$9'): Promise<{clientSecret: string, customerId: string}> => {
   let res: Response;
   try {
     res = await fetch(`${SUPABASE_URL}/functions/v1/create-payment-intent`, {
@@ -25,7 +20,7 @@ export const createPaymentIntent = async (
         Authorization: `Bearer ${SUPABASE_ANON_KEY}`,
         apikey: SUPABASE_ANON_KEY,
       },
-      body: JSON.stringify({ email, amount, currency, paymentIntentId }),
+      body: JSON.stringify({ email, amount }),
     });
   } catch (netErr) {
     console.error('[Stripe] Network error calling edge function:', netErr);
@@ -78,6 +73,25 @@ export const chargeSavedCardUpsell = async (customerId: string, amount: string =
     throw new Error(data.error ?? `Upsell failed.`);
   }
   return true;
+};
+
+export const getAccessLinks = async (products: string[]): Promise<Record<string, string>> => {
+  try {
+    const res = await fetch(`${SUPABASE_URL}/functions/v1/get-access-links`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${SUPABASE_ANON_KEY}`,
+        apikey: SUPABASE_ANON_KEY,
+      },
+      body: JSON.stringify({ products }),
+    });
+    const data = await res.json();
+    return data.links ?? {};
+  } catch (err) {
+    console.error('[getAccessLinks] failed:', err);
+    return {};
+  }
 };
 
 export const sendAccessEmail = async (email: string): Promise<void> => {

@@ -45,11 +45,11 @@ const RenderUpsellPage: React.FC = () => {
   const handleSuccess = (newCustomerId?: string, newPaymentMethodId?: string) => {
     if ((window as any).fbq) (window as any).fbq("track", "Purchase", { value: FRONT_END_PRICE, currency: "USD" });
     sendStageEmail(email, 'render');
-    navigate("/onetime", { state: { customerId: newCustomerId ?? customerId, paymentMethodId: newPaymentMethodId ?? paymentMethodId, email } });
+    navigate("/onetime", { state: { customerId: newCustomerId ?? customerId, paymentMethodId: newPaymentMethodId ?? paymentMethodId, email, purchased: ['render'] } });
   };
 
   const handleSkip = () => {
-    navigate("/onetime", { state: { customerId, paymentMethodId, email } });
+    navigate("/onetime", { state: { customerId, paymentMethodId, email, purchased: [] } });
   };
 
   const executeUpsell = async () => {

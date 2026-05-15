@@ -34,7 +34,7 @@ const CheckoutPage: React.FC = () => {
     console.log('[CheckoutPage] Payment succeeded. customerId:', customerId, 'paymentMethodId:', paymentMethodId, 'paymentIntentId:', paymentIntentId);
     if ((window as any).fbq) (window as any).fbq("track", "Purchase", { value: FRONT_END_PRICE, currency: "USD" });
     sendStageEmail(email, 'render');
-    navigate("/onetime", { state: { customerId, paymentMethodId, paymentIntentId, email } });
+    navigate("/onetime", { state: { customerId, paymentMethodId, paymentIntentId, email, purchased: ['render'] } });
   };
 
   return (

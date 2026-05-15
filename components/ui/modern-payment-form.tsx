@@ -1,13 +1,16 @@
 import React, { useState, useEffect, useRef } from "react";
 import {
   Elements,
-  PaymentElement,
+  CardNumberElement,
+  CardExpiryElement,
+  CardCvcElement,
   useStripe,
   useElements,
 } from "@stripe/react-stripe-js";
 import type { Appearance } from "@stripe/stripe-js";
 import { stripePromise, createPaymentIntent, FALLBACK_STRIPE_LINK, sendAccessEmail } from "@/services/stripe";
 import { Card, CardContent } from "@/components/ui/card";
+import { Label } from "@/components/ui/label";
 import { FaPaypal } from "react-icons/fa";
 import { Lock, ShieldCheck, Loader2 } from "lucide-react";
 
@@ -121,6 +124,25 @@ const appearance: Appearance = {
   variables: { colorPrimary: "#111827", fontFamily: "Inter, system-ui, sans-serif" },
 };
 
+const CARD_STYLE = {
+  style: {
+    base: {
+      fontSize: "14px",
+      color: "#111827",
+      fontFamily: "Inter, system-ui, sans-serif",
+      fontWeight: "400",
+      "::placeholder": { color: "#9ca3af" },
+    },
+    invalid: { color: "#ef4444" },
+  },
+};
+
+const StripeInputWrap = ({ children }: { children: React.ReactNode }) => (
+  <div className="flex h-10 w-full items-center rounded-md border border-gray-300 bg-white px-3 text-sm focus-within:outline-none focus-within:ring-2 focus-within:ring-gray-900/20 focus-within:border-gray-900 transition-colors">
+    <div className="w-full">{children}</div>
+  </div>
+);
+
 interface CheckoutFormProps {
   email: string;
   onSuccess: (customerId?: string, paymentMethodId?: string, paymentIntentId?: string) => void;
@@ -133,67 +155,36 @@ function CheckoutForm({ email, onSuccess, onBack, amount }: CheckoutFormProps) {
   const elements = useElements();
   const [isLoading, setIsLoading] = useState(false);
   const [message, setMessage] = useState("");
-  const formRef = useRef<HTMLFormElement>(null);
-
-  // Hide Stripe mandate / terms text (e.g. Amazon Pay, card save disclosures)
-  useEffect(() => {
-    const hide = () => {
-      if (!formRef.current) return;
-      formRef.current.querySelectorAll('div, p').forEach((el) => {
-        const text = (el as HTMLElement).innerText || '';
-        if (
-          /by (confirming|providing|submitting)/i.test(text) &&
-          /future payments|in accordance/i.test(text)
-        ) {
-          (el as HTMLElement).style.display = 'none';
-        }
-      });
-    };
-    hide();
-    const observer = new MutationObserver(hide);
-    if (formRef.current) observer.observe(formRef.current, { childList: true, subtree: true });
-    return () => observer.disconnect();
-  }, []);
+  const [cardTyped, setCardTyped] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!stripe || !elements) return;
 
+    const cardElement = elements.getElement(CardNumberElement);
+    if (!cardElement) return;
+
     if ((window as any).fbq) (window as any).fbq('track', 'AddPaymentInfo');
     setIsLoading(true);
     setMessage("");
 
-    // Validate form first (deferred mode)
-    const { error: submitError } = await elements.submit();
-    if (submitError) {
-      setMessage(submitError.message ?? "Please check your payment details.");
-      setIsLoading(false);
-      return;
-    }
-
-    // Create PI with email (creates customer + saves card for upsell)
-    let piClientSecret: string;
+    let clientSecret: string;
     let customerId: string | undefined;
     try {
-      const res = await createPaymentIntent(email || '', amount);
-      piClientSecret = res.clientSecret;
+      const res = await createPaymentIntent(email, amount);
+      clientSecret = res.clientSecret;
       customerId = res.customerId;
     } catch (err: any) {
-      setMessage(err.message ?? "Could not create payment. Please try again.");
+      setMessage(err?.message ?? "Failed to initialise payment. Please try again.");
       setIsLoading(false);
       return;
     }
 
-    const { error, paymentIntent } = await stripe.confirmPayment({
-      elements,
-      clientSecret: piClientSecret,
-      confirmParams: {
-        return_url: window.location.href,
-        payment_method_data: {
-          billing_details: { email: email || undefined },
-        },
+    const { error, paymentIntent } = await stripe.confirmCardPayment(clientSecret, {
+      payment_method: {
+        card: cardElement,
+        billing_details: { email: email || undefined },
       },
-      redirect: 'if_required',
     });
 
     if (error) {
@@ -202,10 +193,11 @@ function CheckoutForm({ email, onSuccess, onBack, amount }: CheckoutFormProps) {
     } else if (paymentIntent?.status === "succeeded") {
       const numericAmount = parseInt(amount.replace(/[^0-9]/g, ''), 10) || 9;
       if ((window as any).fbq) (window as any).fbq('track', 'Purchase', { value: numericAmount, currency: 'USD' });
+      // Extract the payment method ID from the confirmed intent so upsell pages
+      // can charge it directly without waiting for Stripe's async card-save flow.
       const paymentMethodId = typeof paymentIntent.payment_method === 'string'
         ? paymentIntent.payment_method
         : paymentIntent.payment_method?.id;
-      console.log('[CheckoutForm] customerId:', customerId, 'paymentMethodId:', paymentMethodId, 'paymentIntentId:', paymentIntent.id);
       onSuccess(customerId, paymentMethodId, paymentIntent.id);
     } else {
       setMessage("Unexpected state — please contact support.");
@@ -214,14 +206,30 @@ function CheckoutForm({ email, onSuccess, onBack, amount }: CheckoutFormProps) {
   };
 
   return (
-    <form ref={formRef} onSubmit={handleSubmit} className="space-y-4">
+    <form onSubmit={handleSubmit} className="space-y-4">
 
-      {/* Stripe PaymentElement — renders card, iDEAL, Bancontact, etc. based on location */}
-      <PaymentElement options={{
-        layout: { type: 'accordion', defaultCollapsed: false, spacedAccordionItems: true },
-        defaultValues: { billingDetails: { email: email || undefined } },
-        terms: { card: 'never', googlePay: 'never', applePay: 'never', auBecsDebit: 'never', bancontact: 'never', ideal: 'never', sepaDebit: 'never', sofort: 'never', usBankAccount: 'never', cashapp: 'never' },
-      }} />
+      {/* Card fields */}
+      <div className="space-y-3">
+        <div className="space-y-1">
+          <Label className="text-xs text-gray-600 font-semibold">Card number</Label>
+          <StripeInputWrap>
+            <CardNumberElement
+              options={{ ...CARD_STYLE, showIcon: true }}
+              onChange={(e) => setCardTyped(!e.empty)}
+            />
+          </StripeInputWrap>
+        </div>
+        <div className="grid grid-cols-2 gap-3">
+          <div className="space-y-1">
+            <Label className="text-xs text-gray-600 font-semibold">Expiry</Label>
+            <StripeInputWrap><CardExpiryElement options={CARD_STYLE} /></StripeInputWrap>
+          </div>
+          <div className="space-y-1">
+            <Label className="text-xs text-gray-600 font-semibold">CVV</Label>
+            <StripeInputWrap><CardCvcElement options={CARD_STYLE} /></StripeInputWrap>
+          </div>
+        </div>
+      </div>
 
       {email && (
         <p className="text-xs text-gray-400 text-center">
@@ -233,13 +241,13 @@ function CheckoutForm({ email, onSuccess, onBack, amount }: CheckoutFormProps) {
         <p className="text-red-500 text-xs text-center bg-red-50 p-2.5 rounded-xl border border-red-100">{message}</p>
       )}
 
-      <button type="submit" disabled={!stripe || !elements || isLoading}
+      <button type="submit" disabled={!stripe || isLoading}
         className="w-full h-12 bg-gray-900 hover:bg-black disabled:opacity-50 disabled:cursor-not-allowed text-white font-bold rounded-xl text-base flex items-center justify-center gap-2 transition-all">
         {isLoading ? <><Loader2 size={18} className="animate-spin" /> Processing…</> : `Pay ${amount} · Get Instant Access`}
       </button>
 
-      {/* PayPal */}
-      <div>
+      {/* PayPal — hidden once user starts typing card number */}
+      <div className={`transition-all duration-300 overflow-hidden ${cardTyped ? 'max-h-0 opacity-0 pointer-events-none' : 'max-h-24 opacity-100'}`}>
         <div className="flex items-center gap-3 text-gray-600 mb-3">
           <hr className="flex-grow border-gray-300" />
           <span className="text-xs font-bold whitespace-nowrap text-gray-400">or pay with</span>
@@ -274,8 +282,6 @@ export default function ModernPaymentForm({
   amount = "$9",
   bare = false,
 }: ModernPaymentFormProps) {
-  const numericAmount = Math.round(parseFloat(amount.replace(/[^0-9.]/g, '')) * 100) || 900;
-
   const wrap = (content: React.ReactNode) =>
     bare ? (
       <div className="border-t border-gray-100 mt-3 pt-4">{content}</div>
@@ -286,7 +292,7 @@ export default function ModernPaymentForm({
     );
 
   return wrap(
-    <Elements stripe={stripePromise} options={{ appearance, mode: 'payment', amount: numericAmount, currency: 'usd', setupFutureUsage: 'off_session' }}>
+    <Elements stripe={stripePromise} options={{ appearance }}>
       <CheckoutForm email={email} onSuccess={onSuccess} onBack={onBack} amount={amount} />
     </Elements>
   );

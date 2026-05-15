@@ -14,6 +14,7 @@ const OnetimePage: React.FC = () => {
   const paymentMethodId = location.state?.paymentMethodId;
   const paymentIntentId = location.state?.paymentIntentId;
   const emailFromState = location.state?.email ?? '';
+  const prevPurchased: string[] = location.state?.purchased ?? ['render'];
   const [timeLeft, setTimeLeft] = useState({ m: 9, s: 59 });
   const [email, setEmail] = useState(emailFromState);
   const [showPayment, setShowPayment] = useState(false);
@@ -48,11 +49,11 @@ const OnetimePage: React.FC = () => {
   const handleSuccess = (newCustomerId?: string, newPaymentMethodId?: string) => {
     if ((window as any).fbq) (window as any).fbq("track", "Purchase", { value: UPSELL_PRICE, currency: "USD" });
     sendStageEmail(email, 'full');
-    navigate("/offer", { state: { customerId: newCustomerId ?? customerId, paymentMethodId: newPaymentMethodId ?? paymentMethodId, paymentIntentId, email } });
+    navigate("/offer", { state: { customerId: newCustomerId ?? customerId, paymentMethodId: newPaymentMethodId ?? paymentMethodId, paymentIntentId, email, purchased: [...prevPurchased, 'full'] } });
   };
 
   const handleSkip = () => {
-    navigate("/offer", { state: { customerId, paymentMethodId, paymentIntentId, email } });
+    navigate("/offer", { state: { customerId, paymentMethodId, paymentIntentId, email, purchased: prevPurchased } });
   };
 
   const handleCTA = async () => {
@@ -389,7 +390,7 @@ const OnetimePage: React.FC = () => {
               </button>
               <button
                 disabled={isProcessingUpSell}
-                onClick={() => navigate("/offer", { state: { customerId, paymentMethodId, email } })}
+                onClick={() => navigate("/offer", { state: { customerId, paymentMethodId, email, purchased: prevPurchased } })}
                 className="block w-full py-3 text-center text-red-500 hover:text-red-700 text-sm font-bold transition-colors underline underline-offset-4 decoration-red-200"
               >
                 Cancel, I don't want it

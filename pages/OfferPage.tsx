@@ -6,9 +6,11 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { chargeSavedCardUpsell } from "../services/stripe";
 import { sendStageEmail } from "../services/email";
 import FunnelProgressBar from "../components/FunnelProgressBar";
+import { useCurrency } from "../contexts/CurrencyContext";
 
 const OfferPage: React.FC = () => {
   const navigate = useNavigate();
+  const { formatPrice } = useCurrency();
   const location = useLocation();
   const customerId = location.state?.customerId;
   const paymentMethodId = location.state?.paymentMethodId;
@@ -225,13 +227,13 @@ const OfferPage: React.FC = () => {
                 <p className="text-gray-500 text-sm">6 Interior Design Books (800+ Pages)</p>
               </div>
               <div className="text-right">
-                <span className="text-gray-400 text-lg line-through mr-2">${UPSELL2_ORIGINAL_PRICE}</span>
-                <span className="text-4xl font-display font-black text-gray-900">${UPSELL2_PRICE}</span>
+                <span className="text-gray-400 text-lg line-through mr-2">{formatPrice(UPSELL2_ORIGINAL_PRICE)}</span>
+                <span className="text-4xl font-display font-black text-gray-900">{formatPrice(UPSELL2_PRICE)}</span>
               </div>
             </div>
             <div className="flex items-center gap-2 bg-emerald-50 border border-emerald-100 rounded-lg px-3 py-2">
               <Zap size={14} className="text-emerald-500" />
-              <span className="text-sm font-semibold text-emerald-700">You save ${UPSELL2_ORIGINAL_PRICE - UPSELL2_PRICE} right now!</span>
+              <span className="text-sm font-semibold text-emerald-700">You save {formatPrice(UPSELL2_ORIGINAL_PRICE - UPSELL2_PRICE)} right now!</span>
             </div>
           </div>
         </div>
@@ -323,7 +325,7 @@ const OfferPage: React.FC = () => {
             <button onClick={() => setShowPayment(false)} className="absolute top-4 right-4 text-gray-400 hover:text-gray-600"><X size={20}/></button>
             <div className="flex items-center justify-between mb-4 mt-2">
               <h3 className="text-lg font-bold text-gray-900">Complete Your Upgrade</h3>
-              <div className="bg-orange-100 text-orange-600 text-xs font-bold px-3 py-1 rounded-full">${showPayment === 'books' ? UPSELL2_PRICE : DOWNSELL_BOOKS_PRICE}</div>
+              <div className="bg-orange-100 text-orange-600 text-xs font-bold px-3 py-1 rounded-full">{formatPrice(showPayment === 'books' ? UPSELL2_PRICE : DOWNSELL_BOOKS_PRICE)}</div>
             </div>
             <label className="block text-sm font-bold text-gray-900 mb-1.5">Email</label>
             <div className="relative mb-3">
@@ -347,7 +349,7 @@ const OfferPage: React.FC = () => {
             <button onClick={() => setIsConfirmingSkip(false)} className="absolute top-4 right-4 text-gray-400 hover:text-gray-600"><X size={20}/></button>
             <h4 className="text-orange-900 font-black text-2xl mb-2 mt-4">Wait! What if you only took our bestsellers?</h4>
             <p className="text-gray-800 text-sm mb-6 font-medium leading-relaxed">
-              If the full bundle is too much right now, you can get <strong className="text-gray-900">just the Kitchen & Bedroom Design Books</strong> for only ${DOWNSELL_BOOKS_PRICE}. You can always add the other 4 books later for $24.
+              If the full bundle is too much right now, you can get <strong className="text-gray-900">just the Kitchen & Bedroom Design Books</strong> for only {formatPrice(DOWNSELL_BOOKS_PRICE)}. You can always add the other 4 books later.
             </p>
             <div className="space-y-3">
               <button
@@ -355,7 +357,7 @@ const OfferPage: React.FC = () => {
                 onClick={executeDownsell}
                 className="w-full py-4 bg-emerald-500 hover:bg-emerald-600 shadow-xl shadow-emerald-500/20 text-white font-bold text-lg rounded-xl transition-all"
               >
-                {isProcessingDownsell ? "Processing..." : `Yes, add the 2 books for $${DOWNSELL_BOOKS_PRICE}`}
+                {isProcessingDownsell ? "Processing..." : `Yes, add the 2 books for ${formatPrice(DOWNSELL_BOOKS_PRICE)}`}
               </button>
               <button
                 disabled={isProcessingDownsell || isProcessingUpSell}

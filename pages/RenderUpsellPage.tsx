@@ -6,9 +6,11 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { chargeSavedCardUpsell } from "../services/stripe";
 import { sendStageEmail } from "../services/email";
 import FunnelProgressBar from "../components/FunnelProgressBar";
+import { useCurrency } from "../contexts/CurrencyContext";
 
 const RenderUpsellPage: React.FC = () => {
   const navigate = useNavigate();
+  const { formatPrice } = useCurrency();
   const [timeLeft, setTimeLeft] = useState({ m: 14, s: 59 });
   const [showPayment, setShowPayment] = useState(false);
   const [isProcessingUpSell, setIsProcessingUpSell] = useState(false);
@@ -86,7 +88,7 @@ const RenderUpsellPage: React.FC = () => {
             <div className="bg-red-50 border border-red-200 rounded-2xl p-6 text-center mt-4">
               <h4 className="text-red-700 font-bold text-lg mb-2">Are you sure?</h4>
               <p className="text-gray-700 text-sm mb-5">
-                This discount will not be available again. You can still buy later, but at the full regular price (${FRONT_END_ORIGINAL_PRICE}).
+                This discount will not be available again. You can still buy later, but at the full regular price ({formatPrice(FRONT_END_ORIGINAL_PRICE)}).
               </p>
               <div className="space-y-3">
                 <button
@@ -126,7 +128,7 @@ const RenderUpsellPage: React.FC = () => {
         <div className="bg-white rounded-2xl p-6 shadow-2xl border border-gray-100">
           <div className="flex items-center justify-between mb-4">
             <h3 className="text-lg font-bold text-gray-900">Complete Your Upgrade</h3>
-            <div className="bg-orange-100 text-orange-600 text-xs font-bold px-3 py-1 rounded-full">${FRONT_END_PRICE}</div>
+            <div className="bg-orange-100 text-orange-600 text-xs font-bold px-3 py-1 rounded-full">{formatPrice(FRONT_END_PRICE)}</div>
           </div>
           <label className="block text-sm font-bold text-gray-900 mb-1.5">Email</label>
           <div className="relative mb-3">
@@ -260,13 +262,13 @@ const RenderUpsellPage: React.FC = () => {
                 <p className="text-gray-500 text-sm">V-Ray + D5 Render (2 Courses)</p>
               </div>
               <div className="text-right">
-                <span className="text-gray-400 text-lg line-through mr-2">${FRONT_END_ORIGINAL_PRICE}</span>
-                <span className="text-4xl font-display font-black text-gray-900">${FRONT_END_PRICE}</span>
+                <span className="text-gray-400 text-lg line-through mr-2">{formatPrice(FRONT_END_ORIGINAL_PRICE)}</span>
+                <span className="text-4xl font-display font-black text-gray-900">{formatPrice(FRONT_END_PRICE)}</span>
               </div>
             </div>
             <div className="flex items-center gap-2 bg-emerald-50 border border-emerald-100 rounded-lg px-3 py-2">
               <Zap size={14} className="text-emerald-500" />
-              <span className="text-sm font-semibold text-emerald-700">You save ${FRONT_END_ORIGINAL_PRICE - FRONT_END_PRICE} — that's {Math.round((1 - FRONT_END_PRICE / FRONT_END_ORIGINAL_PRICE) * 100)}% off!</span>
+              <span className="text-sm font-semibold text-emerald-700">You save {formatPrice(FRONT_END_ORIGINAL_PRICE - FRONT_END_PRICE)} — that's {Math.round((1 - FRONT_END_PRICE / FRONT_END_ORIGINAL_PRICE) * 100)}% off!</span>
             </div>
           </div>
         </div>

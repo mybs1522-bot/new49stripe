@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowRight, Star, CheckCircle, CheckCircle2, X, ChevronDown, Sparkles, Eye, Download, Mail, Lock, Loader2, Timer, Check, ShieldCheck } from 'lucide-react';
 import { FRONT_END_COURSES, FRONT_END_PRICE, FRONT_END_ORIGINAL_PRICE } from '../constants';
+import { useCurrency } from '../contexts/CurrencyContext';
 import TeamSection from '../components/ui/team';
 import {
   Logo, SocialProofToast,
@@ -12,6 +13,7 @@ import {
 
 /* ─── REUSABLE CTA WITH TIMER ─── */
 const CtaWithTimer = ({ timeLeft, onClick, variant = 'green' }: { timeLeft: { h: number; m: number; s: number }; onClick: () => void; variant?: 'green' | 'dark' | 'blue' }) => {
+  const { formatPrice } = useCurrency();
   const f = (v: number) => v.toString().padStart(2, '0');
   const bgClass = variant === 'dark'
     ? 'bg-slate-900'
@@ -51,8 +53,8 @@ const CtaWithTimer = ({ timeLeft, onClick, variant = 'green' }: { timeLeft: { h:
 
         {/* Price */}
         <div className="flex items-baseline gap-2">
-          <span className={`text-sm ${variant === 'dark' ? 'text-slate-500' : 'text-slate-400'} line-through font-bold`}>${FRONT_END_ORIGINAL_PRICE}</span>
-          <span className={`text-3xl font-display font-black ${variant === 'dark' ? 'text-white' : 'text-slate-900'}`}>${FRONT_END_PRICE}</span>
+          <span className={`text-sm ${variant === 'dark' ? 'text-slate-500' : 'text-slate-400'} line-through font-bold`}>{formatPrice(FRONT_END_ORIGINAL_PRICE)}</span>
+          <span className={`text-3xl font-display font-black ${variant === 'dark' ? 'text-white' : 'text-slate-900'}`}>{formatPrice(FRONT_END_PRICE)}</span>
           <span className="bg-orange-100 text-orange-500 text-[9px] font-bold px-1.5 py-0.5 rounded-full">91% OFF</span>
         </div>
 
@@ -75,6 +77,7 @@ const CtaWithTimer = ({ timeLeft, onClick, variant = 'green' }: { timeLeft: { h:
 
 const LandingPage: React.FC = () => {
   const navigate = useNavigate();
+  const { formatPrice, countryName, currency } = useCurrency();
 
   const [timeLeft, setTimeLeft] = useState(() => { const D = (3 * 3600 + 36 * 60 + 20) * 1000, r = D - (Date.now() % D); return { h: Math.floor((r / 3600000) % 24), m: Math.floor((r / 60000) % 60), s: Math.floor((r / 1000) % 60) }; });
   const [showStickyBar, setShowStickyBar] = useState(false);
@@ -99,15 +102,12 @@ const LandingPage: React.FC = () => {
   return (
     <div className="min-h-screen bg-white text-gray-900 font-sans overflow-x-hidden selection:bg-orange-100">
 
-      {/* ═══ STICKY HEADER ═══ */}
-      <header className="sticky top-0 z-[60] bg-white/80 backdrop-blur-2xl border-b border-slate-100/60 px-5 py-4">
-        <div className="max-w-7xl mx-auto flex items-center justify-between">
-          <Logo />
-          <div className="flex items-center gap-4">
-            <button onClick={openPaymentModal} className="text-white px-6 py-2.5 rounded-full text-xs font-black uppercase tracking-widest hover:scale-105 transition-all premium-stroke" style={{ background: 'linear-gradient(135deg,#f97316,#ea580c)', boxShadow: '0 0 20px rgba(249,115,22,0.45)' }}>Get Access — ${FRONT_END_PRICE}</button>
-          </div>
+      {/* ═══ TOP BANNER ═══ */}
+      {countryName && (
+        <div className="sticky top-0 z-[60] bg-slate-900 text-white text-center py-2.5 px-4">
+          <span className="text-xs md:text-sm font-bold tracking-wide">🎉 Now Available in <span className="text-orange-400">{countryName}</span> — Pay in {currency.code !== 'USD' ? currency.code : 'your local currency'}!</span>
         </div>
-      </header>
+      )}
 
       <main>
         {/* 1. HERO — The Primary Pitch */}
@@ -122,49 +122,70 @@ const LandingPage: React.FC = () => {
               </div>
 
               {/* Headline */}
-              <h1 className="tracking-tight mb-5 md:mb-6 w-full">
-
+              <h1 className="tracking-tight mb-4 w-full">
                 {/* Industry truth */}
-                <span className="block text-[11px] md:text-xs font-bold text-slate-400 uppercase tracking-[0.2em] mb-4">
+                <span className="block text-[11px] md:text-xs font-bold text-slate-400 uppercase tracking-[0.2em] mb-3">
                   In Architecture & Design —{' '}
                   <span className="text-slate-600">Planning</span>,{' '}
                   <span className="text-slate-600">Design</span> &{' '}
                   <span className="text-slate-600">Rendering</span>{' '}matter the most.
                 </span>
 
-                {/* Hook */}
-                <span className="block text-2xl leading-snug md:text-[2.6rem] font-display font-black text-slate-900 mb-1">
-                  The question isn't <em className="font-serif font-normal not-italic text-slate-500">if</em> you can.
+                {/* Bridge */}
+                <span className="block text-lg md:text-xl font-display font-bold text-slate-700">
+                  That's exactly why we teach you the{' '}
+                  <span className="text-orange-500">complete industry pipeline:</span>
                 </span>
-                <span className="block text-2xl leading-snug md:text-[2.6rem] font-display font-black text-slate-900 mb-6">
-                  It's —{' '}
+              </h1>
+
+              {/* Pipeline Visual */}
+              <div className="w-full mb-5 grid grid-cols-3 gap-2 md:gap-3">
+                <div className="bg-slate-50 border border-slate-200 rounded-xl md:rounded-2xl px-2 py-3 md:p-4 text-center">
+                  <span className="text-[9px] md:text-[10px] font-bold uppercase tracking-widest text-orange-500 block">Planning</span>
+                  <span className="text-sm md:text-lg font-display font-black text-slate-900">AutoCAD</span>
+                  <p className="text-[9px] md:text-[11px] text-slate-500 mt-0.5 hidden sm:block">2D Floor Plans</p>
+                </div>
+                <div className="bg-slate-50 border border-slate-200 rounded-xl md:rounded-2xl px-2 py-3 md:p-4 text-center">
+                  <span className="text-[9px] md:text-[10px] font-bold uppercase tracking-widest text-orange-500 block">Designing</span>
+                  <span className="text-sm md:text-lg font-display font-black text-slate-900">SketchUp</span>
+                  <p className="text-[9px] md:text-[11px] text-slate-500 mt-0.5 hidden sm:block">3D Modeling</p>
+                </div>
+                <div className="bg-slate-50 border border-slate-200 rounded-xl md:rounded-2xl px-2 py-3 md:p-4 text-center">
+                  <span className="text-[9px] md:text-[10px] font-bold uppercase tracking-widest text-orange-500 block">Rendering</span>
+                  <span className="text-sm md:text-lg font-display font-black text-slate-900">V-Ray & D5</span>
+                  <p className="text-[9px] md:text-[11px] text-slate-500 mt-0.5 hidden sm:block">Photorealistic Visuals</p>
+                </div>
+              </div>
+
+              <div className="tracking-tight mb-5 md:mb-6 w-full text-center">
+                {/* Hook */}
+                <p className="text-2xl leading-snug md:text-[2.6rem] font-display font-black text-slate-900 mb-1">
+                  Master All 4 Tools.{' '}
                   <span className="relative inline-block">
-                    <span className="text-orange-500">How to do it FASTER?</span>
+                    <span className="text-orange-500">15 Days. From Zero.</span>
                     <span className="absolute -bottom-1 left-0 w-full h-[3px] bg-orange-200 rounded-full"></span>
                   </span>
-                </span>
+                </p>
 
                 {/* Divider */}
-                <span className="block w-10 h-[2px] bg-orange-300 rounded-full mx-auto mb-5"></span>
+                <span className="block w-10 h-[2px] bg-orange-300 rounded-full mx-auto my-5"></span>
 
                 {/* Identity */}
-                <span className="block text-[1.65rem] leading-tight md:text-5xl font-display font-black text-slate-900 mb-1">
-                  If You Want to Design{' '}
+                <p className="text-[1.65rem] leading-tight md:text-5xl font-display font-black text-slate-900 mb-1">
+                  Design{' '}
                   <span className="text-orange-500">Homes. Villas. Offices.</span>
-                </span>
-                <span className="block text-[1.5rem] leading-tight md:text-4xl font-display font-black text-slate-700 mb-4">
-                  Design Them in a Way<br />
-                  <span className="text-orange-500">the Industry Can't Ignore.</span>
-                </span>
+                </p>
+                <p className="text-[1.5rem] leading-tight md:text-4xl font-display font-black text-slate-700 mb-4">
+                  In a Way the Industry{' '}
+                  <span className="text-orange-500">Can't Ignore.</span>
+                </p>
 
                 {/* Consequence */}
-                <span className="block text-sm md:text-base text-slate-500 font-medium leading-relaxed max-w-lg mx-auto">
-                  Because that's the only way you can{' '}
-                  <strong className="text-slate-800">make money</strong> in this{' '}
-                  <strong className="text-orange-500">AI era.</strong>
-                </span>
-
-              </h1>
+                <p className="text-sm md:text-base text-slate-500 font-medium leading-relaxed max-w-lg mx-auto">
+                  The designers who master <strong className="text-slate-800">planning, modeling & rendering</strong> are the ones who{' '}
+                  <strong className="text-orange-500">get hired, get clients, and get paid.</strong>
+                </p>
+              </div>
 
               {/* Zero-knowledge note */}
               <div className="w-full mb-5 flex items-start gap-3 bg-slate-50 border border-slate-200 rounded-2xl px-4 py-4 text-left">
@@ -210,7 +231,7 @@ const LandingPage: React.FC = () => {
                 <p className="text-xs font-bold uppercase tracking-widest text-orange-500 mb-3">✨ Why This Bundle Is Different</p>
                 <ul className="space-y-2">
                   <li className="flex items-start gap-2 text-sm md:text-base font-semibold text-slate-800"><span className="text-orange-400 shrink-0">—</span> Zero prior knowledge needed — we start from absolute scratch</li>
-                  <li className="flex items-start gap-2 text-sm md:text-base font-semibold text-slate-800"><span className="text-orange-400 shrink-0">—</span> 3 courses that form one seamless workflow: Design → Render → Deliver</li>
+                  <li className="flex items-start gap-2 text-sm md:text-base font-semibold text-slate-800"><span className="text-orange-400 shrink-0">—</span> 4 tools that form one seamless pipeline: Plan → Design → Render → Deliver</li>
                   <li className="flex items-start gap-2 text-sm md:text-base font-semibold text-slate-800"><span className="text-orange-400 shrink-0">—</span> AI does the heavy lifting — you focus on creativity, not tech headaches</li>
                   <li className="flex items-start gap-2 text-sm md:text-base font-semibold text-slate-800"><span className="text-orange-400 shrink-0">—</span> Go from zero to client-ready renders in just 15 days</li>
                 </ul>
@@ -218,8 +239,7 @@ const LandingPage: React.FC = () => {
 
               {/* CTA */}
               <button onClick={openPaymentModal} className="w-full sm:w-auto px-8 py-4 bg-gradient-to-r from-orange-500 to-orange-600 text-white rounded-2xl font-bold text-base md:text-lg shadow-xl shadow-orange-500/20 hover:shadow-orange-500/30 hover:scale-[1.03] transition-all flex items-center justify-center gap-3 group premium-stroke">
-                <Download size={18} className="shrink-0" />
-                Get All 3 Courses — ${FRONT_END_PRICE} <ArrowRight className="group-hover:translate-x-1 transition-transform" size={18} />
+                <Download size={18} /> Get All 4 Courses — {formatPrice(FRONT_END_PRICE)} <ArrowRight className="group-hover:translate-x-1 transition-transform" size={18} />
               </button>
               <p className="text-[11px] md:text-xs text-slate-400 mt-3 font-medium">24/7 Support • Free AI Software • 7-Day Money-Back Guarantee</p>
 
@@ -234,16 +254,16 @@ const LandingPage: React.FC = () => {
              <div className="text-center reveal">
                  <div className="inline-flex items-center gap-2 text-orange-500 text-xs font-bold uppercase tracking-widest mb-2">
                    <Sparkles size={14} />
-                   3 Premium Courses Included
+                   4 Premium Courses Included
                  </div>
-                 <h2 className="text-2xl md:text-4xl font-display font-black text-gray-900 leading-tight">Master the Complete<br/>Design-to-Render Pipeline</h2>
-                 <p className="text-slate-500 mt-3 text-sm md:text-base max-w-2xl mx-auto">From your first 3D floor plan to stunning photorealistic renders — everything you need in one bundle.</p>
+                 <h2 className="text-2xl md:text-4xl font-display font-black text-gray-900 leading-tight">Master the Complete<br/>Plan-to-Render Pipeline</h2>
+                 <p className="text-slate-500 mt-3 text-sm md:text-base max-w-2xl mx-auto">From precise 2D plans to stunning photorealistic renders — the 4-tool pipeline that top firms actually use.</p>
              </div>
            </div>
            
            {/* Course cards — 3 courses */}
            <div className="max-w-4xl mx-auto px-4">
-             <div className="grid grid-cols-3 gap-3 md:gap-6">
+             <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-6">
                {FRONT_END_COURSES.map((course, i) => (
                  <div key={course.id} className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden group hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
                    <div className="relative aspect-square overflow-hidden bg-gray-100">
@@ -303,7 +323,7 @@ const LandingPage: React.FC = () => {
           <div className="max-w-5xl mx-auto px-5 mb-12 text-center">
             <div className="reveal">
               <h2 className="text-3xl md:text-5xl font-display font-bold text-slate-900 tracking-tight mb-4">See What Our <span className="text-orange-600">Students Have Created</span></h2>
-              <p className="text-slate-600 text-lg max-w-2xl mx-auto italic font-serif">"With 24/7 team support, these students transformed their portfolios and confidence."</p>
+              <p className="text-slate-600 text-lg">50,000+ learners • 4.9★ average rating</p>
             </div>
           </div>
           <div className="flex flex-col gap-6 md:gap-8">
@@ -329,7 +349,7 @@ const LandingPage: React.FC = () => {
         <section className="py-16 bg-white border-b border-slate-200">
           <div className="max-w-5xl mx-auto px-5">
             <div className="reveal text-center mb-10">
-              <h2 className="text-3xl md:text-5xl font-display font-bold text-slate-900 tracking-tight mb-4">Your ${FRONT_END_PRICE} Investment <br className="hidden md:block" /><span className="text-orange-600">Pays for Itself 100x Over</span></h2>
+              <h2 className="text-3xl md:text-5xl font-display font-bold text-slate-900 tracking-tight mb-4">Your {formatPrice(FRONT_END_PRICE)} Investment <br className="hidden md:block" /><span className="text-orange-600">Pays for Itself 100x Over</span></h2>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
               {INCOME_TIERS.map((tier, i) => (
@@ -372,7 +392,7 @@ const LandingPage: React.FC = () => {
                   <span className="text-slate-900 font-bold text-center">Lifetime Access + Free Updates</span>
                 </div>
                 <button onClick={openPaymentModal} className="w-full sm:w-auto px-10 py-4 bg-gradient-to-r from-orange-500 to-orange-600 text-white rounded-xl font-bold text-lg shadow-xl shadow-orange-500/20 hover:scale-[1.02] transition-all flex items-center justify-center gap-3 group premium-stroke whitespace-nowrap">
-                  <Download size={16} /> Get All 3 Courses — ${FRONT_END_PRICE} <ArrowRight className="group-hover:translate-x-1 transition-transform" size={18} />
+                  <Download size={16} /> Get All 4 Courses — {formatPrice(FRONT_END_PRICE)} <ArrowRight className="group-hover:translate-x-1 transition-transform" size={18} />
                 </button>
               </div>
             </div>
@@ -423,12 +443,12 @@ const LandingPage: React.FC = () => {
                   <li className="flex items-center gap-3"><CheckCircle size={18} className="text-orange-500 shrink-0" /><span className="text-slate-800">24/7 support, free software links, and a community that's always got your back.</span></li>
                 </ul>
                 <div className="mt-6 pt-6 border-t border-orange-100 flex items-center justify-between">
-                  <span className="text-slate-600 text-sm italic font-bold">The complete design-to-render ecosystem for just ${FRONT_END_PRICE}.</span>
+                  <span className="text-slate-600 text-sm italic font-bold">The complete design-to-render ecosystem for just {formatPrice(FRONT_END_PRICE)}.</span>
                   <button onClick={openPaymentModal} className="text-orange-600 font-bold text-sm hover:text-orange-600 flex items-center gap-1 group">Get Started <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" /></button>
                 </div>
               </div>
 
-              <p className="text-slate-900 font-semibold text-lg md:text-xl border-l-4 border-orange-500 pl-4 bg-orange-50 p-4 rounded-r-xl">Stop collecting bookmarks. Start building a portfolio. 50,000+ students already did — and they started with the same ${FRONT_END_PRICE} decision you're about to make.</p>
+              <p className="text-slate-900 font-semibold text-lg md:text-xl border-l-4 border-orange-500 pl-4 bg-orange-50 p-4 rounded-r-xl">Stop collecting bookmarks. Start building a portfolio. 50,000+ students already did — and they started with the same {formatPrice(FRONT_END_PRICE)} decision you're about to make.</p>
             </div>
           </div>
         </section>
@@ -437,7 +457,7 @@ const LandingPage: React.FC = () => {
         {/* 5. OLD vs NEW — The Contrast */}
         <section className="py-16 md:py-24 bg-white grid-bg">
           <div className="max-w-5xl mx-auto px-5">
-            <div className="reveal text-center mb-12"><h2 className="text-3xl md:text-5xl font-display font-bold text-slate-900 tracking-tight mb-4">The Slow, Expensive Path <br className="hidden md:block" />vs. <span className="text-orange-600">Our ${FRONT_END_PRICE} Shortcut</span></h2></div>
+            <div className="reveal text-center mb-12"><h2 className="text-3xl md:text-5xl font-display font-bold text-slate-900 tracking-tight mb-4">The Slow, Expensive Path <br className="hidden md:block" />vs. <span className="text-orange-600">Our {formatPrice(FRONT_END_PRICE)} Shortcut</span></h2></div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="reveal grid-bg border border-red-200 rounded-2xl p-8 shadow-soft">
                 <div className="flex items-center gap-3 mb-6"><div className="w-10 h-10 rounded-xl bg-red-50 flex items-center justify-center"><X size={20} className="text-red-500" /></div><h3 className="text-xl font-bold text-red-500">The Old Struggle</h3></div>
@@ -451,7 +471,7 @@ const LandingPage: React.FC = () => {
                 </ul>
               </div>
               <div className="reveal bg-gradient-to-br from-orange-50 to-slate-50 border border-orange-200 rounded-2xl p-8 shadow-soft">
-                <div className="flex items-center gap-3 mb-6"><div className="w-10 h-10 rounded-xl bg-orange-100 flex items-center justify-center"><CheckCircle size={20} className="text-orange-600" /></div><h3 className="text-xl font-bold text-slate-900">The ${FRONT_END_PRICE} Bundle</h3></div>
+                <div className="flex items-center gap-3 mb-6"><div className="w-10 h-10 rounded-xl bg-orange-100 flex items-center justify-center"><CheckCircle size={20} className="text-orange-600" /></div><h3 className="text-xl font-bold text-slate-900">The {formatPrice(FRONT_END_PRICE)} Bundle</h3></div>
                 <ul className="space-y-4">
                   {['SketchUp: Build 3D models from floor plans in minutes', 'V-Ray: One-click photorealistic lighting, materials & shadows', 'D5 Render AI: Real-time renders — see it as you design it', 'All software links provided — no expensive licenses needed', '24/7 team support — stuck on a render? We fix it with you'].map((item, i) => (
                     <li key={i} className="flex items-start gap-3 text-slate-700 text-sm"><CheckCircle size={14} className="text-orange-500 mt-1 shrink-0" />{item}</li>
@@ -529,7 +549,7 @@ const LandingPage: React.FC = () => {
           <div className="max-w-3xl mx-auto px-4 md:px-5">
             <div className="text-center mb-6 md:mb-8">
               <h3 className="text-xl md:text-3xl font-display font-bold text-slate-900 mb-2">Your future portfolio is one click away.</h3>
-              <p className="text-slate-500 text-xs md:text-sm">50,000+ students chose this path. SketchUp + V-Ray + D5 Render AI for ${FRONT_END_PRICE}. Lifetime access. Zero risk.</p>
+              <p className="text-slate-500 text-xs md:text-sm">50,000+ students chose this path. AutoCAD + SketchUp + V-Ray + D5 Render for {formatPrice(FRONT_END_PRICE)}. Lifetime access. Zero risk.</p>
             </div>
             <CtaWithTimer timeLeft={timeLeft} onClick={openPaymentModal} variant="dark" />
           </div>
@@ -555,7 +575,7 @@ const LandingPage: React.FC = () => {
           {/* Left: price + timer */}
           <div className="flex flex-col items-start gap-0.5 shrink-0">
             <div className="flex items-baseline gap-1.5">
-              <span className="text-base font-black text-slate-900">${FRONT_END_PRICE}</span>
+              <span className="text-base font-black text-slate-900">{formatPrice(FRONT_END_PRICE)}</span>
               <span className="text-[10px] font-black text-slate-900 uppercase tracking-wide">Offer ends in</span>
             </div>
             <div className="flex items-center gap-0.5">
@@ -572,7 +592,7 @@ const LandingPage: React.FC = () => {
           <div className="flex-1 flex flex-col gap-1">
             <button onClick={openPaymentModal} className="flex-1 flex items-center justify-center gap-1.5 bg-slate-900 text-white text-xs font-bold py-3 rounded-xl hover:bg-black transition-all"
               style={{ boxShadow: '0 0 0 2px #f97316, 0 0 12px rgba(249,115,22,0.35)' }}>
-              Get All 3 Courses — ${FRONT_END_PRICE}
+              Get All 4 Courses — {formatPrice(FRONT_END_PRICE)}
               <ArrowRight size={13} />
             </button>
           </div>

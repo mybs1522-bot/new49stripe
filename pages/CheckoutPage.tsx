@@ -4,9 +4,11 @@ import { Sparkles, Timer, CheckCircle2, Download, Mail, Lock, Check, X, ArrowLef
 import ModernPaymentForm from "../components/ui/modern-payment-form";
 import { useNavigate } from "react-router-dom";
 import { sendStageEmail } from "../services/email";
+import { useCurrency } from "../contexts/CurrencyContext";
 
 const CheckoutPage: React.FC = () => {
   const navigate = useNavigate();
+  const { formatPrice } = useCurrency();
   const [timeLeft, setTimeLeft] = useState({ h: 1, m: 19, s: 59 });
   const [email, setEmail] = useState("");
   const [emailError, setEmailError] = useState(false);
@@ -62,7 +64,7 @@ const CheckoutPage: React.FC = () => {
             className="w-full h-full object-cover"
           />
         </div>
-        <p className="text-xs font-semibold text-gray-600 mt-2 text-center max-w-[200px]">🎨 SketchUp + V-Ray + D5 Render AI Bundle</p>
+        <p className="text-xs font-semibold text-gray-600 mt-2 text-center max-w-[200px]">🎨 AutoCAD + SketchUp + V-Ray + D5 Render Bundle</p>
       </div>
 
       <div className="checkout-card w-full max-w-md bg-white rounded-3xl shadow-2xl overflow-hidden">
@@ -72,17 +74,17 @@ const CheckoutPage: React.FC = () => {
               <Sparkles size={11} /> Rendering Pipeline
             </div>
           </div>
-          <h3 className="text-xl font-display font-bold mb-1">SketchUp + V-Ray + D5 Render</h3>
+          <h3 className="text-xl font-display font-bold mb-1">AutoCAD + SketchUp + V-Ray + D5</h3>
           <div className="flex items-baseline gap-2">
-            <span className="text-2xl font-display font-black">${FRONT_END_PRICE}</span>
-            <span className="text-gray-500 text-sm line-through">${FRONT_END_ORIGINAL_PRICE}</span>
+            <span className="text-2xl font-display font-black">{formatPrice(FRONT_END_PRICE)}</span>
+            <span className="text-gray-500 text-sm line-through">{formatPrice(FRONT_END_ORIGINAL_PRICE)}</span>
             <span className="bg-white/10 text-white text-xs font-bold px-2 py-0.5 rounded-full border border-white/20">91% OFF</span>
           </div>
         </div>
 
         <div className="px-6 pt-5 pb-6">
           <div className="grid grid-cols-2 gap-2 mb-4">
-            {["3 Premium Courses", "10,000+ Textures", "Official Certificate", "24/7 Team Support", "Lifetime Access"].map((item, i) => (
+            {["4 Premium Courses", "10,000+ Textures", "Official Certificate", "24/7 Team Support", "Lifetime Access"].map((item, i) => (
               <div key={i} className="flex items-center gap-2 text-xs text-gray-700 font-medium">
                 <CheckCircle2 size={12} className="text-gray-500 shrink-0" /> {item}
               </div>

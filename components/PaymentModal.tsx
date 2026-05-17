@@ -200,7 +200,7 @@ export const PaymentModal: React.FC<PaymentModalProps> = ({ isOpen, onClose, ini
            <div className="relative z-10 mt-auto">
              <div className="text-xs uppercase tracking-widest text-gray-500 mb-3 font-bold">What's included</div>
              <ul className="space-y-2">
-               <li className="flex items-center gap-2 text-sm text-gray-300"><Check size={14} className="text-brand-accent" /> 3 Premium Courses</li>
+               <li className="flex items-center gap-2 text-sm text-gray-300"><Check size={14} className="text-brand-accent" /> 4 Premium Courses</li>
                <li className="flex items-center gap-2 text-sm text-gray-300"><Check size={14} className="text-brand-accent" /> Source Files Download</li>
                <li className="flex items-center gap-2 text-sm text-gray-300"><Check size={14} className="text-brand-accent" /> ISO Certification</li>
              </ul>
@@ -235,7 +235,7 @@ export const PaymentModal: React.FC<PaymentModalProps> = ({ isOpen, onClose, ini
                     <div className="flex items-center justify-between mb-2">
                         <h4 className="text-xs font-bold text-gray-900 uppercase tracking-widest flex items-center gap-2">
                             <BookOpen size={14} className="text-brand-primary"/> 
-                            {isBundleComplete ? '3 Premium Courses Included' : `Adding Courses: ${addedCount}/${FRONT_END_COURSES.length}`}
+                            {isBundleComplete ? '4 Premium Courses Included' : `Adding Courses: ${addedCount}/${FRONT_END_COURSES.length}`}
                         </h4>
                         {!isBundleComplete && <Loader2 size={14} className="animate-spin text-brand-primary" />}
                     </div>

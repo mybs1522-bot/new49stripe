@@ -81,11 +81,11 @@ export const CallToActionWidget = ({ timeLeft, onClick, headline, subtext }: { t
           <div className="flip-clock-group"><div className="flex gap-1"><FlipDigit value={s[0]} /><FlipDigit value={s[1]} /></div><span className="flip-clock-label">SEC</span></div>
         </div>
         <div className="mb-6">
-          <p className="text-red-400 font-semibold text-sm mt-2">SketchUp + V-Ray + D5 Render AI — All 3 Courses for Just $9</p>
+          <p className="text-red-400 font-semibold text-sm mt-2">AutoCAD + SketchUp + V-Ray + D5 Render AI — All 4 Courses</p>
         </div>
         <div className="w-full max-w-md mx-auto">
           <button onClick={onClick} className="cta-primary w-full text-white px-8 py-4 md:py-5 rounded-2xl transition-all duration-300 flex items-center justify-center gap-3 group hover:scale-[1.03] active:scale-[0.98] premium-stroke" style={{ background: 'linear-gradient(135deg, #f7a440 0%, #f7931e 100%)', boxShadow: '0 6px 20px -4px rgba(247,164,68,0.5), 0 12px 40px -8px rgba(247,147,30,0.25)', border: '1px solid rgba(255,255,255,0.15)' }}>
-            <span className="text-lg md:text-xl font-display font-bold uppercase tracking-widest relative z-10">Get Instant Access — $9</span>
+            <span className="text-lg md:text-xl font-display font-bold uppercase tracking-widest relative z-10">Get Instant Access Now</span>
             <ArrowRight size={20} className="relative z-10 group-hover:translate-x-1 transition-transform" />
           </button>
         </div>
@@ -124,6 +124,7 @@ export const SocialProofToast: React.FC = () => {
 
 /* ─── CONSTANTS ─── */
 export const VALUE_STACK_ITEMS = [
+  { name: 'AutoCAD 2D Planning — Complete Course', value: 'Included' },
   { name: 'SketchUp 3D Modeling — Complete Course', value: 'Included' },
   { name: 'V-Ray Photo-Realism Masterclass', value: 'Included' },
   { name: 'D5 Real-Time AI Rendering Course', value: 'Included' },
@@ -148,13 +149,13 @@ export const TESTIMONIALS_LANDING = [
 ];
 
 export const FAQ_ITEMS_LANDING = [
-  { question: "What exactly do I get for $9?", answer: "You get 3 complete courses: SketchUp Pro (3D modeling from scratch), V-Ray Photorealism (magazine-quality renders), and D5 Render AI (real-time AI rendering). Plus 10,000+ textures, 2,000+ 3D models, all software download links, a certified diploma, and 24/7 team support. Lifetime access, one-time payment." },
-  { question: "I'm a complete beginner — is this for me?", answer: "Absolutely! The SketchUp course starts from 'how to open the software' and builds up to full 3D interiors. V-Ray and D5 Render courses follow the same beginner-friendly approach. Our 24/7 support team is always a WhatsApp message away whenever you feel stuck." },
+  { question: "What exactly do I get?", answer: "You get 4 complete courses: AutoCAD (2D planning), SketchUp Pro (3D modeling), V-Ray Photorealism (magazine-quality renders), and D5 Render AI (real-time AI rendering). Plus 10,000+ textures, 2,000+ 3D models, all software download links, a certified diploma, and 24/7 team support. Lifetime access, one-time payment." },
+  { question: "I'm a complete beginner — is this for me?", answer: "Absolutely! The AutoCAD course starts from the very basics of 2D drawing, SketchUp builds up to full 3D interiors, and V-Ray and D5 Render follow the same beginner-friendly approach. Our 24/7 support team is always a WhatsApp message away whenever you feel stuck." },
   { question: "Why is it so cheap? What's the catch?", answer: "No catch. We believe high-quality design education shouldn't cost $300+. We've served 50,000+ students at this price point and it works — low price, high volume, massive impact. You get the same content other platforms charge hundreds for." },
-  { question: "Do I need to buy expensive software?", answer: "Not at all. We provide links to official free or student versions of SketchUp, V-Ray, and D5 Render. You won't spend a single extra dollar on software licenses." },
-  { question: "Will this actually help me get clients or a job?", answer: "Yes. The #1 reason designers struggle to land clients is they can't produce photorealistic renders. This bundle teaches you the full pipeline — SketchUp to model, V-Ray for beauty shots, D5 AI for real-time presentations. Designers with these skills charge $2,000–$5,000 per project." },
-  { question: "How long does it take to finish all 3 courses?", answer: "Most students complete the full pipeline in 2–3 weeks at 1–2 hours per day. SketchUp takes about 5 days, V-Ray about 4, and D5 Render about 3. By day 15, you'll have portfolio-ready renders." },
-  { question: "What if it's not for me?", answer: "We offer a 100% money-back guarantee within 7 days. If you feel it's not a good fit, just email us and we'll refund your $9 immediately — no questions asked. Zero risk." },
+  { question: "Do I need to buy expensive software?", answer: "Not at all. We provide links to official free or student versions of AutoCAD, SketchUp, V-Ray, and D5 Render. You won't spend a single extra dollar on software licenses." },
+  { question: "Will this actually help me get clients or a job?", answer: "Yes. The #1 reason designers struggle to land clients is they can't produce professional plans and photorealistic renders. This bundle teaches you the full pipeline — AutoCAD for plans, SketchUp to model, V-Ray for beauty shots, D5 AI for real-time presentations. Designers with these skills charge $2,000–$5,000 per project." },
+  { question: "How long does it take to finish all 4 courses?", answer: "Most students complete the full pipeline in 2–3 weeks at 1–2 hours per day. AutoCAD takes about 3 days, SketchUp about 5, V-Ray about 4, and D5 Render about 3. By day 15, you'll have portfolio-ready plans and renders." },
+  { question: "What if it's not for me?", answer: "We offer a 100% money-back guarantee within 7 days. If you feel it's not a good fit, just message us and we'll refund you immediately — no questions asked. Zero risk." },
 ];
 
 export const INCOME_TIERS = [
@@ -165,6 +166,13 @@ export const INCOME_TIERS = [
 ];
 
 export const COURSES_LANDING = [
+  {
+    id: '1', title: 'AutoCAD 2D', software: 'AutoCAD', students: '42.5k',
+    description: 'Draw precise 2D floor plans and construction documents — the foundation every architect needs before going 3D.',
+    imageUrl: 'https://lh3.googleusercontent.com/d/1fV5bz4JDugh8HxLMJ0fXu5K5sDj3qlSR',
+    learningPoints: ['Draw professional floor plans and furniture layouts', 'Print drawings to scale for real construction', 'Use shortcuts to draft 10x faster than others'],
+    workflowImpact: 'Create the precise 2D blueprints that every 3D model begins with.'
+  },
   {
     id: '3', title: 'SketchUp 3D', software: 'SketchUp', students: '55k',
     description: 'Build stunning 3D models from scratch — walls, furniture, kitchens, bathrooms. The foundation of every great render starts here.',

@@ -243,7 +243,7 @@ function CheckoutForm({ email, onSuccess, onBack, amount }: CheckoutFormProps) {
 
       <button type="submit" disabled={!stripe || isLoading}
         className="w-full h-12 bg-gray-900 hover:bg-black disabled:opacity-50 disabled:cursor-not-allowed text-white font-bold rounded-xl text-base flex items-center justify-center gap-2 transition-all">
-        {isLoading ? <><Loader2 size={18} className="animate-spin" /> Processing…</> : `Pay ${amount} · Get Instant Access`}
+        {isLoading ? <><Loader2 size={18} className="animate-spin" /> Processing…</> : 'Get Instant Access'}
       </button>
 
       {/* PayPal — hidden once user starts typing card number */}

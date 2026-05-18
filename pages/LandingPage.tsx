@@ -55,7 +55,7 @@ const CtaWithTimer = ({ timeLeft, onClick, variant = 'green' }: { timeLeft: { h:
         <div className="flex items-baseline gap-2">
           <span className={`text-sm ${variant === 'dark' ? 'text-slate-500' : 'text-slate-400'} line-through font-bold`}>{formatPrice(FRONT_END_ORIGINAL_PRICE)}</span>
           <span className={`text-3xl font-display font-black ${variant === 'dark' ? 'text-white' : 'text-slate-900'}`}>{formatPrice(FRONT_END_PRICE)}</span>
-          <span className="bg-orange-100 text-orange-500 text-[9px] font-bold px-1.5 py-0.5 rounded-full">91% OFF</span>
+          <span className="bg-orange-100 text-orange-500 text-[9px] font-bold px-1.5 py-0.5 rounded-full">30% OFF</span>
         </div>
 
         {/* Button */}
@@ -111,131 +111,58 @@ const LandingPage: React.FC = () => {
 
       <main>
         {/* 1. HERO — The Primary Pitch */}
-        <section className="relative pt-0 pb-6 md:pb-16 overflow-hidden" style={{ background: '#ffffff' }}>
+        <section className="relative pt-0 pb-8 md:pb-16 overflow-hidden" style={{ background: '#ffffff' }}>
           <div className="w-full px-4 md:max-w-3xl md:mx-auto relative z-10">
             <div className="flex flex-col items-center text-center pt-7 md:pt-14">
 
               {/* Badge */}
-              <div className="mb-4 inline-flex items-center gap-2 px-4 py-1.5 bg-orange-50 border border-orange-300 rounded-full shadow-sm">
-                <Sparkles size={12} className="text-orange-500" />
+              <div className="mb-5 inline-flex items-center gap-2 px-5 py-2 bg-orange-50 border border-orange-300 rounded-full shadow-sm">
+                <Sparkles size={14} className="text-orange-500" />
                 <span className="text-[11px] md:text-xs font-bold text-orange-700 uppercase tracking-widest">For Architects & Interior Designers</span>
               </div>
 
-              {/* Headline */}
-              <h1 className="tracking-tight mb-4 w-full">
-                {/* Industry truth */}
-                <span className="block text-[11px] md:text-xs font-bold text-slate-400 uppercase tracking-[0.2em] mb-3">
-                  In Architecture & Design —{' '}
-                  <span className="text-slate-600">Planning</span>,{' '}
-                  <span className="text-slate-600">Design</span> &{' '}
-                  <span className="text-slate-600">Rendering</span>{' '}matter the most.
-                </span>
+              {/* Industry truth subtitle */}
+              <p className="text-[10px] md:text-xs font-bold uppercase tracking-[0.18em] text-slate-600 mb-5 leading-relaxed">
+                In Architecture & Design —{' '}
+                <span className="text-orange-500 font-extrabold">Planning, Design & Rendering</span>{' '}
+                matter the most.
+              </p>
 
-                {/* Bridge */}
-                <span className="block text-lg md:text-xl font-display font-bold text-slate-700">
-                  That's exactly why we teach you the{' '}
-                  <span className="text-orange-500">complete industry pipeline:</span>
-                </span>
+              {/* Main Headline */}
+              <h1 className="tracking-tight mb-2 w-full">
+                <span className="block text-[1.75rem] md:text-6xl font-display font-black text-slate-900 leading-[1.1] whitespace-nowrap">You Will Design Complete</span>
+                <span className="block text-[1.75rem] md:text-6xl font-display font-black text-orange-500 leading-[1.1] whitespace-nowrap">Homes, Villas & Offices</span>
               </h1>
+              <p className="text-base md:text-xl italic text-slate-800 mb-1 font-medium">and Start Earning as a Professional Designer</p>
+              <p className="text-base md:text-xl font-bold mb-7"><span className="bg-orange-500 text-white px-3 py-1 rounded-md">in Just 15 days</span></p>
 
-              {/* Pipeline Visual */}
-              <div className="w-full mb-5 grid grid-cols-3 gap-2 md:gap-3">
-                <div className="bg-slate-50 border border-slate-200 rounded-xl md:rounded-2xl px-2 py-3 md:p-4 text-center">
-                  <span className="text-[9px] md:text-[10px] font-bold uppercase tracking-widest text-orange-500 block">Planning</span>
-                  <span className="text-sm md:text-lg font-display font-black text-slate-900">AutoCAD</span>
-                  <p className="text-[9px] md:text-[11px] text-slate-500 mt-0.5 hidden sm:block">2D Floor Plans</p>
-                </div>
-                <div className="bg-slate-50 border border-slate-200 rounded-xl md:rounded-2xl px-2 py-3 md:p-4 text-center">
-                  <span className="text-[9px] md:text-[10px] font-bold uppercase tracking-widest text-orange-500 block">Designing</span>
-                  <span className="text-sm md:text-lg font-display font-black text-slate-900">SketchUp</span>
-                  <p className="text-[9px] md:text-[11px] text-slate-500 mt-0.5 hidden sm:block">3D Modeling</p>
-                </div>
-                <div className="bg-slate-50 border border-slate-200 rounded-xl md:rounded-2xl px-2 py-3 md:p-4 text-center">
-                  <span className="text-[9px] md:text-[10px] font-bold uppercase tracking-widest text-orange-500 block">Rendering</span>
-                  <span className="text-sm md:text-lg font-display font-black text-slate-900">V-Ray & D5</span>
-                  <p className="text-[9px] md:text-[11px] text-slate-500 mt-0.5 hidden sm:block">Photorealistic Visuals</p>
-                </div>
-              </div>
-
-              <div className="tracking-tight mb-5 md:mb-6 w-full text-center">
-                {/* Hook */}
-                <p className="text-2xl leading-snug md:text-[2.6rem] font-display font-black text-slate-900 mb-1">
-                  Master All 4 Tools.{' '}
-                  <span className="relative inline-block">
-                    <span className="text-orange-500">15 Days. From Zero.</span>
-                    <span className="absolute -bottom-1 left-0 w-full h-[3px] bg-orange-200 rounded-full"></span>
-                  </span>
+              {/* WE TEACH YOU card */}
+              <div className="w-full mb-7 bg-slate-50 border border-slate-200 rounded-2xl px-5 py-5 md:px-8 md:py-6 text-center">
+                <p className="text-[10px] md:text-xs font-bold uppercase tracking-[0.25em] text-slate-600 mb-3">We Teach You</p>
+                <p className="text-sm md:text-base text-slate-800 leading-relaxed">
+                  <strong className="text-slate-900">Planning</strong> on AutoCAD, <strong className="text-slate-900">Designing</strong> on SketchUp
                 </p>
-
-                {/* Divider */}
-                <span className="block w-10 h-[2px] bg-orange-300 rounded-full mx-auto my-5"></span>
-
-                {/* Identity */}
-                <p className="text-[1.65rem] leading-tight md:text-5xl font-display font-black text-slate-900 mb-1">
-                  Design{' '}
-                  <span className="text-orange-500">Homes. Villas. Offices.</span>
+                <p className="text-sm md:text-base text-slate-800 leading-relaxed">
+                  and <strong className="text-slate-900">Rendering</strong> on V-Ray and D5 + AI
                 </p>
-                <p className="text-[1.5rem] leading-tight md:text-4xl font-display font-black text-slate-700 mb-4">
-                  In a Way the Industry{' '}
-                  <span className="text-orange-500">Can't Ignore.</span>
-                </p>
-
-                {/* Consequence */}
-                <p className="text-sm md:text-base text-slate-500 font-medium leading-relaxed max-w-lg mx-auto">
-                  The designers who master <strong className="text-slate-800">planning, modeling & rendering</strong> are the ones who{' '}
-                  <strong className="text-orange-500">get hired, get clients, and get paid.</strong>
-                </p>
-              </div>
-
-              {/* Zero-knowledge note */}
-              <div className="w-full mb-5 flex items-start gap-3 bg-slate-50 border border-slate-200 rounded-2xl px-4 py-4 text-left">
-                <span className="text-xl shrink-0 mt-0.5">💻</span>
-                <div>
-                  <p className="text-sm font-black text-slate-900 mb-0.5">No prior knowledge needed. Zero.</p>
-                  <p className="text-xs md:text-sm text-slate-500 leading-relaxed">
-                    Never opened SketchUp? Never rendered anything? That's totally fine — we start from scratch. All you need is a <strong className="text-slate-700">laptop or PC</strong> and we'll take care of the rest.
-                  </p>
-                </div>
               </div>
 
               {/* Hero Video */}
-              <div className="w-full mb-5 overflow-hidden rounded-2xl shadow-2xl border border-slate-100" style={{ position: 'relative', paddingTop: '56.25%' }}>
+              <div className="w-full mb-8 overflow-hidden rounded-2xl shadow-2xl border border-slate-100" style={{ position: 'relative', paddingTop: '56.25%' }}>
                 <iframe src="https://iframe.mediadelivery.net/embed/489113/a214b199-e64a-4eaf-af70-edfbc586e5fd?autoplay=true&loop=true&muted=true&preload=true&responsive=true" loading="lazy" style={{ border: 0, position: 'absolute', top: 0, height: '100%', width: '100%' }} allow="accelerometer;gyroscope;autoplay;encrypted-media;picture-in-picture;" allowFullScreen={true} />
               </div>
 
-              {/* Post-video hook */}
-              <div className="w-full mb-6 text-center">
-                <p className="text-xl md:text-3xl font-display font-black text-slate-900 leading-tight">
-                  Design like Top Designers in{' '}
-                  <span className="relative inline-block">
-                    <span className="text-orange-500">15 Days.</span>
-                    <span className="absolute -bottom-0.5 left-0 w-full h-[3px] bg-orange-300 rounded-full opacity-70"></span>
-                  </span>
+              {/* Bottom persuasion text */}
+              <div className="w-full mb-4 text-center px-2">
+                <p className="text-[1.1rem] md:text-3xl font-display font-black text-gray-900 leading-snug">
+                  Designers who can Plan, Design and Render make{' '}
+                  <span className="text-orange-500 underline decoration-orange-300 decoration-2 underline-offset-2">10x money</span>{' '}in this industry{' '}
+                  <em className="text-orange-500 italic font-black">because</em>{' '}only they can deliver a project from start to finish.
                 </p>
-                <p className="text-sm md:text-base font-bold text-slate-400 uppercase tracking-widest mt-1">No Bullshit.</p>
               </div>
 
-              {/* Outcome strip */}
-              <div className="w-full mb-4 flex gap-2">
-                <div className="flex-1 bg-amber-50 border border-amber-200 rounded-xl px-3 py-3 text-left">
-                  <p className="text-base font-black text-slate-900">💼 Land Higher-Paying Jobs</p>
-                  <p className="text-[11px] text-slate-500 mt-0.5">Firms pay premium for rendering skills</p>
-                </div>
-                <div className="flex-1 bg-amber-50 border border-amber-200 rounded-xl px-3 py-3 text-left">
-                  <p className="text-base font-black text-slate-900">🏢 Start Your Own Studio</p>
-                  <p className="text-[11px] text-slate-500 mt-0.5">Full pipeline for freelance & studio work</p>
-                </div>
-              </div>
-
-              <div className="w-full mb-5 bg-orange-50 border border-orange-200 rounded-2xl px-4 py-4 text-left">
-                <p className="text-xs font-bold uppercase tracking-widest text-orange-500 mb-3">✨ Why This Bundle Is Different</p>
-                <ul className="space-y-2">
-                  <li className="flex items-start gap-2 text-sm md:text-base font-semibold text-slate-800"><span className="text-orange-400 shrink-0">—</span> Zero prior knowledge needed — we start from absolute scratch</li>
-                  <li className="flex items-start gap-2 text-sm md:text-base font-semibold text-slate-800"><span className="text-orange-400 shrink-0">—</span> 4 tools that form one seamless pipeline: Plan → Design → Render → Deliver</li>
-                  <li className="flex items-start gap-2 text-sm md:text-base font-semibold text-slate-800"><span className="text-orange-400 shrink-0">—</span> AI does the heavy lifting — you focus on creativity, not tech headaches</li>
-                  <li className="flex items-start gap-2 text-sm md:text-base font-semibold text-slate-800"><span className="text-orange-400 shrink-0">—</span> Go from zero to client-ready renders in just 15 days</li>
-                </ul>
-              </div>
+              {/* Pipeline tagline */}
+              <p className="text-lg md:text-2xl italic text-orange-500 font-medium mb-8 animate-[pulse_3s_ease-in-out_infinite]">We teach you that entire pipeline in 15 days.</p>
 
               {/* CTA */}
               <button onClick={openPaymentModal} className="w-full sm:w-auto px-8 py-4 bg-gradient-to-r from-orange-500 to-orange-600 text-white rounded-2xl font-bold text-base md:text-lg shadow-xl shadow-orange-500/20 hover:shadow-orange-500/30 hover:scale-[1.03] transition-all flex items-center justify-center gap-3 group premium-stroke">
@@ -247,6 +174,58 @@ const LandingPage: React.FC = () => {
           </div>
         </section>
 
+
+        {/* ═══════ SOCIAL PROOF — Students & Trust ═══════ */}
+        <section className="py-10 md:py-16 bg-white">
+          <div className="max-w-3xl mx-auto px-4">
+            {/* Heading */}
+            <p className="text-[10px] md:text-xs font-bold uppercase tracking-[0.25em] text-slate-600 text-center mb-4">50,000+ Students Worldwide</p>
+
+            {/* Student collage image */}
+            <div className="w-full mb-8 overflow-hidden rounded-2xl shadow-lg border border-slate-100">
+              <img src="https://lh3.googleusercontent.com/d/1U5Yisfd31i6-OFBRVorAjhO5O0S72JzG" alt="50,000+ Students Worldwide" className="w-full h-auto object-cover" />
+            </div>
+
+            {/* Trust badges */}
+            <div className="flex flex-col items-center gap-3 mb-8">
+              <div className="inline-flex items-center gap-2 px-5 py-2.5 bg-white border border-slate-200 rounded-full shadow-sm">
+                <span>⭐</span>
+                <span className="text-sm font-bold text-slate-900">4.9/5 from 50,000+ students</span>
+              </div>
+              <div className="inline-flex items-center gap-2 px-5 py-2.5 bg-white border border-slate-200 rounded-full shadow-sm">
+                <span>🏆</span>
+                <span className="text-sm font-bold text-slate-900">Used by designers in 18+ countries</span>
+              </div>
+              <div className="inline-flex items-center gap-2 px-5 py-2.5 bg-white border border-slate-200 rounded-full shadow-sm">
+                <span>✅</span>
+                <span className="text-sm font-bold text-slate-900">7-day money-back guarantee</span>
+              </div>
+            </div>
+
+            {/* Outcome cards */}
+            <div className="grid grid-cols-2 gap-3 mb-8">
+              <div className="bg-white border border-slate-200 rounded-2xl px-4 py-5 text-left">
+                <p className="text-lg font-black text-slate-900 mb-2">💰 Start Earning Faster</p>
+                <p className="text-sm text-slate-600">Design real projects & charge clients within weeks</p>
+              </div>
+              <div className="bg-white border border-slate-200 rounded-2xl px-4 py-5 text-left">
+                <p className="text-lg font-black text-slate-900 mb-2">🏢 Design Full Projects</p>
+                <p className="text-sm text-slate-600">Homes, villas, offices — from floor plan to final visual</p>
+              </div>
+            </div>
+
+            {/* Why this bundle is different */}
+            <div className="w-full bg-orange-50 border border-orange-200 rounded-2xl px-5 py-5 text-left">
+              <p className="text-xs font-bold uppercase tracking-widest text-orange-500 mb-4 flex items-center gap-2"><Sparkles size={14} /> Why This Bundle Is Different</p>
+              <ul className="space-y-3">
+                <li className="flex items-start gap-3 text-sm md:text-base font-semibold text-slate-800"><span className="text-orange-400 shrink-0 mt-0.5">—</span> Learn to design complete homes, villas & offices end-to-end</li>
+                <li className="flex items-start gap-3 text-sm md:text-base font-semibold text-slate-800"><span className="text-orange-400 shrink-0 mt-0.5">—</span> 4 tools that form one seamless pipeline: Plan → Design → Render → Deliver</li>
+                <li className="flex items-start gap-3 text-sm md:text-base font-semibold text-slate-800"><span className="text-orange-400 shrink-0 mt-0.5">—</span> AI does the heavy lifting — you focus on creativity, not tech headaches</li>
+                <li className="flex items-start gap-3 text-sm md:text-base font-semibold text-slate-800"><span className="text-orange-400 shrink-0 mt-0.5">—</span> Go from zero to client-ready renders in just 15 days</li>
+              </ul>
+            </div>
+          </div>
+        </section>
 
         {/* ═══════ COURSE SLIDESHOW — Master Every Tool ═══════ */}
         <section className="py-8 md:py-16 bg-white border-b border-gray-100 overflow-hidden relative">
@@ -295,7 +274,6 @@ const LandingPage: React.FC = () => {
             <CtaWithTimer timeLeft={timeLeft} onClick={openPaymentModal} variant="green" />
           </div>
         </section>
-
 
         {/* AI ENHANCEMENT — Visual Proof */}
         <section className="py-16 md:py-20 bg-white border-b border-slate-200">

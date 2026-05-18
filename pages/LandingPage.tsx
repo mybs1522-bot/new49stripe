@@ -179,28 +179,13 @@ const LandingPage: React.FC = () => {
         <section className="py-10 md:py-16 bg-white">
           <div className="max-w-3xl mx-auto px-4">
             {/* Heading */}
-            <p className="text-[10px] md:text-xs font-bold uppercase tracking-[0.25em] text-slate-600 text-center mb-4">50,000+ Students Worldwide</p>
+            <p className="text-lg md:text-2xl font-black uppercase tracking-[0.15em] text-slate-900 text-center mb-4">50,000+ Students Worldwide</p>
 
             {/* Student collage image */}
             <div className="w-full mb-8 overflow-hidden rounded-2xl shadow-lg border border-slate-100">
               <img src="https://lh3.googleusercontent.com/d/1U5Yisfd31i6-OFBRVorAjhO5O0S72JzG" alt="50,000+ Students Worldwide" className="w-full h-auto object-cover" />
             </div>
 
-            {/* Trust badges */}
-            <div className="flex flex-col items-center gap-3 mb-8">
-              <div className="inline-flex items-center gap-2 px-5 py-2.5 bg-white border border-slate-200 rounded-full shadow-sm">
-                <span>⭐</span>
-                <span className="text-sm font-bold text-slate-900">4.9/5 from 50,000+ students</span>
-              </div>
-              <div className="inline-flex items-center gap-2 px-5 py-2.5 bg-white border border-slate-200 rounded-full shadow-sm">
-                <span>🏆</span>
-                <span className="text-sm font-bold text-slate-900">Used by designers in 18+ countries</span>
-              </div>
-              <div className="inline-flex items-center gap-2 px-5 py-2.5 bg-white border border-slate-200 rounded-full shadow-sm">
-                <span>✅</span>
-                <span className="text-sm font-bold text-slate-900">7-day money-back guarantee</span>
-              </div>
-            </div>
 
             {/* Outcome cards */}
             <div className="grid grid-cols-2 gap-3 mb-8">

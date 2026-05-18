@@ -105,7 +105,7 @@ const LandingPage: React.FC = () => {
       {/* ═══ TOP BANNER ═══ */}
       {countryName && (
         <div className="sticky top-0 z-[60] bg-slate-900 text-white text-center py-2.5 px-4">
-          <span className="text-xs md:text-sm font-bold tracking-wide">🎉 Now Available in <span className="text-orange-400">{countryName}</span> — Pay in {currency.code !== 'USD' ? currency.code : 'your local currency'}!</span>
+          <span className="text-xs md:text-sm font-bold tracking-wide">🎉 Now Available in <span className="text-orange-400">{countryName}</span></span>
         </div>
       )}
 

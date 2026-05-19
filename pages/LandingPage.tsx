@@ -55,7 +55,7 @@ const CtaWithTimer = ({ timeLeft, onClick, variant = 'green' }: { timeLeft: { h:
         <div className="flex items-baseline gap-2">
           <span className={`text-sm ${variant === 'dark' ? 'text-slate-500' : 'text-slate-400'} line-through font-bold`}>{formatPrice(FRONT_END_ORIGINAL_PRICE)}</span>
           <span className={`text-3xl font-display font-black ${variant === 'dark' ? 'text-white' : 'text-slate-900'}`}>{formatPrice(FRONT_END_PRICE)}</span>
-          <span className="bg-orange-100 text-orange-500 text-[9px] font-bold px-1.5 py-0.5 rounded-full">30% OFF</span>
+          <span className="bg-orange-100 text-orange-500 text-[9px] font-bold px-1.5 py-0.5 rounded-full">69% OFF</span>
         </div>
 
         {/* Button */}
@@ -103,11 +103,9 @@ const LandingPage: React.FC = () => {
     <div className="min-h-screen bg-white text-gray-900 font-sans overflow-x-hidden selection:bg-orange-100">
 
       {/* ═══ TOP BANNER ═══ */}
-      {countryName && (
-        <div className="sticky top-0 z-[60] bg-slate-900 text-white text-center py-2.5 px-4">
-          <span className="text-xs md:text-sm font-bold tracking-wide">🎉 Now Available in <span className="text-orange-400">{countryName}</span></span>
-        </div>
-      )}
+      <div className="sticky top-0 z-[60] bg-slate-900 text-white text-center py-2.5 px-4">
+        <span className="text-xs md:text-sm font-bold tracking-wide">⚠️ With Current Market Conditions we are <span className="text-orange-400">increasing prices tomorrow</span>.</span>
+      </div>
 
       <main>
         {/* 1. HERO — The Primary Pitch */}

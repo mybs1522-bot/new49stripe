@@ -238,7 +238,7 @@ export const FRONT_END_COURSES = FRONT_END_IDS.map(id => COURSES.find(c => c.id 
 export const UPSELL_COURSES = COURSES.filter(c => !FRONT_END_IDS.includes(c.id));
 
 export const FRONT_END_PRICE = 9;
-export const FRONT_END_ORIGINAL_PRICE = 13;
+export const FRONT_END_ORIGINAL_PRICE = 29;
 export const UPSELL_PRICE = 27;
 export const UPSELL_ORIGINAL_PRICE = 199;
 export const UPSELL2_PRICE = 36;

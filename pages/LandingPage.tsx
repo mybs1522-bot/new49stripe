@@ -116,13 +116,13 @@ const LandingPage: React.FC = () => {
               {/* Badge */}
               <div className="mb-5 inline-flex items-center gap-2 px-5 py-2 bg-orange-50 border border-orange-300 rounded-full shadow-sm">
                 <Sparkles size={14} className="text-orange-500" />
-                <span className="text-[11px] md:text-xs font-bold text-orange-700 uppercase tracking-widest">For Architects & Interior Designers</span>
+                <span className="text-[11px] md:text-xs font-bold text-orange-700 uppercase tracking-widest">Hello, Interior Designers and Architects</span>
               </div>
 
               {/* Industry truth subtitle */}
               <p className="text-[10px] md:text-xs font-bold uppercase tracking-[0.18em] text-slate-600 mb-5 leading-relaxed">
-                In Architecture & Design —{' '}
-                <span className="text-orange-500 font-extrabold">Planning, Design & Rendering</span>{' '}
+                In our business of Architecture and Design,{' '}
+                <span className="text-orange-500 font-extrabold">Planning, Design and Rendering</span>{' '}
                 matter the most.
               </p>
 
@@ -162,15 +162,15 @@ const LandingPage: React.FC = () => {
 
               {/* Hero Video */}
               <div className="w-full mb-8 overflow-hidden rounded-2xl shadow-2xl border border-slate-100" style={{ position: 'relative', paddingTop: '56.25%' }}>
-                <iframe src="https://iframe.mediadelivery.net/embed/489113/a214b199-e64a-4eaf-af70-edfbc586e5fd?autoplay=true&loop=true&muted=true&preload=true&responsive=true" loading="lazy" style={{ border: 0, position: 'absolute', top: 0, height: '100%', width: '100%' }} allow="accelerometer;gyroscope;autoplay;encrypted-media;picture-in-picture;" allowFullScreen={true} />
+                <iframe src="https://iframe.mediadelivery.net/embed/489113/a4460094-5648-498d-8d29-6e63aa1feb91?autoplay=true&loop=true&muted=true&preload=true&responsive=true" loading="lazy" style={{ border: 0, position: 'absolute', top: 0, height: '100%', width: '100%' }} allow="accelerometer;gyroscope;autoplay;encrypted-media;picture-in-picture;" allowFullScreen={true} />
               </div>
 
               {/* Bottom persuasion text */}
               <div className="w-full mb-4 text-center px-2">
                 <p className="text-[1rem] md:text-3xl font-display font-black text-gray-900 leading-snug">
-                  Designers who can Plan, Design and Render make{' '}
+                  If you can Plan, Design and Render you can make{' '}
                   <span className="text-orange-500 underline decoration-orange-300 decoration-2 underline-offset-2">10x money</span>{' '}in this industry{' '}
-                  <em className="text-orange-500 italic font-black">because</em>{' '}only they can deliver a project from start to finish.
+                  <em className="text-orange-500 italic font-black">because</em>{' '}only you deliver a project from start to finish.
                 </p>
               </div>
 

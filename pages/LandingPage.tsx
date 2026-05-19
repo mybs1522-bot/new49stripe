@@ -130,19 +130,19 @@ const LandingPage: React.FC = () => {
 
               {/* Main Headline */}
               <h1 className="tracking-tight mb-3 w-full">
-                <span className="block text-[1.35rem] md:text-5xl font-display font-black text-slate-900 leading-[1.15] whitespace-nowrap">We Will Teach You to Design Complete</span>
+                <span className="block text-[1.35rem] md:text-5xl font-display font-black text-slate-900 leading-[1.15] whitespace-nowrap">We Will Teach You to Create Complete</span>
               </h1>
               <div className="flex flex-wrap justify-center gap-2 md:gap-3 mb-2">
                 {[
-                  { label: 'Bedroom', Icon: Bed },
-                  { label: 'Kitchen', Icon: CookingPot },
-                  { label: 'Washroom', Icon: Bath },
-                  { label: 'Villas', Icon: Landmark },
-                  { label: 'Offices', Icon: Building2 },
+                  { label: 'Bedroom', img: 'https://archicgi.com/wp-content/uploads/2025/01/bedroom-design-3d-render-vancouver.jpg' },
+                  { label: 'Kitchen', img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSVxhTeQpiWXZ5sqNSpfTLtZgqfVLCg8DxWZg&s' },
+                  { label: 'Washroom', img: 'https://t4.ftcdn.net/jpg/05/39/76/47/360_F_539764753_ssmO3LitGNsiX5X1c14XWp2qYxNhgAGo.jpg' },
+                  { label: 'Villas', img: 'https://forum.d5render.com/uploads/default/optimized/2X/a/a0b1e6e8c5e8b9f8e4c5c8c0f2a5b3e4d6f8a0c2_2_1024x576.jpeg' },
+                  { label: 'Offices', img: 'https://render-vision.com/wp-content/uploads/2024/09/3D-Visualisierung_Buro_final-1920x1280.jpg.webp' },
                 ].map((item) => (
                   <span key={item.label} className="inline-flex items-center gap-1.5 bg-orange-50 border border-orange-200 rounded-full px-3 py-1.5">
-                    <span className="w-5 h-5 bg-orange-500 rounded-full flex items-center justify-center">
-                      <item.Icon size={12} className="text-white" />
+                    <span className="w-9 h-9 md:w-7 md:h-7 rounded-full overflow-hidden shrink-0">
+                      <img src={item.img} alt={item.label} className="w-full h-full object-cover" />
                     </span>
                     <span className="text-sm md:text-base font-bold text-orange-600">{item.label}</span>
                   </span>

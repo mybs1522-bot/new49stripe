@@ -47,9 +47,7 @@ serve(async (req: Request) => {
     }
 
     if (finalPaymentMethodId) {
-      // We have an explicit payment method ID.
-      // Explicitly attach it to the customer first (idempotent — if already
-      // attached, Stripe just returns the existing attachment).
+      // Attach payment method to customer (idempotent)
       try {
         await stripe.paymentMethods.attach(finalPaymentMethodId, {
           customer: customerId,
@@ -75,7 +73,7 @@ serve(async (req: Request) => {
       finalPaymentMethodId = paymentMethods.data[0].id;
     }
 
-    // Charge the card immediately
+    // Charge the card off-session with clear descriptor
     const paymentIntent = await stripe.paymentIntents.create({
       amount: numericAmount,
       currency: 'usd',
@@ -83,13 +81,41 @@ serve(async (req: Request) => {
       payment_method: finalPaymentMethodId,
       off_session: true,
       confirm: true,
+      statement_descriptor: 'AVADADESIGN',
+      statement_descriptor_suffix: 'ADDON',
+      description: 'Avada Design - Course Add-on',
       metadata: { product: 'Avada Design Bundle Upsell' },
+      payment_method_options: {
+        card: {
+          request_three_d_secure: 'any',
+        },
+      },
     });
 
-    return new Response(
-      JSON.stringify({ success: true, paymentIntentId: paymentIntent.id, status: paymentIntent.status }),
-      { status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-    );
+    // Handle different payment statuses
+    if (paymentIntent.status === 'succeeded') {
+      return new Response(
+        JSON.stringify({ success: true, paymentIntentId: paymentIntent.id, status: paymentIntent.status }),
+        { status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    } else if (paymentIntent.status === 'requires_action' || paymentIntent.status === 'requires_confirmation') {
+      // Card requires 3DS authentication — return client_secret so frontend can handle
+      return new Response(
+        JSON.stringify({
+          success: false,
+          requiresAction: true,
+          clientSecret: paymentIntent.client_secret,
+          paymentIntentId: paymentIntent.id,
+          error: 'Your bank requires additional verification. Please re-enter your card.',
+        }),
+        { status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    } else {
+      return new Response(
+        JSON.stringify({ success: false, error: `Payment incomplete (status: ${paymentIntent.status})` }),
+        { status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
   } catch (err: any) {
     console.error('[charge-saved-card-upsell] Error:', err.message);
     return new Response(

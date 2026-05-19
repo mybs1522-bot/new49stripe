@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowRight, Star, CheckCircle, CheckCircle2, X, ChevronDown, Sparkles, Eye, Download, Mail, Lock, Loader2, Timer, Check, ShieldCheck } from 'lucide-react';
+import { ArrowRight, Star, CheckCircle, CheckCircle2, X, ChevronDown, Sparkles, Eye, Download, Mail, Lock, Loader2, Timer, Check, ShieldCheck, Bed, CookingPot, Bath, Building2, Landmark } from 'lucide-react';
 import { FRONT_END_COURSES, FRONT_END_PRICE, FRONT_END_ORIGINAL_PRICE } from '../constants';
 import { useCurrency } from '../contexts/CurrencyContext';
 import TeamSection from '../components/ui/team';
@@ -129,11 +129,26 @@ const LandingPage: React.FC = () => {
               </p>
 
               {/* Main Headline */}
-              <h1 className="tracking-tight mb-2 w-full">
-                <span className="block text-[1.75rem] md:text-6xl font-display font-black text-slate-900 leading-[1.1] whitespace-nowrap">You Will Design Complete</span>
-                <span className="block text-[1.75rem] md:text-6xl font-display font-black text-orange-500 leading-[1.1] whitespace-nowrap">Homes, Villas & Offices</span>
+              <h1 className="tracking-tight mb-3 w-full">
+                <span className="block text-[1.35rem] md:text-5xl font-display font-black text-slate-900 leading-[1.15] whitespace-nowrap">We Will Teach You to Design Complete</span>
               </h1>
-              <p className="text-base md:text-xl italic text-slate-800 mb-1 font-medium">and Start Earning as a Professional Designer</p>
+              <div className="flex flex-wrap justify-center gap-2 md:gap-3 mb-2">
+                {[
+                  { label: 'Bedroom', Icon: Bed },
+                  { label: 'Kitchen', Icon: CookingPot },
+                  { label: 'Washroom', Icon: Bath },
+                  { label: 'Villas', Icon: Landmark },
+                  { label: 'Offices', Icon: Building2 },
+                ].map((item) => (
+                  <span key={item.label} className="inline-flex items-center gap-1.5 bg-orange-50 border border-orange-200 rounded-full px-3 py-1.5">
+                    <span className="w-5 h-5 bg-orange-500 rounded-full flex items-center justify-center">
+                      <item.Icon size={12} className="text-white" />
+                    </span>
+                    <span className="text-sm md:text-base font-bold text-orange-600">{item.label}</span>
+                  </span>
+                ))}
+              </div>
+              <p className="text-base md:text-xl italic text-slate-800 mb-1 font-medium">So You can Start Earning as a Professional Designer</p>
               <p className="text-base md:text-xl font-bold mb-7"><span className="bg-orange-500 text-white px-3 py-1 rounded-md">in Just 15 days</span></p>
 
               {/* WE TEACH YOU card */}
@@ -154,7 +169,7 @@ const LandingPage: React.FC = () => {
 
               {/* Bottom persuasion text */}
               <div className="w-full mb-4 text-center px-2">
-                <p className="text-[1.1rem] md:text-3xl font-display font-black text-gray-900 leading-snug">
+                <p className="text-[1rem] md:text-3xl font-display font-black text-gray-900 leading-snug">
                   Designers who can Plan, Design and Render make{' '}
                   <span className="text-orange-500 underline decoration-orange-300 decoration-2 underline-offset-2">10x money</span>{' '}in this industry{' '}
                   <em className="text-orange-500 italic font-black">because</em>{' '}only they can deliver a project from start to finish.
@@ -174,43 +189,6 @@ const LandingPage: React.FC = () => {
           </div>
         </section>
 
-
-        {/* ═══════ SOCIAL PROOF — Students & Trust ═══════ */}
-        <section className="py-10 md:py-16 bg-white">
-          <div className="max-w-3xl mx-auto px-4">
-            {/* Heading */}
-            <p className="text-lg md:text-2xl font-black uppercase tracking-[0.15em] text-slate-900 text-center mb-4">50,000+ Students Worldwide</p>
-
-            {/* Student collage image */}
-            <div className="w-full mb-8 overflow-hidden rounded-2xl shadow-lg border border-slate-100">
-              <img src="https://lh3.googleusercontent.com/d/1U5Yisfd31i6-OFBRVorAjhO5O0S72JzG" alt="50,000+ Students Worldwide" className="w-full h-auto object-cover" />
-            </div>
-
-
-            {/* Outcome cards */}
-            <div className="grid grid-cols-2 gap-3 mb-8">
-              <div className="bg-white border border-slate-200 rounded-2xl px-4 py-5 text-left">
-                <p className="text-lg font-black text-slate-900 mb-2">💰 Start Earning Faster</p>
-                <p className="text-sm text-slate-600">Design real projects & charge clients within weeks</p>
-              </div>
-              <div className="bg-white border border-slate-200 rounded-2xl px-4 py-5 text-left">
-                <p className="text-lg font-black text-slate-900 mb-2">🏢 Design Full Projects</p>
-                <p className="text-sm text-slate-600">Homes, villas, offices — from floor plan to final visual</p>
-              </div>
-            </div>
-
-            {/* Why this bundle is different */}
-            <div className="w-full bg-orange-50 border border-orange-200 rounded-2xl px-5 py-5 text-left">
-              <p className="text-xs font-bold uppercase tracking-widest text-orange-500 mb-4 flex items-center gap-2"><Sparkles size={14} /> Why This Bundle Is Different</p>
-              <ul className="space-y-3">
-                <li className="flex items-start gap-3 text-sm md:text-base font-semibold text-slate-800"><span className="text-orange-400 shrink-0 mt-0.5">—</span> Learn to design complete homes, villas & offices end-to-end</li>
-                <li className="flex items-start gap-3 text-sm md:text-base font-semibold text-slate-800"><span className="text-orange-400 shrink-0 mt-0.5">—</span> 4 tools that form one seamless pipeline: Plan → Design → Render → Deliver</li>
-                <li className="flex items-start gap-3 text-sm md:text-base font-semibold text-slate-800"><span className="text-orange-400 shrink-0 mt-0.5">—</span> AI does the heavy lifting — you focus on creativity, not tech headaches</li>
-                <li className="flex items-start gap-3 text-sm md:text-base font-semibold text-slate-800"><span className="text-orange-400 shrink-0 mt-0.5">—</span> Go from zero to client-ready renders in just 15 days</li>
-              </ul>
-            </div>
-          </div>
-        </section>
 
         {/* ═══════ COURSE SLIDESHOW — Master Every Tool ═══════ */}
         <section className="py-8 md:py-16 bg-white border-b border-gray-100 overflow-hidden relative">
@@ -257,6 +235,42 @@ const LandingPage: React.FC = () => {
         <section className="py-8 md:py-10 px-4 md:px-5">
           <div className="max-w-3xl mx-auto">
             <CtaWithTimer timeLeft={timeLeft} onClick={openPaymentModal} variant="green" />
+          </div>
+        </section>
+
+        {/* ═══════ SOCIAL PROOF — Students & Trust ═══════ */}
+        <section className="py-10 md:py-16 bg-white">
+          <div className="max-w-3xl mx-auto px-4">
+            {/* Heading */}
+            <p className="text-lg md:text-2xl font-black uppercase tracking-[0.15em] text-slate-900 text-center mb-4">50,000+ Students Worldwide</p>
+
+            {/* Student collage image */}
+            <div className="w-full mb-8 overflow-hidden rounded-2xl shadow-lg border border-slate-100">
+              <img src="https://lh3.googleusercontent.com/d/1U5Yisfd31i6-OFBRVorAjhO5O0S72JzG" alt="50,000+ Students Worldwide" className="w-full h-auto object-cover" />
+            </div>
+
+            {/* Outcome cards */}
+            <div className="grid grid-cols-2 gap-3 mb-8">
+              <div className="bg-white border border-slate-200 rounded-2xl px-4 py-5 text-left">
+                <p className="text-lg font-black text-slate-900 mb-2">💰 Start Earning Faster</p>
+                <p className="text-sm text-slate-600">Design real projects & charge clients within weeks</p>
+              </div>
+              <div className="bg-white border border-slate-200 rounded-2xl px-4 py-5 text-left">
+                <p className="text-lg font-black text-slate-900 mb-2">🏢 Design Full Projects</p>
+                <p className="text-sm text-slate-600">Homes, villas, offices — from floor plan to final visual</p>
+              </div>
+            </div>
+
+            {/* Why this bundle is different */}
+            <div className="w-full bg-orange-50 border border-orange-200 rounded-2xl px-5 py-5 text-left">
+              <p className="text-xs font-bold uppercase tracking-widest text-orange-500 mb-4 flex items-center gap-2"><Sparkles size={14} /> Why This Bundle Is Different</p>
+              <ul className="space-y-3">
+                <li className="flex items-start gap-3 text-sm md:text-base font-semibold text-slate-800"><span className="text-orange-400 shrink-0 mt-0.5">—</span> Learn to design complete homes, villas & offices end-to-end</li>
+                <li className="flex items-start gap-3 text-sm md:text-base font-semibold text-slate-800"><span className="text-orange-400 shrink-0 mt-0.5">—</span> 4 tools that form one seamless pipeline: Plan → Design → Render → Deliver</li>
+                <li className="flex items-start gap-3 text-sm md:text-base font-semibold text-slate-800"><span className="text-orange-400 shrink-0 mt-0.5">—</span> AI does the heavy lifting — you focus on creativity, not tech headaches</li>
+                <li className="flex items-start gap-3 text-sm md:text-base font-semibold text-slate-800"><span className="text-orange-400 shrink-0 mt-0.5">—</span> Go from zero to client-ready renders in just 15 days</li>
+              </ul>
+            </div>
           </div>
         </section>
 

@@ -21,6 +21,9 @@ const CurrencyContext = createContext<CurrencyContextType>({
 
 export const useCurrency = () => useContext(CurrencyContext);
 
+// Set to true to enable local currency conversion
+const USE_LOCAL_CURRENCY = false;
+
 export const CurrencyProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [currency, setCurrency] = useState<CurrencyInfo>(defaultCurrency);
   const [countryCode, setCountryCode] = useState('US');
@@ -32,14 +35,15 @@ export const CurrencyProvider: React.FC<{ children: React.ReactNode }> = ({ chil
       const code = await detectCountry();
       setCountryCode(code);
       setCountryName(getCountryName(code));
-      const fallback = getCurrencyForCountry(code);
 
-      // Try to get live exchange rate
-      const liveRate = await fetchLiveRate(fallback.code);
-      if (liveRate !== null) {
-        setCurrency({ ...fallback, rate: liveRate });
-      } else {
-        setCurrency(fallback);
+      if (USE_LOCAL_CURRENCY) {
+        const fallback = getCurrencyForCountry(code);
+        const liveRate = await fetchLiveRate(fallback.code);
+        if (liveRate !== null) {
+          setCurrency({ ...fallback, rate: liveRate });
+        } else {
+          setCurrency(fallback);
+        }
       }
       setIsLoading(false);
     })();

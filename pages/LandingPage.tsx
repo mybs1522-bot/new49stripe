@@ -104,7 +104,7 @@ const LandingPage: React.FC = () => {
 
       {/* ═══ TOP BANNER ═══ */}
       <div className="sticky top-0 z-[60] bg-slate-900 text-white text-center py-2.5 px-4">
-        <span className="text-[10px] md:text-sm font-bold tracking-wide whitespace-nowrap">⚠️ With Current Market Conditions we are <span className="text-orange-400">increasing prices tomorrow</span>.</span>
+        <span className="text-[10px] md:text-sm font-bold tracking-wide whitespace-nowrap">⚠️ With Current Market Conditions we are <span className="text-orange-400">increasing prices soon</span>.</span>
       </div>
 
       <main>

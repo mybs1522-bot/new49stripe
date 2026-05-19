@@ -1,0 +1,63 @@
+HERO SECTION CHANGES SUMMARY
+=============================
+
+## Top Banner (Sticky Header)
+- Text: "⚠️ With Current Market Conditions we are increasing prices soon."
+- "increasing prices soon" is highlighted in orange
+- Single line on phone (font: 10px mobile, sm desktop)
+
+## Badge
+- Text: "Hello, Interior Designers and Architects"
+- Orange pill with sparkle icon
+
+## Industry Truth Subtitle
+- Text: "In our business of Architecture and Design, Planning, Design and Rendering matter the most."
+- "Planning, Design and Rendering" in orange bold
+
+## Main Headline
+- Text: "We Will Teach You to Create Complete"
+- Single line on phone (font: 1.35rem mobile, 5xl desktop)
+
+## Room Type Pills (with circular image thumbnails)
+- Bedroom — https://archicgi.com/wp-content/uploads/2025/01/bedroom-design-3d-render-vancouver.jpg
+- Kitchen — https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSVxhTeQpiWXZ5sqNSpfTLtZgqfVLCg8DxWZg&s
+- Washroom — https://t4.ftcdn.net/jpg/05/39/76/47/360_F_539764753_ssmO3LitGNsiX5X1c14XWp2qYxNhgAGo.jpg
+- Villas — https://mirchidevelopers.com/wp-content/uploads/2025/09/1.webp
+- Offices — https://render-vision.com/wp-content/uploads/2024/09/3D-Visualisierung_Buro_final-1920x1280.jpg.webp
+- Circle size: w-9 h-9 on mobile, w-7 h-7 on desktop
+
+## Subtitle Line
+- Text: "So You can Start Earning as a Professional Designer"
+- Italic, slate-800 color
+
+## Highlighted Tag
+- Text: "in Just 15 days"
+- Orange background, white text, rounded pill
+
+## WE TEACH YOU Card
+- Label: "We Teach You"
+- Content: "Planning on AutoCAD, Designing on SketchUp and Rendering on V-Ray and D5 + AI"
+
+## Hero Video
+- URL: https://iframe.mediadelivery.net/embed/489113/a4460094-5648-498d-8d29-6e63aa1feb91?autoplay=true&loop=true&muted=true&preload=true&responsive=true
+- 16:9 aspect ratio, rounded corners, shadow
+
+## Bottom Persuasion Text
+- Text: "If you can Plan, Design and Render you can make 10x money in this industry because only you deliver a project from start to finish."
+- "10x money" in orange with underline
+- "because" in orange italic
+- 3 lines on mobile (font: 1rem), 3xl on desktop
+
+## Pipeline Tagline (with slow pulse animation)
+- Text: "We teach you that entire pipeline in 15 days."
+- Orange, italic, pulsing animation (3s ease-in-out infinite)
+
+## CTA Button
+- Text: "Get All 4 Courses — $9"
+- Orange gradient, rounded, with download icon and arrow
+- Sub-text: "24/7 Support • Free AI Software • 7-Day Money-Back Guarantee"
+
+## Pricing
+- Current price: $9
+- Strikethrough price: $29
+- Discount badge: 69% OFF

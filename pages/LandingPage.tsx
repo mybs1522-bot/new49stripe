@@ -167,15 +167,23 @@ const LandingPage: React.FC = () => {
 
               {/* Bottom persuasion text */}
               <div className="w-full mb-4 text-center px-2">
-                <p className="text-[1rem] md:text-3xl font-display font-black text-gray-900 leading-snug">
-                  If you can Plan, Design and Render you can make{' '}
-                  <span className="text-orange-500 underline decoration-orange-300 decoration-2 underline-offset-2">10x money</span>{' '}in this industry{' '}
-                  <em className="text-orange-500 italic font-black">because</em>{' '}only you deliver a project from start to finish.
+                <p className="text-xl md:text-3xl font-display font-black text-gray-900 leading-snug">
+                  Design like Top Designers in <span className="text-orange-500 underline decoration-orange-300 decoration-2 underline-offset-4 italic">15 Days.</span>
                 </p>
+                <p className="text-xs md:text-sm font-bold uppercase tracking-[0.2em] text-slate-400 mt-2">No Bullshit.</p>
               </div>
 
-              {/* Pipeline tagline */}
-              <p className="text-lg md:text-2xl italic text-orange-500 font-medium mb-8 animate-[pulse_3s_ease-in-out_infinite]">We teach you that entire pipeline in 15 days.</p>
+              {/* Outcome cards */}
+              <div className="grid grid-cols-2 gap-3 w-full mb-8">
+                <div className="bg-yellow-50 border border-yellow-200 rounded-2xl px-4 py-4 text-left">
+                  <p className="text-sm md:text-base font-black text-slate-900 mb-1">💼 Land Higher-Paying Jobs</p>
+                  <p className="text-xs md:text-sm text-slate-500">Firms pay premium for rendering skills</p>
+                </div>
+                <div className="bg-yellow-50 border border-yellow-200 rounded-2xl px-4 py-4 text-left">
+                  <p className="text-sm md:text-base font-black text-slate-900 mb-1">🏢 Start Your Own Studio</p>
+                  <p className="text-xs md:text-sm text-slate-500">Full pipeline for freelance & studio work</p>
+                </div>
+              </div>
 
               {/* CTA */}
               <button onClick={openPaymentModal} className="w-full sm:w-auto px-8 py-4 bg-gradient-to-r from-orange-500 to-orange-600 text-white rounded-2xl font-bold text-base md:text-lg shadow-xl shadow-orange-500/20 hover:shadow-orange-500/30 hover:scale-[1.03] transition-all flex items-center justify-center gap-3 group premium-stroke">

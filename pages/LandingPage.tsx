@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowRight, Star, CheckCircle, CheckCircle2, X, ChevronDown, Sparkles, Eye, Download, Mail, Lock, Loader2, Timer, Check, ShieldCheck, Bed, CookingPot, Bath, Building2, Landmark } from 'lucide-react';
-import { FRONT_END_COURSES, FRONT_END_PRICE, FRONT_END_ORIGINAL_PRICE } from '../constants';
+import { FRONT_END_PRICE, FRONT_END_ORIGINAL_PRICE } from '../constants';
 import { useCurrency } from '../contexts/CurrencyContext';
 import TeamSection from '../components/ui/team';
 import {
@@ -162,7 +162,15 @@ const LandingPage: React.FC = () => {
 
               {/* Hero Video */}
               <div className="w-full mb-8 overflow-hidden rounded-2xl shadow-2xl border border-slate-100" style={{ position: 'relative', paddingTop: '56.25%' }}>
-                <iframe src="https://iframe.mediadelivery.net/embed/489113/a4460094-5648-498d-8d29-6e63aa1feb91?autoplay=true&loop=true&muted=true&preload=true&responsive=true" loading="lazy" style={{ border: 0, position: 'absolute', top: 0, height: '100%', width: '100%' }} allow="accelerometer;gyroscope;autoplay;encrypted-media;picture-in-picture;" allowFullScreen={true} />
+                <iframe src="https://iframe.mediadelivery.net/embed/494628/81badf78-a3b0-42fa-9f23-9f7213d4185c?autoplay=true&loop=true&muted=true&preload=true&responsive=true" loading="lazy" style={{ border: 0, position: 'absolute', top: 0, height: '100%', width: '100%' }} allow="accelerometer;gyroscope;autoplay;encrypted-media;picture-in-picture;fullscreen;" allowFullScreen={true} />
+                {/* On-video caption */}
+                <div className="absolute bottom-0 left-0 right-0 pointer-events-none" style={{ position: 'absolute', bottom: 0, left: 0, right: 0 }}>
+                  <div className="mx-3 mb-3 md:mx-5 md:mb-5 bg-black/60 backdrop-blur-md rounded-xl px-4 py-2.5 md:px-6 md:py-3 border border-white/10">
+                    <p className="text-white text-xs md:text-base font-bold text-center tracking-wide drop-shadow-lg">
+                      Learn Complete Interior & Exterior Design in one package.
+                    </p>
+                  </div>
+                </div>
               </div>
 
               {/* Bottom persuasion text */}
@@ -196,43 +204,17 @@ const LandingPage: React.FC = () => {
         </section>
 
 
-        {/* ═══════ COURSE SLIDESHOW — Master Every Tool ═══════ */}
+        {/* ═══════ COURSE SLIDESHOW — Master Every Tool (Replaced with Custom Designed Pipeline Banner) ═══════ */}
         <section className="py-8 md:py-16 bg-white border-b border-gray-100 overflow-hidden relative">
-           <div className="container mx-auto px-4 mb-8">
-             <div className="text-center reveal">
-                 <div className="inline-flex items-center gap-2 text-orange-500 text-xs font-bold uppercase tracking-widest mb-2">
-                   <Sparkles size={14} />
-                   4 Premium Courses Included
-                 </div>
-                 <h2 className="text-2xl md:text-4xl font-display font-black text-gray-900 leading-tight">Master the Complete<br/>Plan-to-Render Pipeline</h2>
-                 <p className="text-slate-500 mt-3 text-sm md:text-base max-w-2xl mx-auto">From precise 2D plans to stunning photorealistic renders — the 4-tool pipeline that top firms actually use.</p>
-             </div>
-           </div>
-           
-           {/* Course cards — 3 courses */}
-           <div className="max-w-4xl mx-auto px-4">
-             <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-6">
-               {FRONT_END_COURSES.map((course, i) => (
-                 <div key={course.id} className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden group hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
-                   <div className="relative aspect-square overflow-hidden bg-gray-100">
-                     <img src={course.imageUrl} alt={course.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-                     <div className="absolute top-1.5 left-1.5 w-6 h-6 bg-white/95 backdrop-blur-sm rounded-full flex items-center justify-center font-display font-bold text-gray-900 shadow-sm text-[10px] border border-gray-200">{i + 1}</div>
-                     <div className="absolute top-1.5 right-1.5 bg-white/95 backdrop-blur-sm text-gray-900 text-[8px] font-bold uppercase tracking-widest px-1.5 py-0.5 rounded-full shadow-sm border border-gray-200">{course.software}</div>
-                     <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                       <div className="w-6 h-6 bg-white rounded-full flex items-center justify-center text-orange-500 shadow-lg"><Eye size={14} /></div>
-                     </div>
-                   </div>
-                   <div className="p-2 md:p-3">
-                     <h3 className="font-display font-bold text-gray-900 text-xs md:text-sm mb-1 line-clamp-1 leading-tight">{course.title}</h3>
-                     <p className="text-[10px] md:text-xs text-gray-500 mb-2 line-clamp-2 hidden md:block">{course.description}</p>
-                     <div className="mt-1 pt-1 border-t border-gray-100">
-                       <div className="bg-orange-50 text-orange-600 text-[9px] font-bold px-1.5 py-0.5 rounded flex items-center justify-center gap-1 border border-orange-100 w-full"><CheckCircle2 size={8}/> Included</div>
-                     </div>
-                   </div>
-                 </div>
-               ))}
-             </div>
-           </div>
+          <div className="max-w-5xl mx-auto px-4 md:px-6">
+            <div className="reveal flex justify-center">
+              <img 
+                src="/plan-to-render-pipeline.png" 
+                alt="Master the Complete Plan-to-Render Pipeline: AutoCAD, SketchUp, V-Ray, D5 Render" 
+                className="w-full h-auto rounded-2xl shadow-xl hover:shadow-2xl transition-shadow duration-300 border border-slate-100"
+              />
+            </div>
+          </div>
         </section>
 
 

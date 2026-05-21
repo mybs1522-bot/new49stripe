@@ -101,6 +101,14 @@ const LandingPage: React.FC = () => {
   useEffect(() => {
     const handleScroll = () => {
       if (pipelineSentinelRef.current) {
+        // Only activate sticky on phone screens
+        if (window.innerWidth >= 768) {
+          if (pipelineStickyRef.current) {
+            pipelineStickyRef.current = false;
+            setPipelineSticky(false);
+          }
+          return;
+        }
         // Capture the natural height before it goes sticky
         if (!pipelineStickyRef.current && pipelineRef.current) {
           pipelineNaturalHeight.current = pipelineRef.current.offsetHeight;

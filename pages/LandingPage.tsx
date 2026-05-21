@@ -92,6 +92,32 @@ const LandingPage: React.FC = () => {
   useEffect(() => { const h = () => setShowStickyBar(window.scrollY > 600); window.addEventListener('scroll', h, { passive: true }); return () => window.removeEventListener('scroll', h); }, []);
   useEffect(() => { const t = setInterval(() => setStudentCount(c => c + 1), 4000); return () => clearInterval(t); }, []);
 
+  // Pipeline sticky on mobile
+  const pipelineRef = React.useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.innerWidth >= 768) {
+        setPipelineSticky(false);
+        return;
+      }
+
+      if (pipelineRef.current) {
+        const rect = pipelineRef.current.getBoundingClientRect();
+        const isInViewport = rect.top < window.innerHeight && rect.bottom > 0;
+        setPipelineSticky(isInViewport);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    window.addEventListener('resize', handleScroll);
+    handleScroll();
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('resize', handleScroll);
+    };
+  }, []);
+
   const formatTime = (val: number) => val.toString().padStart(2, '0');
 
   const openPaymentModal = () => {
@@ -104,7 +130,7 @@ const LandingPage: React.FC = () => {
 
       {/* ═══ TOP BANNER ═══ */}
       <div className="sticky top-0 z-[60] bg-slate-900 text-white text-center py-2.5 px-4">
-        <span className="text-[10px] md:text-sm font-bold tracking-wide whitespace-nowrap">⚠️ With Current Market Conditions we are <span className="text-orange-400">increasing prices soon</span>.</span>
+        <span className="text-[10px] md:text-sm font-bold tracking-wide whitespace-nowrap">AutoCAD added in the package, <span className="text-orange-400">No price increment till offer last</span>.</span>
       </div>
 
       <main>
@@ -205,15 +231,19 @@ const LandingPage: React.FC = () => {
 
 
         {/* ═══════ COURSE SLIDESHOW — Master Every Tool (Replaced with Custom Designed Pipeline Banner) ═══════ */}
-        <section className="py-8 md:py-16 bg-white border-b border-gray-100 overflow-hidden relative">
+        <section className="py-8 md:py-16 bg-white border-b border-gray-100 relative">
           <div className="max-w-5xl mx-auto px-4 md:px-6">
-            <div className="reveal flex justify-center">
+            <div 
+              ref={pipelineRef}
+              className={`reveal flex justify-center ${pipelineSticky ? 'fixed top-12 left-0 right-0 z-50 bg-white py-4 shadow-2xl border-b border-gray-200' : ''}`}
+            >
               <img 
                 src="/plan-to-render-pipeline.png" 
                 alt="Master the Complete Plan-to-Render Pipeline: AutoCAD, SketchUp, V-Ray, D5 Render" 
                 className="w-full h-auto rounded-2xl shadow-xl hover:shadow-2xl transition-shadow duration-300 border border-slate-100"
               />
             </div>
+            {pipelineSticky && <div className="h-80 md:hidden"></div>}
           </div>
         </section>
 

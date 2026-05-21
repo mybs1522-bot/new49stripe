@@ -169,7 +169,7 @@ export const COURSES_LANDING = [
   {
     id: '1', title: 'AutoCAD 2D', software: 'AutoCAD', students: '42.5k',
     description: 'Draw precise 2D floor plans and construction documents — the foundation every architect needs before going 3D.',
-    imageUrl: 'https://lh3.googleusercontent.com/d/1fV5bz4JDugh8HxLMJ0fXu5K5sDj3qlSR',
+    imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/23/Autodesk_AutoCAD_logo.svg/1200px-Autodesk_AutoCAD_logo.svg.png',
     learningPoints: ['Draw professional floor plans and furniture layouts', 'Print drawings to scale for real construction', 'Use shortcuts to draft 10x faster than others'],
     workflowImpact: 'Create the precise 2D blueprints that every 3D model begins with.'
   },

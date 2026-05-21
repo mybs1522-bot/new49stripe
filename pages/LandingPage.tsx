@@ -84,6 +84,7 @@ const LandingPage: React.FC = () => {
   useEffect(() => { window.scrollTo(0, 0); if ((window as any).fbq) (window as any).fbq('track', 'ViewContent', { content_name: 'Avada Design — SketchUp + V-Ray + D5 Render AI', value: FRONT_END_PRICE, currency: 'USD' }); }, []);
   const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(0);
   const [studentCount, setStudentCount] = useState(22390);
+  const [pipelineSticky, setPipelineSticky] = useState(false);
 
   useEffect(() => {
     const calc = () => { const D = (3 * 3600 + 36 * 60 + 20) * 1000, now = Date.now(), r = D - (now % D); setTimeLeft({ h: Math.floor((r / 3600000) % 24), m: Math.floor((r / 60000) % 60), s: Math.floor((r / 1000) % 60) }); };
@@ -92,19 +93,24 @@ const LandingPage: React.FC = () => {
   useEffect(() => { const h = () => setShowStickyBar(window.scrollY > 600); window.addEventListener('scroll', h, { passive: true }); return () => window.removeEventListener('scroll', h); }, []);
   useEffect(() => { const t = setInterval(() => setStudentCount(c => c + 1), 4000); return () => clearInterval(t); }, []);
 
-  // Pipeline sticky on mobile
+  // Pipeline sticky — sticks to top when scrolled past, shrinks to 1/3
   const pipelineRef = React.useRef<HTMLDivElement>(null);
+  const pipelineSentinelRef = React.useRef<HTMLDivElement>(null);
+  const pipelineNaturalHeight = React.useRef(0);
+  const pipelineStickyRef = React.useRef(false);
   useEffect(() => {
     const handleScroll = () => {
-      if (window.innerWidth >= 768) {
-        setPipelineSticky(false);
-        return;
-      }
-
-      if (pipelineRef.current) {
-        const rect = pipelineRef.current.getBoundingClientRect();
-        const isInViewport = rect.top < window.innerHeight && rect.bottom > 0;
-        setPipelineSticky(isInViewport);
+      if (pipelineSentinelRef.current) {
+        // Capture the natural height before it goes sticky
+        if (!pipelineStickyRef.current && pipelineRef.current) {
+          pipelineNaturalHeight.current = pipelineRef.current.offsetHeight;
+        }
+        const rect = pipelineSentinelRef.current.getBoundingClientRect();
+        const shouldStick = rect.top <= 0;
+        if (shouldStick !== pipelineStickyRef.current) {
+          pipelineStickyRef.current = shouldStick;
+          setPipelineSticky(shouldStick);
+        }
       }
     };
 
@@ -231,19 +237,31 @@ const LandingPage: React.FC = () => {
 
 
         {/* ═══════ COURSE SLIDESHOW — Master Every Tool (Replaced with Custom Designed Pipeline Banner) ═══════ */}
-        <section className="py-8 md:py-16 bg-white border-b border-gray-100 relative">
-          <div className="max-w-5xl mx-auto px-4 md:px-6">
+        <section className="bg-white border-b border-gray-100 relative">
+          <div ref={pipelineSentinelRef} className="max-w-5xl mx-auto px-4 md:px-6 py-8 md:py-16">
+            {/* Placeholder keeps page height stable when image goes fixed */}
+            {pipelineSticky && (
+              <div style={{ height: pipelineNaturalHeight.current }} />
+            )}
             <div 
               ref={pipelineRef}
-              className={`reveal flex justify-center ${pipelineSticky ? 'fixed top-12 left-0 right-0 z-50 bg-white py-4 shadow-2xl border-b border-gray-200' : ''}`}
+              className={`flex justify-center transition-all duration-300 ease-out ${
+                pipelineSticky
+                  ? 'fixed top-0 left-0 right-0 z-[65] bg-white/95 backdrop-blur-md shadow-lg'
+                  : ''
+              }`}
+              style={pipelineSticky ? { padding: 0, margin: 0 } : undefined}
             >
               <img 
                 src="/plan-to-render-pipeline.png" 
                 alt="Master the Complete Plan-to-Render Pipeline: AutoCAD, SketchUp, V-Ray, D5 Render" 
-                className="w-full h-auto rounded-2xl shadow-xl hover:shadow-2xl transition-shadow duration-300 border border-slate-100"
+                className={`h-auto transition-all duration-300 ease-out ${
+                  pipelineSticky
+                    ? 'w-1/2 py-1'
+                    : 'w-full rounded-2xl shadow-xl hover:shadow-2xl border border-slate-100'
+                }`}
               />
             </div>
-            {pipelineSticky && <div className="h-80 md:hidden"></div>}
           </div>
         </section>
 

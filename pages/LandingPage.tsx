@@ -104,7 +104,7 @@ const LandingPage: React.FC = () => {
 
       {/* ═══ TOP BANNER ═══ */}
       <div className="sticky top-0 z-[60] bg-slate-900 text-white text-center py-2.5 px-4">
-        <span className="text-[10px] md:text-sm font-bold tracking-wide whitespace-nowrap">⚠️ With Current Market Conditions we are <span className="text-orange-400">increasing prices soon</span>.</span>
+        <span className="text-[10px] md:text-sm font-bold tracking-wide whitespace-nowrap">AutoCAD Course added! <span className="text-orange-400">More coming soon.</span></span>
       </div>
 
       <main>
@@ -114,83 +114,68 @@ const LandingPage: React.FC = () => {
             <div className="flex flex-col items-center text-center pt-7 md:pt-14">
 
               {/* Badge */}
-              <div className="mb-5 inline-flex items-center gap-2 px-5 py-2 bg-orange-50 border border-orange-300 rounded-full shadow-sm">
-                <Sparkles size={14} className="text-orange-500" />
-                <span className="text-[11px] md:text-xs font-bold text-orange-700 uppercase tracking-widest">Hello, Interior Designers and Architects</span>
+              <div className="mb-6 inline-flex items-center gap-2 px-5 py-2 bg-slate-800 rounded-full shadow-sm">
+                <span className="text-[11px] md:text-xs font-bold text-white tracking-wide">Start charging $500–$1,500 for designing and rendering.</span>
               </div>
-
-              {/* Industry truth subtitle */}
-              <p className="text-[10px] md:text-xs font-bold uppercase tracking-[0.18em] text-slate-600 mb-5 leading-relaxed">
-                In our business of Architecture and Design,{' '}
-                <span className="text-orange-500 font-extrabold">Planning, Design and Rendering</span>{' '}
-                matter the most.
-              </p>
 
               {/* Main Headline */}
-              <h1 className="tracking-tight mb-3 w-full">
-                <span className="block text-[1.35rem] md:text-5xl font-display font-black text-slate-900 leading-[1.15] whitespace-nowrap">We Will Teach You to Create Complete</span>
+              <h1 className="tracking-tight mb-2 w-full">
+                <span className="block text-3xl md:text-6xl font-display font-black text-slate-900 leading-[1.1]">Learn to Design</span>
+                <span className="block text-3xl md:text-6xl font-display font-black leading-[1.1] mt-1">
+                  <span className="text-emerald-600">Homes</span>
+                  <span className="text-slate-900">, </span>
+                  <span className="text-emerald-600">Offices</span>
+                  {' '}<span className="italic font-serif text-slate-700 font-normal text-2xl md:text-5xl">&amp;</span>{' '}
+                  <span className="text-emerald-600">Villas</span>
+                </span>
               </h1>
-              <div className="flex flex-wrap justify-center gap-2 md:gap-3 mb-2">
-                {[
-                  { label: 'Bedroom', img: 'https://archicgi.com/wp-content/uploads/2025/01/bedroom-design-3d-render-vancouver.jpg' },
-                  { label: 'Kitchen', img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSVxhTeQpiWXZ5sqNSpfTLtZgqfVLCg8DxWZg&s' },
-                  { label: 'Washroom', img: 'https://t4.ftcdn.net/jpg/05/39/76/47/360_F_539764753_ssmO3LitGNsiX5X1c14XWp2qYxNhgAGo.jpg' },
-                  { label: 'Villas', img: 'https://mirchidevelopers.com/wp-content/uploads/2025/09/1.webp' },
-                  { label: 'Offices', img: 'https://render-vision.com/wp-content/uploads/2024/09/3D-Visualisierung_Buro_final-1920x1280.jpg.webp' },
-                ].map((item) => (
-                  <span key={item.label} className="inline-flex items-center gap-1.5 bg-orange-50 border border-orange-200 rounded-full px-3 py-1.5">
-                    <span className="w-9 h-9 md:w-7 md:h-7 rounded-full overflow-hidden shrink-0">
-                      <img src={item.img} alt={item.label} className="w-full h-full object-cover" />
-                    </span>
-                    <span className="text-sm md:text-base font-bold text-orange-600">{item.label}</span>
-                  </span>
-                ))}
-              </div>
-              <p className="text-base md:text-xl italic text-slate-800 mb-1 font-medium">So You can Start Earning as a Professional Designer</p>
-              <p className="text-base md:text-xl font-bold mb-7"><span className="bg-orange-500 text-white px-3 py-1 rounded-md">in Just 15 days</span></p>
 
-              {/* WE TEACH YOU card */}
-              <div className="w-full mb-7 bg-slate-50 border border-slate-200 rounded-2xl px-5 py-5 md:px-8 md:py-6 text-center">
-                <p className="text-[10px] md:text-xs font-bold uppercase tracking-[0.25em] text-slate-600 mb-3">We Teach You</p>
-                <p className="text-sm md:text-base text-slate-800 leading-relaxed">
-                  <strong className="text-slate-900">Planning</strong> on AutoCAD, <strong className="text-slate-900">Designing</strong> on SketchUp
-                </p>
-                <p className="text-sm md:text-base text-slate-800 leading-relaxed">
-                  and <strong className="text-slate-900">Rendering</strong> on V-Ray and D5 + AI
-                </p>
-              </div>
+              {/* Italic subtitle */}
+              <p className="text-base md:text-xl italic text-slate-600 mb-3 font-medium" style={{ fontFamily: 'Georgia, serif' }}>
+                and show real 3D to clients.
+              </p>
 
-              {/* Hero Video */}
-              <div className="w-full mb-8 overflow-hidden rounded-2xl shadow-2xl border border-slate-100" style={{ position: 'relative', paddingTop: '56.25%' }}>
-                <iframe src="https://iframe.mediadelivery.net/embed/494628/81badf78-a3b0-42fa-9f23-9f7213d4185c?autoplay=true&loop=true&muted=true&preload=true&responsive=true" loading="lazy" style={{ border: 0, position: 'absolute', top: 0, height: '100%', width: '100%' }} allow="accelerometer;gyroscope;autoplay;encrypted-media;picture-in-picture;fullscreen;" allowFullScreen={true} />
-                {/* On-video caption */}
-                <div className="absolute bottom-0 left-0 right-0 pointer-events-none" style={{ position: 'absolute', bottom: 0, left: 0, right: 0 }}>
-                  <div className="mx-3 mb-3 md:mx-5 md:mb-5 bg-black/60 backdrop-blur-md rounded-xl px-4 py-2.5 md:px-6 md:py-3 border border-white/10">
-                    <p className="text-white text-xs md:text-base font-bold text-center tracking-wide drop-shadow-lg">
-                      Learn Complete Interior & Exterior Design in one package.
-                    </p>
+              {/* PDR line */}
+              <p className="text-sm md:text-base text-slate-800 font-bold mb-1">
+                Learn <span className="font-black">PDR</span> — Planning, Designing &amp; Rendering
+              </p>
+              <p className="text-xs md:text-sm text-slate-400 mb-8">
+                One bundle. Everything included.
+              </p>
+
+              {/* Quote + Video Card */}
+              <div className="w-full bg-slate-50 border border-slate-200 rounded-2xl px-5 py-6 md:px-8 md:py-8 text-left mb-8">
+                {/* Quote */}
+                <p className="text-sm md:text-base italic text-slate-700 mb-3 leading-relaxed">
+                  "In our business of Architecture and Design, <strong className="text-slate-900 not-italic">Planning, Design and Rendering</strong> matter the most."
+                </p>
+                <p className="text-sm md:text-base text-slate-600 mb-2">
+                  The question isn't <em>if</em> you can. It's...
+                </p>
+                <p className="text-lg md:text-xl font-black text-red-600 mb-5">
+                  How to do it FASTER?
+                </p>
+
+                {/* Hero Video */}
+                <div className="w-full overflow-hidden rounded-xl shadow-lg border border-slate-100" style={{ position: 'relative', paddingTop: '56.25%' }}>
+                  <iframe src="https://iframe.mediadelivery.net/embed/494628/81badf78-a3b0-42fa-9f23-9f7213d4185c?autoplay=true&loop=true&muted=true&preload=true&responsive=true" loading="lazy" style={{ border: 0, position: 'absolute', top: 0, height: '100%', width: '100%' }} allow="accelerometer;gyroscope;autoplay;encrypted-media;picture-in-picture;fullscreen;" allowFullScreen={true} />
+                  {/* On-video caption */}
+                  <div className="absolute bottom-0 left-0 right-0 pointer-events-none" style={{ position: 'absolute', bottom: 0, left: 0, right: 0 }}>
+                    <div className="mx-3 mb-3 md:mx-5 md:mb-5 bg-black/70 backdrop-blur-md rounded-lg px-4 py-2.5 md:px-6 md:py-3">
+                      <p className="text-white text-xs md:text-base font-bold text-center tracking-wide">
+                        Learn Complete Interior &amp; Exterior Design in one package.
+                      </p>
+                    </div>
                   </div>
                 </div>
               </div>
 
               {/* Bottom persuasion text */}
-              <div className="w-full mb-4 text-center px-2">
-                <p className="text-xl md:text-3xl font-display font-black text-gray-900 leading-snug">
-                  Design like Top Designers in <span className="text-orange-500 underline decoration-orange-300 decoration-2 underline-offset-4 italic">15 Days.</span>
+              <div className="w-full mb-6 flex items-start gap-3 px-2">
+                <span className="text-lg mt-0.5">🚀</span>
+                <p className="text-sm md:text-base text-slate-700 leading-relaxed text-left">
+                  That's exactly why we built this. A complete blueprint — from software basics to client-ready renders — designed to make you <span className="font-bold underline underline-offset-2 decoration-orange-400">job or business ready in just one month.</span>
                 </p>
-                <p className="text-xs md:text-sm font-bold uppercase tracking-[0.2em] text-slate-400 mt-2">No Bullshit.</p>
-              </div>
-
-              {/* Outcome cards */}
-              <div className="grid grid-cols-2 gap-3 w-full mb-8">
-                <div className="bg-yellow-50 border border-yellow-200 rounded-2xl px-4 py-4 text-left">
-                  <p className="text-sm md:text-base font-black text-slate-900 mb-1">💼 Land Higher-Paying Jobs</p>
-                  <p className="text-xs md:text-sm text-slate-500">Firms pay premium for rendering skills</p>
-                </div>
-                <div className="bg-yellow-50 border border-yellow-200 rounded-2xl px-4 py-4 text-left">
-                  <p className="text-sm md:text-base font-black text-slate-900 mb-1">🏢 Start Your Own Studio</p>
-                  <p className="text-xs md:text-sm text-slate-500">Full pipeline for freelance & studio work</p>
-                </div>
               </div>
 
               {/* CTA */}
@@ -203,6 +188,28 @@ const LandingPage: React.FC = () => {
           </div>
         </section>
 
+        {/* ═══════ AFTER COURSE YOU CAN ═══════ */}
+        <section className="py-10 md:py-14 bg-slate-50 border-b border-slate-200">
+          <div className="max-w-3xl mx-auto px-4">
+            <h2 className="text-2xl md:text-3xl font-display font-black text-slate-800 text-center mb-6">After Course You Can</h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="bg-white border-2 border-yellow-300 rounded-2xl px-5 py-5 flex items-start gap-3">
+                <span className="text-2xl">💼</span>
+                <div>
+                  <p className="text-base font-bold text-slate-900">Get a Better Job</p>
+                  <p className="text-sm text-slate-500">Higher-paying design roles</p>
+                </div>
+              </div>
+              <div className="bg-white border-2 border-yellow-300 rounded-2xl px-5 py-5 flex items-start gap-3">
+                <span className="text-2xl">🏢</span>
+                <div>
+                  <p className="text-base font-bold text-slate-900">Own Design Firm</p>
+                  <p className="text-sm text-slate-500">Freelance & studio projects</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
 
         {/* ═══════ COURSE SLIDESHOW — Master Every Tool (Replaced with Custom Designed Pipeline Banner) ═══════ */}
         <section className="py-8 md:py-16 bg-white border-b border-gray-100 overflow-hidden relative">

@@ -241,7 +241,7 @@ const LandingPage: React.FC = () => {
 
             {/* Student collage image */}
             <div className="w-full mb-8 overflow-hidden rounded-2xl shadow-lg border border-slate-100">
-              <img src="https://lh3.googleusercontent.com/d/1U5Yisfd31i6-OFBRVorAjhO5O0S72JzG" alt="50,000+ Students Worldwide" className="w-full h-auto object-cover" />
+              <img src="https://lh3.googleusercontent.com/d/1MXpuSNzxwru2XaHmFJ3RnC9CL1YcckRS" alt="50,000+ Students Worldwide" className="w-full h-auto object-cover" />
             </div>
 
             {/* Outcome cards */}

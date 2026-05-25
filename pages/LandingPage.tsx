@@ -158,7 +158,7 @@ const LandingPage: React.FC = () => {
 
                 {/* Hero Video */}
                 <div className="w-full overflow-hidden rounded-xl shadow-lg border border-slate-100" style={{ position: 'relative', paddingTop: '56.25%' }}>
-                  <iframe src="https://iframe.mediadelivery.net/embed/494628/81badf78-a3b0-42fa-9f23-9f7213d4185c?autoplay=true&loop=true&muted=true&preload=true&responsive=true" loading="lazy" style={{ border: 0, position: 'absolute', top: 0, height: '100%', width: '100%' }} allow="accelerometer;gyroscope;autoplay;encrypted-media;picture-in-picture;fullscreen;" allowFullScreen={true} />
+                  <iframe src="https://iframe.mediadelivery.net/embed/494628/1f7b76dd-7d47-4f39-87af-bff5a6b02d08?autoplay=true&loop=true&muted=true&preload=true&responsive=true" loading="lazy" style={{ border: 0, position: 'absolute', top: 0, height: '100%', width: '100%' }} allow="accelerometer;gyroscope;autoplay;encrypted-media;picture-in-picture;fullscreen;" allowFullScreen={true} />
                   {/* On-video caption */}
                   <div className="absolute bottom-0 left-0 right-0 pointer-events-none" style={{ position: 'absolute', bottom: 0, left: 0, right: 0 }}>
                     <div className="mx-3 mb-3 md:mx-5 md:mb-5 bg-black/70 backdrop-blur-md rounded-lg px-4 py-2.5 md:px-6 md:py-3">

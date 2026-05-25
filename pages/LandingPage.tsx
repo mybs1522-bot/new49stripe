@@ -244,6 +244,11 @@ const LandingPage: React.FC = () => {
               <img src="https://lh3.googleusercontent.com/d/1MXpuSNzxwru2XaHmFJ3RnC9CL1YcckRS" alt="50,000+ Students Worldwide" className="w-full h-auto object-cover" />
             </div>
 
+            {/* Additional image */}
+            <div className="w-full mb-8 overflow-hidden rounded-2xl shadow-lg border border-slate-100">
+              <img src="https://lh3.googleusercontent.com/d/1fJGHXqn5Fb12r8FjgLzd0ebPQEHM3i1G" alt="Student Success" className="w-full h-auto object-cover" />
+            </div>
+
             {/* Outcome cards */}
             <div className="grid grid-cols-2 gap-3 mb-8">
               <div className="bg-white border border-slate-200 rounded-2xl px-4 py-5 text-left">

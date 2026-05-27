@@ -231,7 +231,7 @@ export const COURSES = RAW_COURSES.map(course => {
 });
 
 // ─── FRONT-END OFFER: SketchUp + V-Ray + D5 Render ───
-export const FRONT_END_IDS = ['1', '3', '5', '7'];
+export const FRONT_END_IDS = ['3', '5', '7'];
 export const FRONT_END_COURSES = FRONT_END_IDS.map(id => COURSES.find(c => c.id === id)!);
 
 // ─── UPSELL: Everything else ───
@@ -247,6 +247,8 @@ export const DOWNSELL_BOOKS_PRICE = 12;
 
 export const BUNDLE_PRICE = FRONT_END_PRICE;
 export const BUNDLE_ORIGINAL_PRICE = FRONT_END_ORIGINAL_PRICE;
+export const AUTOCAD_ADDON_PRICE = 9;
+export const AUTOCAD_ADDON_ORIGINAL_PRICE = 29;
 
 export const RAW_BOOKS: Course[] = [
   {

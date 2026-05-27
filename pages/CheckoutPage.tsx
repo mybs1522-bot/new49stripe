@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { FRONT_END_COURSES, FRONT_END_PRICE, FRONT_END_ORIGINAL_PRICE } from "../constants";
-import { Sparkles, Timer, CheckCircle2, Download, Mail, Lock, Check, X, ArrowLeft } from "lucide-react";
+import { FRONT_END_COURSES, FRONT_END_PRICE, FRONT_END_ORIGINAL_PRICE, AUTOCAD_ADDON_PRICE, AUTOCAD_ADDON_ORIGINAL_PRICE } from "../constants";
+import { Sparkles, Timer, CheckCircle2, Download, Mail, Lock, Check, X, ArrowLeft, FileText } from "lucide-react";
 import ModernPaymentForm from "../components/ui/modern-payment-form";
 import { useNavigate } from "react-router-dom";
 import { sendStageEmail } from "../services/email";
@@ -13,6 +13,9 @@ const CheckoutPage: React.FC = () => {
   const [email, setEmail] = useState("");
   const [emailError, setEmailError] = useState(false);
   const [studentCount, setStudentCount] = useState(22847);
+  const [autocadAddon, setAutocadAddon] = useState(false);
+
+  const totalPrice = autocadAddon ? FRONT_END_PRICE + AUTOCAD_ADDON_PRICE : FRONT_END_PRICE;
 
   useEffect(() => { const t = setInterval(() => setStudentCount(c => c + 1), 4000); return () => clearInterval(t); }, []);
 
@@ -34,9 +37,9 @@ const CheckoutPage: React.FC = () => {
 
   const handleSuccess = (customerId?: string, paymentMethodId?: string, paymentIntentId?: string) => {
     console.log('[CheckoutPage] Payment succeeded. customerId:', customerId, 'paymentMethodId:', paymentMethodId, 'paymentIntentId:', paymentIntentId);
-    if ((window as any).fbq) (window as any).fbq("track", "Purchase", { value: FRONT_END_PRICE, currency: "USD" });
+    if ((window as any).fbq) (window as any).fbq("track", "Purchase", { value: totalPrice, currency: "USD" });
     sendStageEmail(email, 'render');
-    navigate("/onetime", { state: { customerId, paymentMethodId, paymentIntentId, email, purchased: ['render'] } });
+    navigate("/onetime", { state: { customerId, paymentMethodId, paymentIntentId, email, purchased: autocadAddon ? ['render', 'autocad'] : ['render'] } });
   };
 
   return (
@@ -64,7 +67,7 @@ const CheckoutPage: React.FC = () => {
             className="w-full h-full object-cover"
           />
         </div>
-        <p className="text-xs font-semibold text-gray-600 mt-2 text-center max-w-[200px]">🎨 AutoCAD + SketchUp + V-Ray + D5 Render Bundle</p>
+        <p className="text-xs font-semibold text-gray-600 mt-2 text-center max-w-[200px]">🎨 SketchUp + V-Ray + D5 Render AI Bundle</p>
       </div>
 
       <div className="checkout-card w-full max-w-md bg-white rounded-3xl shadow-2xl overflow-hidden">
@@ -74,23 +77,49 @@ const CheckoutPage: React.FC = () => {
               <Sparkles size={11} /> Rendering Pipeline
             </div>
           </div>
-          <h3 className="text-xl font-display font-bold mb-1">AutoCAD + SketchUp + V-Ray + D5</h3>
+          <h3 className="text-xl font-display font-bold mb-1">SketchUp + V-Ray + D5 Render</h3>
           <div className="flex items-baseline gap-2">
             <span className="text-2xl font-display font-black">{formatPrice(FRONT_END_PRICE)}</span>
             <span className="text-gray-500 text-sm line-through">{formatPrice(FRONT_END_ORIGINAL_PRICE)}</span>
-            <span className="bg-white/10 text-white text-xs font-bold px-2 py-0.5 rounded-full border border-white/20">Limited Offer</span>
+            <span className="bg-white/10 text-white text-xs font-bold px-2 py-0.5 rounded-full border border-white/20">69% OFF</span>
           </div>
         </div>
 
         <div className="px-6 pt-5 pb-6">
           <div className="grid grid-cols-2 gap-2 mb-4">
-            {["4 Premium Courses", "10,000+ Textures", "Official Certificate", "24/7 Team Support", "Lifetime Access"].map((item, i) => (
+            {["3 Premium Courses", "10,000+ Textures", "Official Certificate", "24/7 Team Support", "Lifetime Access"].map((item, i) => (
               <div key={i} className="flex items-center gap-2 text-xs text-gray-700 font-medium">
                 <CheckCircle2 size={12} className="text-gray-500 shrink-0" /> {item}
               </div>
             ))}
             <div className="col-span-2 flex items-center gap-2 text-xs font-bold bg-green-50 border border-green-200 rounded-lg px-3 py-2 text-green-700">
               <Download size={11} className="shrink-0" /> Software Download - All Links Included
+            </div>
+          </div>
+
+          {/* AutoCAD Add-on */}
+          <div
+            onClick={() => setAutocadAddon(!autocadAddon)}
+            className={`rounded-xl border-2 px-4 py-3.5 mb-5 cursor-pointer transition-all ${autocadAddon ? 'border-orange-400 bg-orange-50' : 'border-gray-200 bg-gray-50 hover:border-gray-300'}`}
+          >
+            <div className="flex items-start gap-3">
+              <div className={`w-5 h-5 rounded border-2 flex items-center justify-center shrink-0 mt-0.5 transition-all ${autocadAddon ? 'bg-orange-500 border-orange-500' : 'border-gray-300 bg-white'}`}>
+                {autocadAddon && <Check size={12} className="text-white" />}
+              </div>
+              <div className="flex-1">
+                <div className="flex items-center justify-between mb-1">
+                  <div className="flex items-center gap-2">
+                    <FileText size={16} className="text-gray-700" />
+                    <span className="text-sm font-bold text-gray-900">AutoCAD</span>
+                  </div>
+                  <div className="flex items-center gap-1.5">
+                    <span className="bg-orange-500 text-white text-[9px] font-bold px-2 py-0.5 rounded-full uppercase">Add-on</span>
+                    <span className="text-sm font-black text-gray-900">+ {formatPrice(AUTOCAD_ADDON_PRICE)}</span>
+                  </div>
+                </div>
+                <p className="text-xs font-semibold text-gray-700 mb-0.5">Complete Planning & Floor Plans Course</p>
+                <p className="text-[11px] text-gray-500">Master professional floor plans, site plans & construction drawings. The perfect companion to your 3D workflow.</p>
+              </div>
             </div>
           </div>
 
@@ -118,7 +147,7 @@ const CheckoutPage: React.FC = () => {
           </div>
           {emailError && <p className="text-red-500 text-[10px] mb-2 font-bold">Enter a valid email address</p>}
 
-          <ModernPaymentForm bare email={email} onSuccess={handleSuccess} amount={`$${FRONT_END_PRICE}`} />
+          <ModernPaymentForm bare email={email} onSuccess={handleSuccess} amount={`$${totalPrice}`} />
 
           <div className="flex items-center justify-center gap-1.5 mt-4 text-[11px] text-gray-500 font-medium text-center">
             🎓 Skill Certificate will be automatically mailed after you complete the course.

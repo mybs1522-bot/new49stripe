@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowRight, Star, CheckCircle, CheckCircle2, X, ChevronDown, Sparkles, Eye, Download, Mail, Lock, Loader2, Timer, Check, ShieldCheck, Bed, CookingPot, Bath, Building2, Landmark } from 'lucide-react';
+import { ArrowRight, Star, CheckCircle, CheckCircle2, X, ChevronDown, Sparkles, Eye, Download, Mail, Lock, Loader2, Timer, Check, ShieldCheck, Building2, Landmark } from 'lucide-react';
 import { FRONT_END_PRICE, FRONT_END_ORIGINAL_PRICE } from '../constants';
 import { useCurrency } from '../contexts/CurrencyContext';
 import TeamSection from '../components/ui/team';
@@ -144,7 +144,7 @@ const LandingPage: React.FC = () => {
 
       {/* ═══ TOP BANNER ═══ */}
       <div className="sticky top-0 z-[60] bg-slate-900 text-white text-center py-2.5 px-4">
-        <span className="text-[10px] md:text-sm font-bold tracking-wide whitespace-nowrap">AutoCAD added in the package, <span className="text-orange-400">No price increment till offer last</span>.</span>
+        <span className="text-[10px] md:text-sm font-bold tracking-wide whitespace-nowrap">Freelance paid projects for every student! <span className="text-orange-400">Limited time offer.</span></span>
       </div>
 
       <main>
@@ -154,88 +154,70 @@ const LandingPage: React.FC = () => {
             <div className="flex flex-col items-center text-center pt-7 md:pt-14">
 
               {/* Badge */}
-              <div className="mb-5 inline-flex items-center gap-2 px-5 py-2 bg-orange-50 border border-orange-300 rounded-full shadow-sm">
-                <Sparkles size={14} className="text-orange-500" />
-                <span className="text-[11px] md:text-xs font-bold text-orange-700 uppercase tracking-widest">Hello, Interior Designers and Architects</span>
+              <div className="mb-6 inline-flex items-center gap-2 px-5 py-2 bg-slate-800 rounded-full shadow-sm">
+                <span className="text-[11px] md:text-xs font-bold text-white tracking-wide">Start charging $500–$1,500 for designing and rendering.</span>
               </div>
-
-              {/* Industry truth subtitle */}
-              <p className="text-[10px] md:text-xs font-bold uppercase tracking-[0.18em] text-slate-600 mb-5 leading-relaxed">
-                In our business of Architecture and Design,{' '}
-                <span className="text-orange-500 font-extrabold">Planning, Design and Rendering</span>{' '}
-                matter the most.
-              </p>
 
               {/* Main Headline */}
-              <h1 className="tracking-tight mb-3 w-full">
-                <span className="block text-[1.35rem] md:text-5xl font-display font-black text-slate-900 leading-[1.15] whitespace-nowrap">We Will Teach You to Create Complete</span>
+              <h1 className="tracking-tight mb-2 w-full">
+                <span className="block text-3xl md:text-6xl font-display font-black text-slate-900 leading-[1.1]">Learn to Design</span>
+                <span className="block text-3xl md:text-6xl font-display font-black leading-[1.1] mt-1">
+                  <span className="text-emerald-600">Homes</span>
+                  <span className="text-slate-900">, </span>
+                  <span className="text-emerald-600">Offices</span>
+                  {' '}<span className="italic font-serif text-slate-700 font-normal text-2xl md:text-5xl">&amp;</span>{' '}
+                  <span className="text-emerald-600">Villas</span>
+                </span>
               </h1>
-              <div className="flex flex-wrap justify-center gap-2 md:gap-3 mb-2">
-                {[
-                  { label: 'Bedroom', img: 'https://archicgi.com/wp-content/uploads/2025/01/bedroom-design-3d-render-vancouver.jpg' },
-                  { label: 'Kitchen', img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSVxhTeQpiWXZ5sqNSpfTLtZgqfVLCg8DxWZg&s' },
-                  { label: 'Washroom', img: 'https://t4.ftcdn.net/jpg/05/39/76/47/360_F_539764753_ssmO3LitGNsiX5X1c14XWp2qYxNhgAGo.jpg' },
-                  { label: 'Villas', img: 'https://mirchidevelopers.com/wp-content/uploads/2025/09/1.webp' },
-                  { label: 'Offices', img: 'https://render-vision.com/wp-content/uploads/2024/09/3D-Visualisierung_Buro_final-1920x1280.jpg.webp' },
-                ].map((item) => (
-                  <span key={item.label} className="inline-flex items-center gap-1.5 bg-orange-50 border border-orange-200 rounded-full px-3 py-1.5">
-                    <span className="w-9 h-9 md:w-7 md:h-7 rounded-full overflow-hidden shrink-0">
-                      <img src={item.img} alt={item.label} className="w-full h-full object-cover" />
-                    </span>
-                    <span className="text-sm md:text-base font-bold text-orange-600">{item.label}</span>
-                  </span>
-                ))}
-              </div>
-              <p className="text-base md:text-xl italic text-slate-800 mb-1 font-medium">So You can Start Earning as a Professional Designer</p>
-              <p className="text-base md:text-xl font-bold mb-7"><span className="bg-orange-500 text-white px-3 py-1 rounded-md">in Just 15 days</span></p>
 
-              {/* WE TEACH YOU card */}
-              <div className="w-full mb-7 bg-slate-50 border border-slate-200 rounded-2xl px-5 py-5 md:px-8 md:py-6 text-center">
-                <p className="text-[10px] md:text-xs font-bold uppercase tracking-[0.25em] text-slate-600 mb-3">We Teach You</p>
-                <p className="text-sm md:text-base text-slate-800 leading-relaxed">
-                  <strong className="text-slate-900">Planning</strong> on AutoCAD, <strong className="text-slate-900">Designing</strong> on SketchUp
-                </p>
-                <p className="text-sm md:text-base text-slate-800 leading-relaxed">
-                  and <strong className="text-slate-900">Rendering</strong> on V-Ray and D5 + AI
-                </p>
-              </div>
+              {/* Italic subtitle */}
+              <p className="text-base md:text-xl italic text-slate-600 mb-3 font-medium" style={{ fontFamily: 'Georgia, serif' }}>
+                and show real 3D to clients.
+              </p>
 
-              {/* Hero Video */}
-              <div className="w-full mb-8 overflow-hidden rounded-2xl shadow-2xl border border-slate-100" style={{ position: 'relative', paddingTop: '56.25%' }}>
-                <iframe src="https://iframe.mediadelivery.net/embed/494628/81badf78-a3b0-42fa-9f23-9f7213d4185c?autoplay=true&loop=true&muted=true&preload=true&responsive=true" loading="lazy" style={{ border: 0, position: 'absolute', top: 0, height: '100%', width: '100%' }} allow="accelerometer;gyroscope;autoplay;encrypted-media;picture-in-picture;fullscreen;" allowFullScreen={true} />
-                {/* On-video caption */}
-                <div className="absolute bottom-0 left-0 right-0 pointer-events-none" style={{ position: 'absolute', bottom: 0, left: 0, right: 0 }}>
-                  <div className="mx-3 mb-3 md:mx-5 md:mb-5 bg-black/60 backdrop-blur-md rounded-xl px-4 py-2.5 md:px-6 md:py-3 border border-white/10">
-                    <p className="text-white text-xs md:text-base font-bold text-center tracking-wide drop-shadow-lg">
-                      Learn Complete Interior & Exterior Design in one package.
-                    </p>
-                  </div>
+              {/* PDR line */}
+              <p className="text-sm md:text-base text-slate-800 font-bold mb-1">
+                Learn <span className="font-black">PDR</span> — Planning, Designing &amp; Rendering
+              </p>
+              <p className="text-xs md:text-sm text-slate-400 mb-8">
+                One bundle. Everything included.
+              </p>
+
+              {/* Quote + Video Card */}
+              <div className="w-full bg-slate-50 border border-slate-200 rounded-2xl px-5 py-6 md:px-8 md:py-8 text-left mb-8">
+                {/* Quote */}
+                <p className="text-sm md:text-base italic text-slate-700 mb-3 leading-relaxed">
+                  "In our business of Architecture and Design, <strong className="text-slate-900 not-italic">Planning, Design and Rendering</strong> matter the most."
+                </p>
+                <p className="text-sm md:text-base text-slate-600 mb-2">
+                  The question isn't <em>if</em> you can. It's...
+                </p>
+                <p className="text-lg md:text-xl font-black text-red-600 mb-5">
+                  How to do it FASTER?
+                </p>
+
+                {/* Hero Video */}
+                <div className="w-full overflow-hidden rounded-xl shadow-lg border border-slate-100" style={{ position: 'relative', paddingTop: '56.25%' }}>
+                  <iframe src="https://iframe.mediadelivery.net/embed/494628/1f7b76dd-7d47-4f39-87af-bff5a6b02d08?autoplay=true&loop=true&muted=true&preload=true&responsive=true" loading="lazy" style={{ border: 0, position: 'absolute', top: 0, height: '100%', width: '100%' }} allow="accelerometer;gyroscope;autoplay;encrypted-media;picture-in-picture;fullscreen;" allowFullScreen={true} />
                 </div>
+
+                {/* Video caption below */}
+                <p className="text-sm md:text-base font-bold text-slate-700 text-center tracking-wide mt-4">
+                  Learn Complete Interior &amp; Exterior Design in one package.
+                </p>
               </div>
 
               {/* Bottom persuasion text */}
-              <div className="w-full mb-4 text-center px-2">
-                <p className="text-xl md:text-3xl font-display font-black text-gray-900 leading-snug">
-                  Design like Top Designers in <span className="text-orange-500 underline decoration-orange-300 decoration-2 underline-offset-4 italic">15 Days.</span>
+              <div className="w-full mb-6 flex items-start gap-3 px-2">
+                <span className="text-lg mt-0.5">🚀</span>
+                <p className="text-sm md:text-base text-slate-700 leading-relaxed text-left">
+                  That's exactly why we built this. A complete blueprint — from software basics to client-ready renders — designed to make you <span className="font-bold underline underline-offset-2 decoration-orange-400">job or business ready in just one month.</span>
                 </p>
-                <p className="text-xs md:text-sm font-bold uppercase tracking-[0.2em] text-slate-400 mt-2">No Bullshit.</p>
-              </div>
-
-              {/* Outcome cards */}
-              <div className="grid grid-cols-2 gap-3 w-full mb-8">
-                <div className="bg-yellow-50 border border-yellow-200 rounded-2xl px-4 py-4 text-left">
-                  <p className="text-sm md:text-base font-black text-slate-900 mb-1">💼 Land Higher-Paying Jobs</p>
-                  <p className="text-xs md:text-sm text-slate-500">Firms pay premium for rendering skills</p>
-                </div>
-                <div className="bg-yellow-50 border border-yellow-200 rounded-2xl px-4 py-4 text-left">
-                  <p className="text-sm md:text-base font-black text-slate-900 mb-1">🏢 Start Your Own Studio</p>
-                  <p className="text-xs md:text-sm text-slate-500">Full pipeline for freelance & studio work</p>
-                </div>
               </div>
 
               {/* CTA */}
               <button onClick={openPaymentModal} className="w-full sm:w-auto px-8 py-4 bg-gradient-to-r from-orange-500 to-orange-600 text-white rounded-2xl font-bold text-base md:text-lg shadow-xl shadow-orange-500/20 hover:shadow-orange-500/30 hover:scale-[1.03] transition-all flex items-center justify-center gap-3 group premium-stroke">
-                <Download size={18} /> Get All 4 Courses — {formatPrice(FRONT_END_PRICE)} <ArrowRight className="group-hover:translate-x-1 transition-transform" size={18} />
+                <Download size={18} /> Get All 3 Courses <ArrowRight className="group-hover:translate-x-1 transition-transform" size={18} />
               </button>
               <p className="text-[11px] md:text-xs text-slate-400 mt-3 font-medium">24/7 Support • Free AI Software • 7-Day Money-Back Guarantee</p>
 
@@ -243,33 +225,62 @@ const LandingPage: React.FC = () => {
           </div>
         </section>
 
+        {/* ═══════ WE HELP YOU TO ═══════ */}
+        <section className="py-10 md:py-14 bg-slate-50 border-b border-slate-200">
+          <div className="max-w-3xl mx-auto px-4">
+            <h2 className="text-2xl md:text-3xl font-display font-black text-slate-800 text-center mb-6">We Help You To</h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-5">
+              <div className="bg-white border-2 border-yellow-300 rounded-2xl px-5 py-5 flex items-start gap-3">
+                <span className="text-2xl">💼</span>
+                <div>
+                  <p className="text-base font-bold text-slate-900">Get a Better Job</p>
+                  <p className="text-sm text-slate-500">Higher-paying design roles</p>
+                </div>
+              </div>
+              <div className="bg-white border-2 border-yellow-300 rounded-2xl px-5 py-5 flex items-start gap-3">
+                <span className="text-2xl">🏢</span>
+                <div>
+                  <p className="text-base font-bold text-slate-900">Own Design Firm</p>
+                  <p className="text-sm text-slate-500">Freelance & studio projects</p>
+                </div>
+              </div>
+            </div>
 
-        {/* ═══════ COURSE SLIDESHOW — Master Every Tool (Replaced with Custom Designed Pipeline Banner) ═══════ */}
+            {/* ── Freelance Projects Card ── */}
+            <div className="bg-orange-50 border-2 border-orange-300 rounded-2xl px-5 py-5">
+              <div className="flex items-start gap-3">
+                <span className="text-2xl">🎨</span>
+                <div className="flex-1">
+                  <p className="text-base font-bold text-slate-900 mb-1">3 Interior Design Freelance Projects</p>
+                  <p className="text-sm text-slate-500 mb-3">Freelance paid projects to every student to gather real experience</p>
+                  <div className="flex flex-wrap items-center gap-3">
+                    <span className="inline-flex items-center gap-1.5 bg-orange-500 text-white text-sm font-bold px-4 py-1.5 rounded-full">Worth $200</span>
+                    <span className="flex items-center gap-1.5 text-xs font-bold text-emerald-600"><ShieldCheck size={14} /> Certificate on Completion</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </section>
+
+        {/* ═══════ MASTER DESIGN TO RENDER PIPELINE ═══════ */}
         <section className="bg-white border-b border-gray-100 relative">
-          <div ref={pipelineSentinelRef} className="max-w-5xl mx-auto px-4 md:px-6 py-8 md:py-16">
-            {/* Placeholder keeps page height stable when image goes fixed */}
-            {pipelineSticky && (
-              <div style={{ height: pipelineNaturalHeight.current }} />
-            )}
-            <div 
-              ref={pipelineRef}
-              className={`flex justify-center transition-all duration-300 ease-out ${
-                pipelineSticky
-                  ? 'fixed top-0 left-0 right-0 z-[65] bg-white/95 backdrop-blur-md shadow-lg'
-                  : ''
-              }`}
-              style={pipelineSticky ? { padding: 0, margin: 0 } : undefined}
-            >
+          <div className="max-w-5xl mx-auto px-4 md:px-6 py-10 md:py-16">
+            <div className="text-center mb-6">
+              <h2 className="text-2xl md:text-4xl font-display font-black text-slate-900 tracking-tight mb-2">Master Design to Render Pipeline</h2>
+              <p className="text-sm md:text-lg text-slate-500 font-medium">Software Top Designers & Architects Use</p>
+            </div>
+            <div className="flex justify-center mb-4">
               <img 
-                src="/plan-to-render-pipeline.png" 
-                alt="Master the Complete Plan-to-Render Pipeline: AutoCAD, SketchUp, V-Ray, D5 Render" 
-                className={`h-auto transition-all duration-300 ease-out ${
-                  pipelineSticky
-                    ? 'w-1/2 py-1'
-                    : 'w-full rounded-2xl shadow-xl hover:shadow-2xl border border-slate-100'
-                }`}
+                src="https://lh3.googleusercontent.com/d/1sVPZ_PDQCwMEuA9MiZxHLkTWP6LbjKL7" 
+                alt="Design to Render Pipeline: SketchUp, V-Ray, D5 Render" 
+                className="w-full rounded-2xl shadow-xl border border-slate-100"
               />
             </div>
+            <p className="text-center text-sm md:text-base font-bold text-emerald-600 flex items-center justify-center gap-2">
+              <Download size={16} /> Software Download Links Included
+            </p>
           </div>
         </section>
 
@@ -290,7 +301,12 @@ const LandingPage: React.FC = () => {
 
             {/* Student collage image */}
             <div className="w-full mb-8 overflow-hidden rounded-2xl shadow-lg border border-slate-100">
-              <img src="https://lh3.googleusercontent.com/d/1U5Yisfd31i6-OFBRVorAjhO5O0S72JzG" alt="50,000+ Students Worldwide" className="w-full h-auto object-cover" />
+              <img src="https://lh3.googleusercontent.com/d/1MXpuSNzxwru2XaHmFJ3RnC9CL1YcckRS" alt="50,000+ Students Worldwide" className="w-full h-auto object-cover" />
+            </div>
+
+            {/* Additional image */}
+            <div className="w-full mb-8 overflow-hidden rounded-2xl shadow-lg border border-slate-100">
+              <img src="https://lh3.googleusercontent.com/d/1fJGHXqn5Fb12r8FjgLzd0ebPQEHM3i1G" alt="Student Success" className="w-full h-auto object-cover" />
             </div>
 
             {/* Outcome cards */}
@@ -413,7 +429,7 @@ const LandingPage: React.FC = () => {
                   <span className="text-slate-900 font-bold text-center">Lifetime Access + Free Updates</span>
                 </div>
                 <button onClick={openPaymentModal} className="w-full sm:w-auto px-10 py-4 bg-gradient-to-r from-orange-500 to-orange-600 text-white rounded-xl font-bold text-lg shadow-xl shadow-orange-500/20 hover:scale-[1.02] transition-all flex items-center justify-center gap-3 group premium-stroke whitespace-nowrap">
-                  <Download size={16} /> Get All 4 Courses — {formatPrice(FRONT_END_PRICE)} <ArrowRight className="group-hover:translate-x-1 transition-transform" size={18} />
+                  <Download size={16} /> Get All 3 Courses — {formatPrice(FRONT_END_PRICE)} <ArrowRight className="group-hover:translate-x-1 transition-transform" size={18} />
                 </button>
               </div>
             </div>
@@ -570,7 +586,7 @@ const LandingPage: React.FC = () => {
           <div className="max-w-3xl mx-auto px-4 md:px-5">
             <div className="text-center mb-6 md:mb-8">
               <h3 className="text-xl md:text-3xl font-display font-bold text-slate-900 mb-2">Your future portfolio is one click away.</h3>
-              <p className="text-slate-500 text-xs md:text-sm">50,000+ students chose this path. AutoCAD + SketchUp + V-Ray + D5 Render for {formatPrice(FRONT_END_PRICE)}. Lifetime access. Zero risk.</p>
+              <p className="text-slate-500 text-xs md:text-sm">50,000+ students chose this path. SketchUp + V-Ray + D5 Render for {formatPrice(FRONT_END_PRICE)}. Lifetime access. Zero risk.</p>
             </div>
             <CtaWithTimer timeLeft={timeLeft} onClick={openPaymentModal} variant="dark" />
           </div>
@@ -613,7 +629,7 @@ const LandingPage: React.FC = () => {
           <div className="flex-1 flex flex-col gap-1">
             <button onClick={openPaymentModal} className="flex-1 flex items-center justify-center gap-1.5 bg-slate-900 text-white text-xs font-bold py-3 rounded-xl hover:bg-black transition-all"
               style={{ boxShadow: '0 0 0 2px #f97316, 0 0 12px rgba(249,115,22,0.35)' }}>
-              Get All 4 Courses — {formatPrice(FRONT_END_PRICE)}
+              Get All 3 Courses — {formatPrice(FRONT_END_PRICE)}
               <ArrowRight size={13} />
             </button>
           </div>
